@@ -36,7 +36,7 @@ var Indicator = class ExampleIndicator extends PanelMenu.Button {
 
 if (SHELL_MINOR > 30) {
     Indicator = GObject.registerClass(
-        { GTypeName: 'ExampleIndicator' },
+        { GTypeName: 'Indicator' },
         Indicator
     );
 }
