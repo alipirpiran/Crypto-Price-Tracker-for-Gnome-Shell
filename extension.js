@@ -17,6 +17,9 @@ const Binance = Me.imports.api.binance;
 const Config = imports.misc.config;
 const SHELL_MINOR = parseInt(Config.PACKAGE_VERSION.split('.')[1]);
 
+let selectedIndex = 0;
+const coinNames = ['BTC', 'ETC'];
+
 const coins = [];
 let btcItem, ethItem;
 var menuItem;
@@ -84,7 +87,7 @@ async function refreshPrice(coin) {
 }
 
 function toggleBTC() {
-    log('toggled btc');
+    log(btcItem.active)
 }
 function toggleETH() {}
 
