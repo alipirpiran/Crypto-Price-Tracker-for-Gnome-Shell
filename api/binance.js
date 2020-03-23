@@ -8,3 +8,8 @@ var getBTC = function() {
         'https://www.binance.com/api/v3/avgPrice?symbol=BTCUSDT'
     );
 };
+var getETH = function() {
+    return request.get(
+        'https://www.binance.com/api/v3/avgPrice?symbol=ETHUSDT'
+    );
+};
