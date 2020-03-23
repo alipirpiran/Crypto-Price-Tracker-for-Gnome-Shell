@@ -59,15 +59,28 @@ function init() {
 
     coins.push(btcItem, ethItem);
 
+    refreshPrice('BTC');
     GLib.timeout_add(1, 1000 * 10, async () => {
-        const result = await Binance.getBTC();
-        const jsonRes = JSON.parse(result.body);
-        let price = jsonRes.price;
-        let priceParts = price.split('.');
-        price = priceParts[0] + '.' + priceParts[0][0] + priceParts[0][1]
-        menuItem.text = `BTC ${price}`;
+        refreshPrice('BTC');
         return true;
     });
+}
+
+async function refreshPrice(coin) {
+    let result;
+    if (coin == 'BTC') {
+        result = await Binance.getBTC();
+    }
+
+    if (result == null) return;
+
+    const jsonRes = JSON.parse(result.body);
+    let price = jsonRes.price;
+    let priceParts = price.split('.');
+    price = priceParts[0] + '.';
+    priceParts[1][0] ? (price += priceParts[1][0]) : null;
+    priceParts[1][1] ? (price += priceParts[1][1]) : null;
+    menuItem.text = `BTC ${price}`;
 }
 
 function toggleBTC() {
