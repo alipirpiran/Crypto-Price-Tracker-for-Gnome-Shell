@@ -17,3 +17,4 @@ Create extension dir and Copy files in it:
     $ cp -r ./CryptoPriceTracker-for-GnomeShell/* ~/.local/share/gnome-shell/extensions/crypto@alipirpiran.gmail.com/
  
 Restart Gnome-shell. (ALT+F2, r, Enter)
+You may need to enable the extension via Gnome Tweaks
