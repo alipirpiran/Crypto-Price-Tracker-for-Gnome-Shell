@@ -12,12 +12,14 @@ const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 
+const Binance = Me.imports.api.binance;
+
 const Config = imports.misc.config;
 const SHELL_MINOR = parseInt(Config.PACKAGE_VERSION.split('.')[1]);
 
 const coins = [];
 let btcItem, ethItem;
-let menuItem;
+var menuItem;
 
 var Indicator = class CIndicator extends PanelMenu.Button {
     _init() {
@@ -56,6 +58,16 @@ function init() {
     btcItem.connect('toggled', toggleETH);
 
     coins.push(btcItem, ethItem);
+
+    GLib.timeout_add(1, 1000 * 10, async () => {
+        const result = await Binance.getBTC();
+        const jsonRes = JSON.parse(result.body);
+        let price = jsonRes.price;
+        let priceParts = price.split('.');
+        price = priceParts[0] + '.' + priceParts[0][0] + priceParts[0][1]
+        menuItem.text = `BTC ${price}`;
+        return true;
+    });
 }
 
 function toggleBTC() {
