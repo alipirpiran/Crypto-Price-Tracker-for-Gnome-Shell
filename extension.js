@@ -19,15 +19,11 @@ var Indicator = class ExampleIndicator extends PanelMenu.Button {
     _init() {
         super._init(0.0, `${Me.metadata.name} Indicator`, false);
 
-        // Pick an icon
         let icon = new St.Icon({
             gicon: new Gio.ThemedIcon({ name: 'face-laugh-symbolic' }),
             style_class: 'system-status-icon',
         });
         this.actor.add_child(icon);
-
-        // Keep a record of the original visibility of each panel item
-        this.states = {};
 
         menuItem = new PopupMenu.PopupSwitchMenuItem('BTC', false);
         this.menu.addMenuItem(menuItem);
