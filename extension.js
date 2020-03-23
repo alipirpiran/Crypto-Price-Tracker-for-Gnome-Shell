@@ -4,6 +4,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const St = imports.gi.St;
+const Clutter = imports.gi.Clutter;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -14,19 +15,24 @@ const PanelMenu = imports.ui.panelMenu;
 const Config = imports.misc.config;
 const SHELL_MINOR = parseInt(Config.PACKAGE_VERSION.split('.')[1]);
 
+const coins = [];
+let btcItem, ethItem;
 let menuItem;
-var Indicator = class ExampleIndicator extends PanelMenu.Button {
+
+var Indicator = class CIndicator extends PanelMenu.Button {
     _init() {
         super._init(0.0, `${Me.metadata.name} Indicator`, false);
 
-        let icon = new St.Icon({
-            gicon: new Gio.ThemedIcon({ name: 'face-laugh-symbolic' }),
-            style_class: 'system-status-icon',
+        menuItem = new St.Label({
+            text: 'Crypto',
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
         });
-        this.actor.add_child(icon);
+        this.actor.add_child(menuItem);
 
-        menuItem = new PopupMenu.PopupSwitchMenuItem('BTC', false);
-        this.menu.addMenuItem(menuItem);
+        for (const coin of coins) {
+            this.menu.addMenuItem(coin);
+        }
     }
 
     destroy() {
@@ -35,15 +41,27 @@ var Indicator = class ExampleIndicator extends PanelMenu.Button {
 };
 
 if (SHELL_MINOR > 30) {
-    Indicator = GObject.registerClass(
-        { GTypeName: 'Indicator' },
-        Indicator
-    );
+    Indicator = GObject.registerClass({ GTypeName: 'Indicator' }, Indicator);
 }
 
 var indicator = null;
 
-function init() {}
+function init() {
+    btcItem = new PopupMenu.PopupSwitchMenuItem('BTC', false);
+    btcItem.statusAreaKey = 'BTC';
+    btcItem.connect('toggled', toggleBTC);
+
+    ethItem = new PopupMenu.PopupSwitchMenuItem('ETH', false);
+    ethItem.statusAreaKey = 'ETH';
+    btcItem.connect('toggled', toggleETH);
+
+    coins.push(btcItem, ethItem);
+}
+
+function toggleBTC() {
+    log('toggled btc');
+}
+function toggleETH() {}
 
 function enable() {
     indicator = new Indicator();
