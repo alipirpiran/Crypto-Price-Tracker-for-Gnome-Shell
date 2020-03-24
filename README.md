@@ -1,4 +1,4 @@
-# CryptoPriceTracker for Gnome-shell
+# Crypto Price Tracker for Gnome-Shell
 An extension for Gnome-Shell to track Crypto currencies price.
 
 * refresh price every 10 sec.
