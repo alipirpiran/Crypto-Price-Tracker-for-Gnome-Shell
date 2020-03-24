@@ -8,7 +8,7 @@ An extension for Gnome-Shell to track Crypto currencies price.
 
  Clone the git repo:
 
-    $ git clone https://github.com/alipirpiran/CryptoPriceTracker-for-GnomeShell.git
+    $ git clone https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell.git
 
 
  Create extension dir and Copy files in it:
