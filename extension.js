@@ -13,20 +13,14 @@ const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 
 const Binance = Me.imports.api.binance;
+const CoinItem = Me.imports.models.coinItem.CoinItem;
 
 const Config = imports.misc.config;
 const SHELL_MINOR = parseInt(Config.PACKAGE_VERSION.split('.')[1]);
 
 const SELECT_TEXT = 'Select';
 
-let timeOutTag;
-
-let selectedIndex = 0;
-const coinNames = ['BTC', 'ETC'];
-
-const coins = [];
-let btcItem, ethItem;
-let btcRun, ethRun;
+let coins = [];
 var menuItem;
 
 var Indicator = class CIndicator extends PanelMenu.Button {
@@ -39,10 +33,6 @@ var Indicator = class CIndicator extends PanelMenu.Button {
             y_align: Clutter.ActorAlign.CENTER,
         });
         this.actor.add_child(menuItem);
-
-        for (const coin of coins) {
-            this.menu.addMenuItem(coin);
-        }
     }
 
     destroy() {
@@ -56,84 +46,21 @@ if (SHELL_MINOR > 30) {
 
 var indicator = null;
 
+function addCoin(coin, reset) {
+    if (reset == true) coins = [];
+    coins.push(coin);
+    indicator.menu.addMenuItem(coin);
+}
+
 function init() {
-    btcItem = new PopupMenu.PopupSwitchMenuItem('BTC', true);
-    btcItem.statusAreaKey = 'BTC';
-    btcItem.connect('toggled', toggleBTC);
-
-    ethItem = new PopupMenu.PopupSwitchMenuItem('ETH', false);
-    ethItem.statusAreaKey = 'ETH';
-    ethItem.connect('toggled', toggleETH);
-
-    coins.push(btcItem, ethItem);
-}
-
-async function refreshPrice(coin) {
-    let result;
-    if (coin == 'BTC') {
-        result = await Binance.getBTC();
-    }
-    if (coin == 'ETH') {
-        result = await Binance.getETH();
-    }
-
-    if (result == null) return;
-
-    const jsonRes = JSON.parse(result.body);
-    let price = jsonRes.price;
-    let priceParts = price.split('.');
-    price = priceParts[0] + '.';
-    priceParts[1][0] ? (price += priceParts[1][0]) : null;
-    priceParts[1][1] ? (price += priceParts[1][1]) : null;
-    menuItem.text = `${coin} ${price}`;
-}
-
-function toggleBTC() {
-    if (btcItem.state) {
-        activeCoin(btcItem);
-        disableOtherCoins(btcItem);
-    }
-}
-function toggleETH() {
-    if (ethItem.state) {
-        activeCoin(ethItem);
-        disableOtherCoins(ethItem);
-    }
-}
-
-// TODO create object contain label -> coin
-function activeCoin(coin) {
-    const coinName = coin.label.text;
-    menuItem.text = coinName + ' ...';
-
-    GLib.Source.remove(timeOutTag);
-
-    refreshPrice(coinName);
-    timeOutTag = GLib.timeout_add(1, 1000 * 10, async () => {
-        refreshPrice(coinName);
-        return true;
-    });
-}
-
-// TODO disable glib timer
-function disableOtherCoins(_coin) {
-    for (const coin of coins) {
-        if (coin == _coin) continue;
-        if (coin.state) coin.toggle();
-
-        switch (coin.label.text) {
-            case 'BTC':
-                ethRun = false;
-                break;
-
-            case 'ETH':
-                btcRun = false;
-        }
-    }
 }
 
 function enable() {
     indicator = new Indicator();
+
+    new CoinItem('BTCUSDT', 'BTC', true);
+    new CoinItem('ETHUSDT', 'ETH', false);
+
     Main.panel.addToStatusArea(`${Me.metadata.name} Indicator`, indicator);
 }
 
