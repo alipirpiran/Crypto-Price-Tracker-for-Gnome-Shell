@@ -1,8 +1,8 @@
 # Crypto Price Tracker for Gnome-Shell
 An extension for Gnome-Shell to track Crypto currencies price.
 
-* refresh price every 10 sec.
-* you can choose coin from menu
+* Refresh price every 10 sec
+* You can choose coin from menu
 
 # Install
 
