@@ -64,7 +64,7 @@ var CoinItem = GObject.registerClass(
         }
 
         disableOtherCoins() {
-            for (const coin of Me.imports.extension.coins) {
+            for (const coin of Me.imports.extension.indicator.coins) {
                 if (coin == this) continue;
                 if (coin.state) {
                     coin.toggle();

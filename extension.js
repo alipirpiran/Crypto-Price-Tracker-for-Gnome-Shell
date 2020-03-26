@@ -20,13 +20,13 @@ const SHELL_MINOR = parseInt(Config.PACKAGE_VERSION.split('.')[1]);
 
 const SELECT_TEXT = 'Select';
 
-let coins = [];
+// let coins = [];
 var menuItem;
 
 var Indicator = class CIndicator extends PanelMenu.Button {
     _init() {
         super._init(0.0, `${Me.metadata.name} Indicator`, false);
-
+        this.coins = [];
         menuItem = new St.Label({
             text: 'Crypto',
             y_expand: true,
@@ -62,11 +62,6 @@ var Indicator = class CIndicator extends PanelMenu.Button {
 
     destroy() {
         super.destroy();
-    }
-
-    createMenu() {
-        // const addCoinBtn = new PopupMenu.PopupMenuItem('Add Coin');
-        // addCoinBtnMenu.addMenuItem(new PopupMenu.menuItem('asdf'));
     }
 
     _generateAddCoinPart() {
@@ -127,7 +122,7 @@ var Indicator = class CIndicator extends PanelMenu.Button {
     }
 
     _buildCoinsSection() {
-        for (const coin of coins) {
+        for (const coin of this.coins) {
             // this.menu.addMenuItem(coin);
             this.coinSection.add(coin, {
                 expand: true,
@@ -142,20 +137,11 @@ if (SHELL_MINOR > 30) {
     Indicator = GObject.registerClass({ GTypeName: 'Indicator' }, Indicator);
 }
 
-function _createMenu() {
-    // log(indicator.menu)
-    // if(!indicator.menu.isEmpty())
-    // indicator.menu.removeAll()
-    // for (const coin of coins) {
-    //     indicator.menu.addMenuItem(coin);
-    // }
-}
-
 var indicator = null;
 
 function addCoin(coin, reset) {
-    if (reset == true) coins = [];
-    coins.push(coin);
+    if (reset == true) indicator.coins = [];
+    indicator.coins.push(coin);
     // indicator.menu.addMenuItem(coin);
     // _createMenu()
 }
@@ -171,7 +157,7 @@ function enable() {
     indicator._generateAddCoinPart();
 
     // let btn = St.Button.new_with_label('test')
-    indicator.createMenu();
+    // indicator.createMenu();
 
     Main.panel.addToStatusArea(`${Me.metadata.name} Indicator`, indicator);
 }
