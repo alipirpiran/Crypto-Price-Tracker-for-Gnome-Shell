@@ -33,20 +33,20 @@ var Indicator = class CIndicator extends PanelMenu.Button {
             y_align: Clutter.ActorAlign.CENTER,
         });
         this.actor.add_child(menuItem);
-        this.coinSection = new St.BoxLayout({
-            style_class: 'p0 m0',
-            vertical: true,
-            x_expand: true,
-        });
-        let coinSectionMenu = new PopupMenu.PopupBaseMenuItem({style_class: 'p0 m0'});
-        coinSectionMenu.actor.add_child(this.coinSection);
-        this.menu.addMenuItem(coinSectionMenu);
+        // this.coinSection = new St.BoxLayout({
+        //     style_class: 'p0 m0',
+        //     vertical: true,
+        //     x_expand: true,
+        // });
+        // let coinSectionMenu = new PopupMenu.PopupBaseMenuItem({style_class: 'p0 m0'});
+        // coinSectionMenu.actor.add_child(this.coinSection);
+        // this.menu.addMenuItem(coinSectionMenu);
 
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem(''));
+        // this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem(''));
 
         // TODO create vbox for coins, refresh func,
         // this._buildCoinsSection();
-        this._generateAddCoinPart();
+        // this._generateAddCoinPart();
     }
 
     destroy() {
@@ -117,7 +117,7 @@ var Indicator = class CIndicator extends PanelMenu.Button {
 
     _buildCoinsSection() {
         for (const coin of coins) {
-            this.coinSection.add(coin);
+            this.menu.addMenuItem(coin);
         }
     }
 };
@@ -152,6 +152,7 @@ function enable() {
     new CoinItem('ETHUSDT', 'ETH', false);
 
     indicator._buildCoinsSection();
+    indicator._generateAddCoinPart()
 
     // let btn = St.Button.new_with_label('test')
     indicator.createMenu();

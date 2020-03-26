@@ -13,7 +13,7 @@ const PopupMenu = imports.ui.popupMenu;
 var CoinItem = GObject.registerClass(
     class CoinItem extends PopupMenu.PopupSwitchMenuItem {
         _init(symbol, text, active) {
-            super._init(text, active, {style_class: 'm0 p0 coinItem'});
+            super._init(text, active, {style_class: 'coinItem'});
 
             this.text = text;
             this.symbol = symbol;

@@ -1,6 +1,7 @@
 .crypto-input {
     margin-left: 5px;
     margin-right: 5px;
+    padding: 5px;
 }
 
 .btn {
@@ -22,8 +23,6 @@
 }
 
 .coinItem{
-    margin-top: 5px;
-    margin-bottom: 5px;
     padding-top: 3px;
     padding-bottom: 3px;
 }
