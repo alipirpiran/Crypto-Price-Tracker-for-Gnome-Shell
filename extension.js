@@ -33,14 +33,25 @@ var Indicator = class CIndicator extends PanelMenu.Button {
             y_align: Clutter.ActorAlign.CENTER,
         });
         this.actor.add_child(menuItem);
-        // this.coinSection = new St.BoxLayout({
-        //     style_class: 'p0 m0',
-        //     vertical: true,
-        //     x_expand: true,
-        // });
-        // let coinSectionMenu = new PopupMenu.PopupBaseMenuItem({style_class: 'p0 m0'});
-        // coinSectionMenu.actor.add_child(this.coinSection);
-        // this.menu.addMenuItem(coinSectionMenu);
+        this.coinSection = new St.BoxLayout({
+            vertical: true,
+            x_expand: true,
+            y_expand: true,
+            style_class: 'p0 m0',
+        });
+        let coinSectionMenu = new PopupMenu.PopupBaseMenuItem({
+            style_class: 'p0 m0',
+            reactive: true,
+            activate: false,
+            hover: false,
+            can_focus: false,
+        });
+        coinSectionMenu.actor.add_child(this.coinSection, {
+            expand: true,
+            x_fill: true,
+            x_align: St.Align.MIDDLE,
+        });
+        this.menu.addMenuItem(coinSectionMenu);
 
         // this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem(''));
 
@@ -117,7 +128,12 @@ var Indicator = class CIndicator extends PanelMenu.Button {
 
     _buildCoinsSection() {
         for (const coin of coins) {
-            this.menu.addMenuItem(coin);
+            // this.menu.addMenuItem(coin);
+            this.coinSection.add(coin, {
+                expand: true,
+                x_fill: true,
+                x_align: St.Align.MIDDLE,
+            });
         }
     }
 };
@@ -152,7 +168,7 @@ function enable() {
     new CoinItem('ETHUSDT', 'ETH', false);
 
     indicator._buildCoinsSection();
-    indicator._generateAddCoinPart()
+    indicator._generateAddCoinPart();
 
     // let btn = St.Button.new_with_label('test')
     indicator.createMenu();

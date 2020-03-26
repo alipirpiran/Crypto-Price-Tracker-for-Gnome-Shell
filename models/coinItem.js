@@ -30,7 +30,7 @@ var CoinItem = GObject.registerClass(
 
             this.removeTimer();
             this._refreshPrice(menuItem);
-            
+
             this.timeOutTag = GLib.timeout_add(1, 1000 * 10, async () => {
                 this._refreshPrice(menuItem);
                 return true;

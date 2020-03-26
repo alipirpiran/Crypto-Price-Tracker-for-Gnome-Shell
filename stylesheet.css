@@ -16,6 +16,10 @@
 .p0 {
     padding: 0px;
     border-spacing: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .m0{
@@ -25,4 +29,12 @@
 .coinItem{
     padding-top: 3px;
     padding-bottom: 3px;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left: 0px;
+}
+
+.color{
+    background-color: red;
+    
 }
