@@ -117,8 +117,11 @@ var Indicator = class CIndicator extends PanelMenu.Button {
         if (coinTitle.text == '' || coinSymbol.text == '') return;
 
         let coin = new CoinItem(coinSymbol.text, coinTitle.text, false);
-        coins.push(coin);
+        this.coins.push(coin);
         this._buildCoinsSection();
+
+        coinTitle.text = '';
+        coinSymbol.text = '';
     }
 
     _buildCoinsSection() {
