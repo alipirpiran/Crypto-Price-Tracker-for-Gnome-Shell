@@ -20,7 +20,6 @@ const SHELL_MINOR = parseInt(Config.PACKAGE_VERSION.split('.')[1]);
 
 const SELECT_TEXT = 'Select';
 
-// let coins = [];
 var menuItem;
 
 var Indicator = class CIndicator extends PanelMenu.Button {
@@ -52,12 +51,6 @@ var Indicator = class CIndicator extends PanelMenu.Button {
             x_align: St.Align.MIDDLE,
         });
         this.menu.addMenuItem(coinSectionMenu);
-
-        // this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem(''));
-
-        // TODO create vbox for coins, refresh func,
-        // this._buildCoinsSection();
-        // this._generateAddCoinPart();
     }
 
     destroy() {
@@ -126,7 +119,6 @@ var Indicator = class CIndicator extends PanelMenu.Button {
 
     _buildCoinsSection() {
         for (const coin of this.coins) {
-            // this.menu.addMenuItem(coin);
             this.coinSection.add(coin, {
                 expand: true,
                 x_fill: true,
@@ -153,14 +145,12 @@ function init() {}
 
 function enable() {
     indicator = new Indicator();
+
     new CoinItem('BTCUSDT', 'BTC', true);
     new CoinItem('ETHUSDT', 'ETH', false);
 
     indicator._buildCoinsSection();
     indicator._generateAddCoinPart();
-
-    // let btn = St.Button.new_with_label('test')
-    // indicator.createMenu();
 
     Main.panel.addToStatusArea(`${Me.metadata.name} Indicator`, indicator);
 }
