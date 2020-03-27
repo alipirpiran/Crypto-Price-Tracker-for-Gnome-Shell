@@ -17,18 +17,28 @@ var CoinItem = GObject.registerClass(
 
             this.text = text;
             this.symbol = symbol;
+            this.activeCoin = active;
             this.timeOutTage;
 
             if (active) this._activeCoin();
+            this._startTimer();
 
             this.connect('toggled', this.toggleCoin.bind(this));
             Me.imports.extension.addCoin(this);
         }
         _activeCoin() {
             let menuItem = Me.imports.extension.menuItem;
-            menuItem.text = this.text + ' ...';
 
-            this.removeTimer();
+            menuItem.text = this.text + ' ...';
+            this.activeCoin = true;
+        }
+        _getPrice() {
+            return Binance.getCoin(this.symbol);
+        }
+
+        _startTimer() {
+            let menuItem = Me.imports.extension.menuItem;
+        
             this._refreshPrice(menuItem);
 
             this.timeOutTag = GLib.timeout_add(1, 1000 * 10, async () => {
@@ -36,11 +46,8 @@ var CoinItem = GObject.registerClass(
                 return true;
             });
         }
-        _getPrice() {
-            return Binance.getCoin(this.symbol);
-        }
-
         async _refreshPrice(menuItem) {
+            log('refreshing');
             let result = await this._getPrice();
             const jsonRes = JSON.parse(result.body);
             let price = jsonRes.price;
@@ -56,7 +63,8 @@ var CoinItem = GObject.registerClass(
                 i++;
             }
 
-            menuItem.text = `${this.text} ${price}`;
+            if (this.activeCoin) menuItem.text = `${this.text} ${price}`;
+            this.label.text = `${this.text}   ${price}     `;
         }
 
         toggleCoin() {
@@ -75,7 +83,7 @@ var CoinItem = GObject.registerClass(
                 if (coin == this) continue;
                 if (coin.state) {
                     coin.toggle();
-                    coin.removeTimer();
+                    coin.activeCoin = false;
                 }
             }
         }
