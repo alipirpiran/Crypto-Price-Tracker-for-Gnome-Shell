@@ -13,7 +13,7 @@ const PopupMenu = imports.ui.popupMenu;
 var CoinItem = GObject.registerClass(
     class CoinItem extends PopupMenu.PopupSwitchMenuItem {
         _init(symbol, text, active) {
-            super._init(text, active, {style_class: 'coinItem'});
+            super._init(text, active, { style_class: 'coinItem' });
 
             this.text = text;
             this.symbol = symbol;
@@ -45,9 +45,16 @@ var CoinItem = GObject.registerClass(
             const jsonRes = JSON.parse(result.body);
             let price = jsonRes.price;
             let priceParts = price.split('.');
+
+            const totalLen = 6;
+            let len = 0;
+            len += priceParts[0].length;
             price = priceParts[0] + '.';
-            priceParts[1][0] ? (price += priceParts[1][0]) : null;
-            priceParts[1][1] ? (price += priceParts[1][1]) : null;
+            let i = 0;
+            for (len; len < totalLen; len++) {
+                price += priceParts[1][i];
+                i++;
+            }
 
             menuItem.text = `${this.text} ${price}`;
         }
