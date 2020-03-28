@@ -7,13 +7,16 @@
   <img src="https://badges.frapsoft.com/os/v2/open-source.png?v=103">
  </a>
  </p>
+ <br />
  
 An extension for Gnome-Shell to track Crypto currencies price.
-
-
+<br />
+<br />
 <p align="center">
  <img src="https://raw.githubusercontent.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell/screenshots/cryptoscr.png?raw=true" alt="Screenshot">
  </p>
+ 
+ <br />
  
 * Refresh price every 10 sec
 * You can choose coin from menu
