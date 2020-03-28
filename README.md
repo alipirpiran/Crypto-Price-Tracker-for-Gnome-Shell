@@ -22,3 +22,12 @@ An extension for Gnome-Shell to track Crypto currencies price.
  
 * Restart Gnome-shell. (ALT+F2, r, Enter)
 * You may need to enable the extension via Gnome Tweaks
+
+## List of coins
+
+Name | Pair | Symbol
+--- | --- | ---
+Bitcoin | BTC/USDT | BTCUSDT
+Ethereum | ETH/USDT | ETHUSDT
+
+* Complete list: [Binance](https://www.binance.com/indexSpa.html#/)
