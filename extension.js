@@ -160,9 +160,6 @@ var indicator = null;
 function addCoin(coin, reset) {
     if (reset == true) indicator.coins = [];
     indicator.coins.push(coin);
-
-    // indicator.menu.addMenuItem(coin);
-    // _createMenu()
 }
 
 function init() {}
