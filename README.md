@@ -6,6 +6,9 @@
  <a href="https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell">
   <img src="https://badges.frapsoft.com/os/v2/open-source.png?v=103">
  </a>
+ <a href="https://t.me/mralpr">
+  <img src="https://img.shields.io/badge/Chat%20on-telegram-blue" alt="Telegram">
+  </a>
  </p>
  <br />
  
