@@ -15,7 +15,10 @@ const PanelMenu = imports.ui.panelMenu;
 const Binance = Me.imports.api.binance;
 const CoinItem = Me.imports.models.coinItem.CoinItem;
 const convenience = Me.imports.convenience;
-const Schema = convenience.getSettings('org.gnome.shell.extensions.crypto-tracker');
+const Schema = convenience.getSettings(
+    'org.gnome.shell.extensions.crypto-tracker'
+);
+const Settings = Me.imports.settings;
 
 const Config = imports.misc.config;
 const SHELL_MINOR = parseInt(Config.PACKAGE_VERSION.split('.')[1]);
@@ -53,6 +56,9 @@ var Indicator = class CIndicator extends PanelMenu.Button {
             x_align: St.Align.MIDDLE,
         });
         this.menu.addMenuItem(coinSectionMenu);
+
+        let sub = Settings.getCoins(Schema);
+        log('AAA:' + sub[0].name);
     }
 
     destroy() {
@@ -115,6 +121,12 @@ var Indicator = class CIndicator extends PanelMenu.Button {
         this.coins.push(coin);
         this._buildCoinsSection();
 
+        Settings.addCoin(Schema, {
+            name: coin.text,
+            symbol: coin.symbol,
+            active: coin.activeCoin,
+        });
+
         coinTitle.text = '';
         coinSymbol.text = '';
     }
@@ -128,6 +140,15 @@ var Indicator = class CIndicator extends PanelMenu.Button {
             });
         }
     }
+
+    _setCoinsFromSettings() {
+        let coins = Settings.getCoins(Schema);
+        for (const coin of coins) {
+            let { name, symbol, active } = coin;
+            let _coin = new CoinItem(symbol, name, active);
+            this.coins.push(_coin);
+        }
+    }
 };
 
 if (SHELL_MINOR > 30) {
@@ -139,6 +160,7 @@ var indicator = null;
 function addCoin(coin, reset) {
     if (reset == true) indicator.coins = [];
     indicator.coins.push(coin);
+
     // indicator.menu.addMenuItem(coin);
     // _createMenu()
 }
@@ -148,9 +170,10 @@ function init() {}
 function enable() {
     indicator = new Indicator();
 
-    new CoinItem('BTCUSDT', 'BTC', true);
-    new CoinItem('ETHUSDT', 'ETH', false);
+    // new CoinItem('BTCUSDT', 'BTC', true);
+    // new CoinItem('ETHUSDT', 'ETH', false);
 
+    indicator._setCoinsFromSettings();
     indicator._buildCoinsSection();
     indicator._generateAddCoinPart();
 
