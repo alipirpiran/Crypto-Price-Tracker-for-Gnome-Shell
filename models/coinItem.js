@@ -47,7 +47,6 @@ var CoinItem = GObject.registerClass(
             });
         }
         async _refreshPrice(menuItem) {
-            log('refreshing');
             let result = await this._getPrice();
             const jsonRes = JSON.parse(result.body);
             let price = jsonRes.price;
