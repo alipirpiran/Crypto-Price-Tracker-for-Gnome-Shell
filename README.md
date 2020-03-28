@@ -1,5 +1,6 @@
 # Crypto Price Tracker for Gnome-Shell
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 An extension for Gnome-Shell to track Crypto currencies price.
 
