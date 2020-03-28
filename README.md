@@ -6,7 +6,7 @@ An extension for Gnome-Shell to track Crypto currencies price.
 
 * Refresh price every 10 sec
 * You can choose coin from menu
-* Add coin: use Binance symbols: coin name: "BTC", symbol: "BTCUSDT"
+* Add coin: use Binance symbols: [List](https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell/blob/master/README.md#list-of-coins)
 
 ## Install
 
