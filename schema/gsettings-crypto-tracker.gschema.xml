@@ -1,0 +1,9 @@
+<schemalist gettext-domain="gnome-shell-extension-examples">
+    <schema id="org.gnome.shell.extensions.examples.gsettings" path="/org/gnome/shell/extensions/examples/gsettings/">
+    <key type="i" name="gsettings1">
+      <default>100</default>
+      <summary>Just an integer</summary>
+      <description/>
+    </key>
+  </schema>
+</schemalist>
