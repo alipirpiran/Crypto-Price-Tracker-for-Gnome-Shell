@@ -45,3 +45,6 @@ Bitcoin | BTC/USDT | BTCUSDT
 Ethereum | ETH/USDT | ETHUSDT
 
 * Complete list: [Binance](https://www.binance.com/indexSpa.html#/)
+
+## License
+[MIT](https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell/blob/master/LICENSE)
