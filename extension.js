@@ -14,6 +14,8 @@ const PanelMenu = imports.ui.panelMenu;
 
 const Binance = Me.imports.api.binance;
 const CoinItem = Me.imports.models.coinItem.CoinItem;
+const convenience = Me.imports.convenience;
+const Schema = convenience.getSettings('org.gnome.shell.extensions.crypto-tracker');
 
 const Config = imports.misc.config;
 const SHELL_MINOR = parseInt(Config.PACKAGE_VERSION.split('.')[1]);
