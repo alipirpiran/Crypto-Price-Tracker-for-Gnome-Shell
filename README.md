@@ -7,11 +7,14 @@
   <img src="https://badges.frapsoft.com/os/v2/open-source.png?v=103">
  </a>
  </p>
+ 
 An extension for Gnome-Shell to track Crypto currencies price.
 
 
-![Screenshot](https://raw.githubusercontent.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell/screenshots/cryptoscr.png?raw=true "Crypto Price Tracker")
-
+<p align="center">
+ <img src="https://raw.githubusercontent.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell/screenshots/cryptoscr.png?raw=true" alt="Screenshot">
+ </p>
+ 
 * Refresh price every 10 sec
 * You can choose coin from menu
 * Add coin: use Binance symbols: [List](https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell#list-of-coins)
