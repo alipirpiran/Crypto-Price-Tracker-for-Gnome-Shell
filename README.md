@@ -42,10 +42,12 @@ An extension for Gnome-Shell to track Crypto currencies price.
 
 ## List of coins
 
-Name | Pair | Symbol
---- | --- | ---
-Bitcoin | BTC/USDT | BTCUSDT
-Ethereum | ETH/USDT | ETHUSDT
+Pair | Symbol
+--- | ---
+BTC/USDT | BTCUSDT
+ETH/USDT | ETHUSDT
+XRP/USDT | XRPUSDT
+BNB/USDT | BNBUSDT
 
 * Complete list: [Binance](https://www.binance.com/indexSpa.html#/)
 
