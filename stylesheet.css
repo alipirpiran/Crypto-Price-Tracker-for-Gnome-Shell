@@ -27,14 +27,21 @@
 }
 
 .coinItem{
-    padding-top: 3px;
-    padding-bottom: 3px;
+    /* padding-top: 3px; */
+    /* padding-bottom: 3px; */
     padding-left: 0px;
-    padding-right: 0px;
+    /* padding-right: 0px; */
     margin-left: 0px;
+    /* margin-right: 0px; */
+    margin-inline-start: 0px;
+    padding-block-start: 0px;
+    /* margin: 0; */
+    /* width: 100%; */
+
 }
 
 .color{
     background-color: red;
     
 }
+
