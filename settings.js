@@ -1,24 +1,40 @@
-var getCoins = function(schema) {
-    let coinJsonStr = String(schema.get_string('coins'));
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
+const convenience = Me.imports.convenience;
+const Schema = convenience.getSettings(
+    'org.gnome.shell.extensions.crypto-tracker'
+);
+
+var getCoins = function() {
+    let coinJsonStr = String(Schema.get_string('coins'));
     let coinJson = JSON.parse(coinJsonStr);
     return coinJson.coins;
 };
 
-var addCoin = function(schema, { name, symbol, active }) {
+var addCoin = function({ name, symbol, active }) {
     let coin = {
         name,
         symbol,
         active,
     };
-    let originalCoinsStr = schema.get_string('coins');
+    if (_checkIsDuplicate(coin)) return false;
+    let originalCoinsStr = Schema.get_string('coins');
     let originalCoinObj = JSON.parse(originalCoinsStr);
     originalCoinObj.coins.push(coin);
 
-    schema.set_string('coins', JSON.stringify(originalCoinObj));
+    Schema.set_string('coins', JSON.stringify(originalCoinObj));
+    return true;
 };
 
-var delCoin = function(schema, { name }) {
-    let coinJsonStr = String(schema.get_string('coins'));
+function _checkIsDuplicate(coin) {
+    let coins = getCoins();
+    for (const _coin of coins) if (coin.name == _coin.name) return true;
+
+    return false;
+}
+
+var delCoin = function({ name }) {
+    let coinJsonStr = String(Schema.get_string('coins'));
     let coinJson = JSON.parse(coinJsonStr);
     let coins = coinJson.coins;
 
@@ -27,5 +43,5 @@ var delCoin = function(schema, { name }) {
     });
     if (index) coins.splice(index, 1);
 
-    schema.set_string('coins', JSON.stringify(coinJson));
+    Schema.set_string('coins', JSON.stringify(coinJson));
 };

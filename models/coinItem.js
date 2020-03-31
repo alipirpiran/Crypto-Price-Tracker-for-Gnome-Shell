@@ -16,93 +16,20 @@ const Schema = convenience.getSettings(
 );
 
 const PopupMenu = imports.ui.popupMenu;
+
 var CoinItem = GObject.registerClass(
-    class CoinItem extends PopupMenu.PopupSwitchMenuItem {
-        _init(symbol, text, active) {
-            super._init(text, active, { style_class: 'coinItem' });
-
-            this.text = text;
-            this.symbol = symbol;
-            this.activeCoin = active;
-            this.timeOutTage;
-
-            if (active) this._activeCoin();
-            this._startTimer();
-
-            this.connect('toggled', this.toggleCoin.bind(this));
-            Me.imports.extension.addCoin(this);
-        }
-        _activeCoin() {
-            let menuItem = Me.imports.extension.menuItem;
-
-            menuItem.text = this.text + ' ...';
-            this.activeCoin = true;
-        }
-        _getPrice() {
-            return Binance.getCoin(this.symbol);
-        }
-
-        _startTimer() {
-            let menuItem = Me.imports.extension.menuItem;
-
-            this._refreshPrice(menuItem);
-
-            this.timeOutTag = GLib.timeout_add(1, 1000 * 10, async () => {
-                this._refreshPrice(menuItem);
-                return true;
-            });
-        }
-        async _refreshPrice(menuItem) {
-            let result = await this._getPrice();
-            const jsonRes = JSON.parse(result.body);
-            let price = jsonRes.price;
-            let priceParts = price.split('.');
-
-            const totalLen = 6;
-            let len = 0;
-            len += priceParts[0].length;
-            price = priceParts[0] + '.';
-            let i = 0;
-            for (len; len < totalLen; len++) {
-                price += priceParts[1][i];
-                i++;
-            }
-
-            if (this.activeCoin) menuItem.text = `${this.text} ${price}`;
-            this.label.text = `${this.text}   ${price}     `;
-        }
-
-        toggleCoin() {
-            if (this.state) {
-                this._activeCoin.bind(this)();
-                this.disableOtherCoins();
-            }
-        }
-
-        removeTimer() {
-            if (this.timeOutTag) GLib.Source.remove(this.timeOutTag);
-        }
-
-        disableOtherCoins() {
-            for (const coin of Me.imports.extension.indicator.coins) {
-                if (coin == this) continue;
-                if (coin.state) {
-                    coin.toggle();
-                    coin.activeCoin = false;
-                }
-            }
-        }
-    }
-);
-
-var CoinItem2 = GObject.registerClass(
     {
         Signals: { toggled: { param_types: [GObject.TYPE_BOOLEAN] } },
     },
-    class CoinItem2 extends PopupMenu.PopupBaseMenuItem {
+    class CoinItem extends PopupMenu.PopupBaseMenuItem {
         _init(symbol, text, active) {
-            super._init();
-            this.add_style_class_name('coinItem popup-submenu-menu-item');
+            super._init({
+                reactive: true,
+                activate: false,
+                hover: true,
+                can_focus: true,
+            });
+            this.add_style_class_name('popup-submenu-menu-item');
 
             let icon = new St.Icon({
                 icon_name: 'edit-delete-symbolic',
@@ -115,16 +42,16 @@ var CoinItem2 = GObject.registerClass(
             delBtn.connect('clicked', this._delCoin.bind(this));
             this.add_child(delBtn);
 
-            let expander = new St.Bin({
-                x_expand: true,
-            });
-            this.add_child(expander);
+            // let expander = new St.Bin({
+            //     style_class: 'popup-menu-item-expander',
+            //     x_expand: true,
+            // });
+            // this.add_child(expander);
 
             this.label = new St.Label({
                 text,
+                y_expand: true,
                 y_align: Clutter.ActorAlign.CENTER,
-                x_align: Clutter.ActorAlign.START,
-                x_expand: true,
             });
             this.add_child(this.label);
 
@@ -137,7 +64,6 @@ var CoinItem2 = GObject.registerClass(
             this._startTimer();
 
             this.connect('toggled', this.toggleCoin.bind(this));
-            Me.imports.extension.addCoin(this);
         }
         _activeCoin() {
             let menuItem = Me.imports.extension.menuItem;
@@ -175,8 +101,8 @@ var CoinItem2 = GObject.registerClass(
                 i++;
             }
 
-            if (this.activeCoin) menuItem.text = `${this.text} ${price}`;
-            this.label.text = `${this.text}   ${price}     `;
+            if (this.activeCoin) menuItem.text = `${this.text} $ ${price}`;
+            this.label.text = `${this.text}   $ ${price}     `;
         }
 
         toggleCoin() {
@@ -201,8 +127,12 @@ var CoinItem2 = GObject.registerClass(
         }
 
         _delCoin() {
-            Settings.delCoin(Schema, { name: this.text });
-            Me.imports.extension.indicator.removeCoinFromMenu(this);
+            Settings.delCoin({ name: this.text });
+            this.destroy();
+        }
+
+        destroy() {
+            super.destroy();
         }
     }
 );

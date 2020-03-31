@@ -2,6 +2,7 @@
 
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const Atk = imports.gi.Atk;
 const GObject = imports.gi.GObject;
 const St = imports.gi.St;
 const Clutter = imports.gi.Clutter;
@@ -13,7 +14,7 @@ const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 
 const Binance = Me.imports.api.binance;
-const { CoinItem, CoinItem2 } = Me.imports.models.coinItem;
+const { CoinItem } = Me.imports.models.coinItem;
 const convenience = Me.imports.convenience;
 const Schema = convenience.getSettings(
     'org.gnome.shell.extensions.crypto-tracker'
@@ -37,27 +38,9 @@ var Indicator = class CIndicator extends PanelMenu.Button {
             y_align: Clutter.ActorAlign.CENTER,
         });
         this.actor.add_child(menuItem);
-        this.coinSection = new St.BoxLayout({
-            vertical: true,
-            x_expand: true,
-            y_expand: true,
-            style_class: 'p0 m0',
-        });
-        let coinSectionMenu = new PopupMenu.PopupBaseMenuItem({
-            style_class: 'p0 m0',
-            reactive: true,
-            activate: false,
-            hover: false,
-            can_focus: false,
-        });
-        coinSectionMenu.actor.add_child(this.coinSection, {
-            expand: true,
-            x_fill: true,
-            x_align: St.Align.MIDDLE,
-        });
-        this.menu.addMenuItem(coinSectionMenu);
 
-        let sub = Settings.getCoins(Schema);
+        this.coinSection = new PopupMenu.PopupMenuSection();
+        this.menu.addMenuItem(this.coinSection);
     }
 
     destroy() {
@@ -116,13 +99,13 @@ var Indicator = class CIndicator extends PanelMenu.Button {
         // TODO show error
         if (coinTitle.text == '' || coinSymbol.text == '') return;
 
-        let coin = new CoinItem2(coinSymbol.text, coinTitle.text, false);
-        Settings.addCoin(Schema, {
+        let coin = new CoinItem(coinSymbol.text, coinTitle.text, false);
+        let result = Settings.addCoin({
             name: coin.text,
             symbol: coin.symbol,
             active: coin.activeCoin,
         });
-        this._buildCoinsSection();
+        if (result) this._buildCoinsSection();
 
         coinTitle.text = '';
         coinSymbol.text = '';
@@ -130,24 +113,20 @@ var Indicator = class CIndicator extends PanelMenu.Button {
 
     _buildCoinsSection() {
         this._setCoinsFromSettings();
-        this.coinSection.remove_all_children();
+        this.coinSection.removeAll();
         for (const coin of this.coins) {
-            this.coinSection.add_child(coin);
+            this.coinSection.addMenuItem(coin);
         }
     }
 
     _setCoinsFromSettings() {
         this.coins = [];
-        let coins = Settings.getCoins(Schema);
+        let coins = Settings.getCoins();
         for (const coin of coins) {
             let { name, symbol, active } = coin;
-            let _coin = new CoinItem2(symbol, name, active);
+            let _coin = new CoinItem(symbol, name, active);
             this.coins.push(_coin);
         }
-    }
-
-    removeCoinFromMenu(coin) {
-        this.coinSection.remove_child(coin);
     }
 };
 
@@ -167,10 +146,6 @@ function init() {}
 function enable() {
     indicator = new Indicator();
 
-    // new CoinItem('BTCUSDT', 'BTC', true);
-    // new CoinItem('ETHUSDT', 'ETH', false);
-
-    // indicator._setCoinsFromSettings();
     indicator._buildCoinsSection();
     indicator._generateAddCoinPart();
 
