@@ -133,6 +133,7 @@ var CoinItem = GObject.registerClass(
 
         destroy() {
             super.destroy();
+            this.removeTimer();
         }
     }
 );
