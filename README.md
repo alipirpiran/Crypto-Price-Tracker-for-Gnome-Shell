@@ -16,7 +16,7 @@ An extension for Gnome-Shell to track Crypto currencies price.
 <br />
 <br />
 <p align="center">
- <img src="https://raw.githubusercontent.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell/screenshots/cryptoscr.png?raw=true" alt="Screenshot">
+ <img src="https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell/blob/screenshots/scrcrypto.png?raw=true" alt="Screenshot">
  </p>
  
  <br />
@@ -34,8 +34,8 @@ An extension for Gnome-Shell to track Crypto currencies price.
 
  Create extension dir and Copy files in it:
 
-    $ mkdir -p ~/.local/share/gnome-shell/extensions/crypto@alipirpiran.github.com/
-    $ cp -r ./Crypto-Price-Tracker-for-Gnome-Shell/* ~/.local/share/gnome-shell/extensions/crypto@alipirpiran.github.com/
+    $ mkdir -p ~/.local/share/gnome-shell/extensions/crypto@alipirpiran.github/
+    $ cp -r ./Crypto-Price-Tracker-for-Gnome-Shell/* ~/.local/share/gnome-shell/extensions/crypto@alipirpiran.github/
  
 * Restart Gnome-shell. (ALT+F2, r, Enter)
 * You may need to enable the extension via Gnome Tweaks
