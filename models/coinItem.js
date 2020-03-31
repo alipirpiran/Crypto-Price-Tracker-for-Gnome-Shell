@@ -49,12 +49,6 @@ var CoinItem = GObject.registerClass(
             delBtn.connect('clicked', this._delCoin.bind(this));
             this.add_child(delBtn);
 
-            // let expander = new St.Bin({
-            //     style_class: 'popup-menu-item-expander',
-            //     x_expand: true,
-            // });
-            // this.add_child(expander);
-
             this.label = new St.Label({
                 text,
                 y_expand: true,
@@ -62,9 +56,15 @@ var CoinItem = GObject.registerClass(
             });
             this.add_child(this.label);
 
+            let expander = new St.Bin({
+                style_class: 'popup-menu-item-expander',
+                x_expand: true,
+            });
+            this.add_child(expander);
+
             this._statusBin = new St.Bin({
                 // x_align: Clutter.ActorAlign.END,
-                x_expand: true,
+                // x_expand: true,
             });
             this.add_child(this._statusBin);
             this._statusBin.child = this._switch;
@@ -115,7 +115,7 @@ var CoinItem = GObject.registerClass(
                 i++;
             }
 
-            if (this.activeCoin) menuItem.text = `${this.text} $ ${price}`;
+            if (this.activeCoin) menuItem.text = `${this.text}  $ ${price}`;
             this.label.text = `${this.text}   $ ${price}     `;
         }
         get state() {
@@ -125,21 +125,20 @@ var CoinItem = GObject.registerClass(
             this._switch.state = state;
             this.checkAccessibleState();
         }
-        
+
         activate(event) {
-            if (this._switch.mapped)
-                this.toggle();
-    
+            if (this._switch.mapped) this.toggle();
+
             // we allow pressing space to toggle the switch
             // without closing the menu
-            if (event.type() == Clutter.EventType.KEY_PRESS &&
-                event.get_key_symbol() == Clutter.KEY_space)
+            if (
+                event.type() == Clutter.EventType.KEY_PRESS &&
+                event.get_key_symbol() == Clutter.KEY_space
+            )
                 return;
-    
+
             super.activate(event);
         }
-    
-    
 
         toggle() {
             this._switch.toggle();
@@ -149,20 +148,18 @@ var CoinItem = GObject.registerClass(
 
         checkAccessibleState() {
             switch (this.accessible_role) {
-            case Atk.Role.CHECK_MENU_ITEM:
-                if (this._switch.state)
-                    this.add_accessible_state(Atk.StateType.CHECKED);
-                else
+                case Atk.Role.CHECK_MENU_ITEM:
+                    if (this._switch.state)
+                        this.add_accessible_state(Atk.StateType.CHECKED);
+                    else this.remove_accessible_state(Atk.StateType.CHECKED);
+                    break;
+                default:
                     this.remove_accessible_state(Atk.StateType.CHECKED);
-                break;
-            default:
-                this.remove_accessible_state(Atk.StateType.CHECKED);
             }
         }
-    
-    
+
         toggleCoin() {
-            log('toggled')
+            log('toggled');
             if (this.state) {
                 this._activeCoin.bind(this)();
                 this.disableOtherCoins();
