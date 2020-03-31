@@ -81,7 +81,8 @@ var CoinItem = GObject.registerClass(
         }
         _activeCoin() {
             let menuItem = Me.imports.extension.menuItem;
-
+            
+            this._refreshPrice(menuItem)
             menuItem.text = this.text + ' ...';
             this.activeCoin = true;
         }
@@ -159,7 +160,6 @@ var CoinItem = GObject.registerClass(
         }
 
         toggleCoin() {
-            log('toggled');
             if (this.state) {
                 this._activeCoin.bind(this)();
                 this.disableOtherCoins();
