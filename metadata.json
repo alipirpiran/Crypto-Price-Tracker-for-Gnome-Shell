@@ -1,7 +1,7 @@
 {
   "name": "Crypto Price Tracker",
   "description": "simple extension to track price of cryptoCurrencies",
-  "uuid": "crypto@alipirpiran.github.com",
+  "uuid": "crypto@alipirpiran.github",
   "shell-version": [
     "3.34"
   ]
