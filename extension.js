@@ -13,7 +13,7 @@ const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
 
 const Binance = Me.imports.api.binance;
-const CoinItem = Me.imports.models.coinItem.CoinItem;
+const { CoinItem, CoinItem2 } = Me.imports.models.coinItem;
 const convenience = Me.imports.convenience;
 const Schema = convenience.getSettings(
     'org.gnome.shell.extensions.crypto-tracker'
@@ -58,7 +58,6 @@ var Indicator = class CIndicator extends PanelMenu.Button {
         this.menu.addMenuItem(coinSectionMenu);
 
         let sub = Settings.getCoins(Schema);
-        log('AAA:' + sub[0].name);
     }
 
     destroy() {
@@ -117,37 +116,38 @@ var Indicator = class CIndicator extends PanelMenu.Button {
         // TODO show error
         if (coinTitle.text == '' || coinSymbol.text == '') return;
 
-        let coin = new CoinItem(coinSymbol.text, coinTitle.text, false);
-        this.coins.push(coin);
-        this._buildCoinsSection();
-
+        let coin = new CoinItem2(coinSymbol.text, coinTitle.text, false);
         Settings.addCoin(Schema, {
             name: coin.text,
             symbol: coin.symbol,
             active: coin.activeCoin,
         });
+        this._buildCoinsSection();
 
         coinTitle.text = '';
         coinSymbol.text = '';
     }
 
     _buildCoinsSection() {
+        this._setCoinsFromSettings();
+        this.coinSection.remove_all_children();
         for (const coin of this.coins) {
-            this.coinSection.add(coin, {
-                expand: true,
-                x_fill: true,
-                x_align: St.Align.MIDDLE,
-            });
+            this.coinSection.add_child(coin);
         }
     }
 
     _setCoinsFromSettings() {
+        this.coins = [];
         let coins = Settings.getCoins(Schema);
         for (const coin of coins) {
             let { name, symbol, active } = coin;
-            let _coin = new CoinItem(symbol, name, active);
+            let _coin = new CoinItem2(symbol, name, active);
             this.coins.push(_coin);
         }
+    }
+
+    removeCoinFromMenu(coin) {
+        this.coinSection.remove_child(coin);
     }
 };
 
@@ -170,7 +170,7 @@ function enable() {
     // new CoinItem('BTCUSDT', 'BTC', true);
     // new CoinItem('ETHUSDT', 'ETH', false);
 
-    indicator._setCoinsFromSettings();
+    // indicator._setCoinsFromSettings();
     indicator._buildCoinsSection();
     indicator._generateAddCoinPart();
 
