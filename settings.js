@@ -1,10 +1,10 @@
-let getCoins = function(schema) {
+var getCoins = function(schema) {
     let coinJsonStr = String(schema.get_string('coins'));
     let coinJson = JSON.parse(coinJsonStr);
     return coinJson.coins;
 };
 
-let addCoin = function(schema, { name, symbol, active }) {
+var addCoin = function(schema, { name, symbol, active }) {
     let coin = {
         name,
         symbol,
