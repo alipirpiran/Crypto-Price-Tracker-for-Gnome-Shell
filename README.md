@@ -25,7 +25,12 @@ An extension for Gnome-Shell to track Crypto currencies price.
 * You can choose coin from menu
 * Add coin: use Binance symbols: [List](https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell#list-of-coins)
 
-## Install
+## Installation
+
+### Through extensions.gnome.org (Local installation)
+Go on the [CryptoPriceTracker](https://extensions.gnome.org/extension/2817/crypto-price-tracker/) extension page on extensions.gnome.org, click on the switch ("OFF" => "ON"), click on the install button. That's it !
+
+### With source code
 
  Clone the git repo:
 
