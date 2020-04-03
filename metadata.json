@@ -1,8 +1,8 @@
 {
-  "name": "Crypto Price Tracker",
-  "description": "simple extension to track price of cryptoCurrencies",
-  "uuid": "crypto@alipirpiran.github",
-  "shell-version": [
-    "3.34"
-  ]
+    "name": "Crypto Price Tracker",
+    "description": "Simple extension to track price of Crypto Currencies\n\nadd coins by Binance symbols, for example: \"BTCUSDT\"\ncomplete list on binance: https://www.binance.com/indexSpa.html",
+    "uuid": "crypto@alipirpiran.github",
+    "url": "https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell",
+    "shell-version": ["3.34"],
+    "version": 2
 }
