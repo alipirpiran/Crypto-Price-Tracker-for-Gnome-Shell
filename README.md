@@ -47,12 +47,12 @@ Go on the [CryptoPriceTracker](https://extensions.gnome.org/extension/2817/crypt
 
 ## List of coins
 
-Pair | Symbol
---- | ---
-BTC/USDT | BTCUSDT
-ETH/USDT | ETHUSDT
-XRP/USDT | XRPUSDT
-BNB/USDT | BNBUSDT
+Symbol |
+--- |
+BTC/USDT 
+ETH/LTC
+XRP/USDT
+BNB/BTC 
 
 * Complete list: [Binance](https://www.binance.com/indexSpa.html#/)
 
