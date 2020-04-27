@@ -67,18 +67,18 @@ var Indicator = class CIndicator extends PanelMenu.Button {
         let hbox = new St.BoxLayout({ x_expand: true });
         vbox.add(hbox);
 
-        let coinTitle = new St.Entry({
-            name: 'title',
-            hint_text: 'Coin Name',
-            can_focus: true,
-            x_expand: true,
-            style_class: 'crypto-input',
-        });
-        hbox.add(coinTitle);
+        // let coinTitle = new St.Entry({
+        //     name: 'title',
+        //     hint_text: 'Coin Name',
+        //     can_focus: true,
+        //     x_expand: true,
+        //     style_class: 'crypto-input',
+        // });
+        // hbox.add(coinTitle);
 
         let coinSymbol = new St.Entry({
             name: 'symbol',
-            hint_text: 'Coin Symbol',
+            hint_text: 'Name/Vol',
             can_focus: true,
             x_expand: true,
             style_class: 'crypto-input',
@@ -91,23 +91,22 @@ var Indicator = class CIndicator extends PanelMenu.Button {
         });
         addBtn.connect(
             'clicked',
-            this._addCoin.bind(this, coinTitle, coinSymbol)
+            this._addCoin.bind(this, coinSymbol)
         );
         hbox.add(addBtn);
     }
-    _addCoin(coinTitle, coinSymbol) {
-        // TODO show error
-        if (coinTitle.text == '' || coinSymbol.text == '') return;
+    _addCoin( coinSymbol) {
+        // TODO show error 
+        if (coinSymbol.text == '' || !coinSymbol.text.includes('/')) return;
 
-        let coin = new CoinItem(coinSymbol.text, coinTitle.text, false);
+        let coin = new CoinItem(coinSymbol.text, false);
         let result = Settings.addCoin({
-            name: coin.text,
             symbol: coin.symbol,
             active: coin.activeCoin,
         });
         if (result) this._buildCoinsSection();
 
-        coinTitle.text = '';
+        // coinTitle.text = '';
         coinSymbol.text = '';
     }
 
@@ -123,8 +122,8 @@ var Indicator = class CIndicator extends PanelMenu.Button {
         this.coins = [];
         let coins = Settings.getCoins();
         for (const coin of coins) {
-            let { name, symbol, active } = coin;
-            let _coin = new CoinItem(symbol, name, active);
+            let { symbol, active } = coin;
+            let _coin = new CoinItem(symbol, active);
             this.coins.push(_coin);
         }
     }

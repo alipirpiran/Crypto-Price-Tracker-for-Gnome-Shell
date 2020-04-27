@@ -5,15 +5,14 @@ const Schema = convenience.getSettings(
     'org.gnome.shell.extensions.crypto-tracker'
 );
 
-var getCoins = function() {
+var getCoins = function () {
     let coinJsonStr = String(Schema.get_string('coins'));
     let coinJson = JSON.parse(coinJsonStr);
     return coinJson.coins;
 };
 
-var addCoin = function({ name, symbol, active }) {
+var addCoin = function ({ symbol, active }) {
     let coin = {
-        name,
         symbol,
         active,
     };
@@ -28,18 +27,18 @@ var addCoin = function({ name, symbol, active }) {
 
 function _checkIsDuplicate(coin) {
     let coins = getCoins();
-    for (const _coin of coins) if (coin.name == _coin.name) return true;
+    for (const _coin of coins) if (coin.symbol == _coin.symbol) return true;
 
     return false;
 }
 
-var delCoin = function({ name }) {
+var delCoin = function ({ symbol }) {
     let coinJsonStr = String(Schema.get_string('coins'));
     let coinJson = JSON.parse(coinJsonStr);
     let coins = coinJson.coins;
 
-    let index = coins.findIndex(value => {
-        return value.name == name;
+    let index = coins.findIndex((value) => {
+        return value.symbol == symbol;
     });
     if (index) coins.splice(index, 1);
 

@@ -25,7 +25,7 @@ var CoinItem = GObject.registerClass(
         Signals: { toggled: { param_types: [GObject.TYPE_BOOLEAN] } },
     },
     class CoinItem extends PopupMenu.PopupBaseMenuItem {
-        _init(symbol, text, active) {
+        _init(symbol, active) {
             super._init({
                 reactive: true,
                 activate: true,
@@ -50,7 +50,7 @@ var CoinItem = GObject.registerClass(
             this.add_child(delBtn);
 
             this.label = new St.Label({
-                text,
+                text: symbol,
                 y_expand: true,
                 y_align: Clutter.ActorAlign.CENTER,
             });
@@ -69,7 +69,7 @@ var CoinItem = GObject.registerClass(
             this.add_child(this._statusBin);
             this._statusBin.child = this._switch;
 
-            this.text = text;
+            // this.text = text;
             this.symbol = symbol;
             this.activeCoin = active;
             this.timeOutTage;
@@ -81,13 +81,16 @@ var CoinItem = GObject.registerClass(
         }
         _activeCoin() {
             let menuItem = Me.imports.extension.menuItem;
-            
-            this._refreshPrice(menuItem)
-            menuItem.text = this.text + ' ...';
+
+            this._refreshPrice(menuItem);
+            menuItem.text = this.symbol + ' ...';
             this.activeCoin = true;
         }
         _getPrice() {
-            return Binance.getCoin(this.symbol);
+            let symbol = this.symbol;
+            symbol = symbol.replace('/', '');
+
+            return Binance.getCoin(symbol);
         }
 
         _startTimer() {
@@ -115,9 +118,13 @@ var CoinItem = GObject.registerClass(
                 price += priceParts[1][i];
                 i++;
             }
+            if (+price == 0)
+                for (let i = len; i < priceParts[1].length; i++) {
+                    price += priceParts[1][i];
+                }
 
-            if (this.activeCoin) menuItem.text = `${this.text}  $ ${price}`;
-            this.label.text = `${this.text}   $ ${price}     `;
+            if (this.activeCoin) menuItem.text = `${this.symbol}   ${price}`;
+            this.label.text = `${this.symbol}    ${price}     `;
         }
         get state() {
             return this._switch.state;
@@ -181,7 +188,7 @@ var CoinItem = GObject.registerClass(
         }
 
         _delCoin() {
-            Settings.delCoin({ name: this.text });
+            Settings.delCoin({ symbol: this.symbol });
             this.destroy();
         }
 
