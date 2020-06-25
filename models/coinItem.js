@@ -86,6 +86,15 @@ var CoinItem = GObject.registerClass(
             this._refreshPrice(menuItem);
             menuItem.text = this.title||this.symbol  + ' ...';
             this.activeCoin = true;
+
+            Settings.updateCoin(this._getJSON())
+        }
+        _getJSON(){
+            return {
+                symbol: this.symbol,
+                active: this.activeCoin,
+                title: this.title
+            }
         }
         _getPrice() {
             let symbol = this.symbol;
@@ -184,6 +193,7 @@ var CoinItem = GObject.registerClass(
                 if (coin.state) {
                     coin.toggle();
                     coin.activeCoin = false;
+                    Settings.updateCoin(coin._getJSON())
                 }
             }
         }

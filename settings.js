@@ -45,3 +45,24 @@ var delCoin = function ({ symbol }) {
 
     Schema.set_string('coins', JSON.stringify(coinJson));
 };
+
+var updateCoin = function(coin){
+    const coins = getCoins()
+    for(const _coin of coins){
+        if(_coin.symbol == coin.symbol){
+            _coin.active = coin.active;
+            _coin.title = coin.title
+            _coin.symbol = coin.symbol
+        }
+    }
+    setCoins(coins)
+}
+/**
+ * @param  {[{}]} coins
+ */
+var setCoins = function (coins) {
+    let originalCoinsStr = Schema.get_string('coins');
+    let originalCoinObj = JSON.parse(originalCoinsStr);
+    originalCoinObj.coins = coins;
+    Schema.set_string('coins', JSON.stringify(originalCoinObj));
+}
