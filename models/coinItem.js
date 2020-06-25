@@ -25,7 +25,7 @@ var CoinItem = GObject.registerClass(
         Signals: { toggled: { param_types: [GObject.TYPE_BOOLEAN] } },
     },
     class CoinItem extends PopupMenu.PopupBaseMenuItem {
-        _init(symbol, active) {
+        _init(symbol, active, title=null) {
             super._init({
                 reactive: true,
                 activate: true,
@@ -50,7 +50,7 @@ var CoinItem = GObject.registerClass(
             this.add_child(delBtn);
 
             this.label = new St.Label({
-                text: symbol,
+                text: title||symbol,
                 y_expand: true,
                 y_align: Clutter.ActorAlign.CENTER,
             });
@@ -72,6 +72,7 @@ var CoinItem = GObject.registerClass(
             // this.text = text;
             this.symbol = symbol;
             this.activeCoin = active;
+            this.title = title;
             this.timeOutTage;
 
             if (active) this._activeCoin();
@@ -83,7 +84,7 @@ var CoinItem = GObject.registerClass(
             let menuItem = Me.imports.extension.menuItem;
 
             this._refreshPrice(menuItem);
-            menuItem.text = this.symbol + ' ...';
+            menuItem.text = this.title||this.symbol  + ' ...';
             this.activeCoin = true;
         }
         _getPrice() {
@@ -123,8 +124,8 @@ var CoinItem = GObject.registerClass(
                     price += priceParts[1][i];
                 }
 
-            if (this.activeCoin) menuItem.text = `${this.symbol}   ${price}`;
-            this.label.text = `${this.symbol}    ${price}     `;
+            if (this.activeCoin) menuItem.text = `${this.title||this.symbol}   ${price}`;
+            this.label.text = `${this.title||this.symbol}    ${price}     `;
         }
         get state() {
             return this._switch.state;

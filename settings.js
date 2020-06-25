@@ -11,10 +11,11 @@ var getCoins = function () {
     return coinJson.coins;
 };
 
-var addCoin = function ({ symbol, active }) {
+var addCoin = function ({ symbol, active, title }) {
     let coin = {
-        symbol,
+        symbol: symbol.toUpperCase(),
         active,
+        title
     };
     if (_checkIsDuplicate(coin)) return false;
     let originalCoinsStr = Schema.get_string('coins');
@@ -27,7 +28,7 @@ var addCoin = function ({ symbol, active }) {
 
 function _checkIsDuplicate(coin) {
     let coins = getCoins();
-    for (const _coin of coins) if (coin.symbol == _coin.symbol) return true;
+    for (const _coin of coins) if (coin.symbol.toUpperCase() == _coin.symbol) return true;
 
     return false;
 }
