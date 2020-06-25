@@ -78,7 +78,7 @@ var Indicator = class CIndicator extends PanelMenu.Button {
 
         let coinTitle = new St.Entry({
             name: 'title',
-            hint_text: 'Name?',
+            hint_text: 'Label?',
             can_focus: true,
             x_expand: true,
             style_class: 'crypto-input',
