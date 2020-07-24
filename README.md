@@ -12,7 +12,7 @@
  </p>
  <br />
  
-An extension for Gnome-Shell to track Crypto currencies price.
+An extension for Gnome-Shell to track price of Crypto currencies.
 <br />
 <br />
 <p align="center">
