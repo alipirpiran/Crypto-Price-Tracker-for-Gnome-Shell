@@ -1,4 +1,5 @@
 # Crypto Price Tracker for Gnome-Shell
+
 <p align="center">
  <a href="https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell/blob/master/LICENSE">
   <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg">
@@ -28,33 +29,35 @@ An extension for Gnome-Shell to track Crypto currencies price.
 ## Installation
 
 ### Through extensions.gnome.org (Local installation)
+
 Go on the [CryptoPriceTracker](https://extensions.gnome.org/extension/2817/crypto-price-tracker/) extension page on extensions.gnome.org, click on the switch ("OFF" => "ON"), click on the install button. That's it !
 
 ### With source code
 
- Clone the git repo:
+Clone the git repo:
 
     $ git clone https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell.git
 
-
- Create extension dir and Copy files in it:
+Create extension dir and Copy files in it:
 
     $ mkdir -p ~/.local/share/gnome-shell/extensions/crypto@alipirpiran.github/
     $ cp -r ./Crypto-Price-Tracker-for-Gnome-Shell/* ~/.local/share/gnome-shell/extensions/crypto@alipirpiran.github/
- 
-* Restart Gnome-shell. (ALT+F2, r, Enter)
-* You may need to enable the extension via Gnome Tweaks
+
+- Restart Gnome-shell. (ALT+F2, r, Enter)
+- You may need to enable the extension via Gnome Tweaks
 
 ## List of coins
 
-Symbol |
---- |
-BTC/USDT 
+| Symbol |
+| ------ |
+
+BTC/USDT
 ETH/LTC
 XRP/USDT
-BNB/BTC 
+BNB/BTC
 
-* Complete list: [Binance](https://www.binance.com/indexSpa.html#/)
+- Complete list: [Binance](https://www.binance.com/indexSpa.html#/)
 
 ## License
+
 [MIT](https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell/blob/master/LICENSE)
