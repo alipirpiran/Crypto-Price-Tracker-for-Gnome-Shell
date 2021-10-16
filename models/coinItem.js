@@ -84,7 +84,7 @@ var CoinItem = GObject.registerClass(
       let menuItem = Me.imports.extension.menuItem;
 
       this._refreshPrice(menuItem);
-      menuItem.text = this.title || this.symbol + ' ...';
+      menuItem.text = (this.title || this.symbol) + ' ...';
       this.activeCoin = true;
 
       Settings.updateCoin(this._getJSON());
@@ -178,6 +178,7 @@ var CoinItem = GObject.registerClass(
     }
 
     toggleCoin() {
+      print('toggle');
       if (this.state) {
         this._activeCoin.bind(this)();
         this.disableOtherCoins();
@@ -189,7 +190,8 @@ var CoinItem = GObject.registerClass(
     }
 
     disableOtherCoins() {
-      for (const coin of Me.imports.extension.indicator.coins) {
+      print('disabling ...');
+      for (const coin of Me.imports.extension._extension._indicator.coins) {
         if (coin == this) continue;
         if (coin.state) {
           coin.toggle();

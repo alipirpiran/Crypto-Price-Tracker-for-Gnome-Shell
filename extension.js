@@ -1,157 +1,159 @@
-'use strict';
+/* extension.js
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Atk = imports.gi.Atk;
-const GObject = imports.gi.GObject;
-const St = imports.gi.St;
-const Clutter = imports.gi.Clutter;
+const { GObject, St, Clutter } = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
+
 const Me = ExtensionUtils.getCurrentExtension();
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const PanelMenu = imports.ui.panelMenu;
 
-const Binance = Me.imports.api.binance;
-const { CoinItem } = Me.imports.models.coinItem;
-const convenience = Me.imports.convenience;
-const Schema = convenience.getSettings(
-  'org.gnome.shell.extensions.crypto-tracker'
-);
 const Settings = Me.imports.settings;
+const { CoinItem } = Me.imports.models.coinItem;
 
-const Config = imports.misc.config;
-const SHELL_MINOR = parseInt(Config.PACKAGE_VERSION.split('.')[1]);
+const Main = imports.ui.main;
+const PanelMenu = imports.ui.panelMenu;
+const PopupMenu = imports.ui.popupMenu;
 
-const SELECT_TEXT = 'Select';
+let menuItem, _extension;
 
-var menuItem;
+const Indicator = GObject.registerClass(
+  class Indicator extends PanelMenu.Button {
+    _init() {
+      super._init(0.0, `${Me.metadata.name} Indicator`, false);
+      this.coins = [];
+      menuItem = new St.Label({
+        text: 'Crypto',
+        y_expand: true,
+        y_align: Clutter.ActorAlign.CENTER,
+      });
+      this.actor.add_child(menuItem);
 
-var Indicator = class CIndicator extends PanelMenu.Button {
-  _init() {
-    super._init(0.0, `${Me.metadata.name} Indicator`, false);
-    this.coins = [];
-    menuItem = new St.Label({
-      text: 'Crypto',
-      y_expand: true,
-      y_align: Clutter.ActorAlign.CENTER,
-    });
-    this.actor.add_child(menuItem);
+      this.coinSection = new PopupMenu.PopupMenuSection();
+      this.menu.addMenuItem(this.coinSection);
+    }
 
-    this.coinSection = new PopupMenu.PopupMenuSection();
-    this.menu.addMenuItem(this.coinSection);
-  }
+    _generateAddCoinPart() {
+      let addCoinBtnMenu = new PopupMenu.PopupSubMenuMenuItem('Add Coin');
+      this.menu.addMenuItem(addCoinBtnMenu);
 
-  destroy() {
-    super.destroy();
-  }
+      let addCoinSubMenu = new PopupMenu.PopupBaseMenuItem({
+        reactive: false,
+        can_focus: false,
+      });
+      addCoinBtnMenu.menu.addMenuItem(addCoinSubMenu);
 
-  _generateAddCoinPart() {
-    let addCoinBtnMenu = new PopupMenu.PopupSubMenuMenuItem('Add Coin');
-    this.menu.addMenuItem(addCoinBtnMenu);
+      let vbox = new St.BoxLayout({
+        style_class: 'add-coin-vbox',
+        vertical: true,
+        x_expand: true,
+      });
+      addCoinSubMenu.actor.add_child(vbox);
 
-    let addCoinSubMenu = new PopupMenu.PopupBaseMenuItem({
-      reactive: false,
-      can_focus: false,
-    });
-    addCoinBtnMenu.menu.addMenuItem(addCoinSubMenu);
+      let hbox = new St.BoxLayout({ x_expand: true });
+      vbox.add(hbox);
 
-    let vbox = new St.BoxLayout({
-      style_class: 'add-coin-vbox',
-      vertical: true,
-      x_expand: true,
-    });
-    addCoinSubMenu.actor.add_child(vbox);
+      let coinSymbol = new St.Entry({
+        name: 'symbol',
+        hint_text: 'Name/Vol     ',
+        can_focus: true,
+        x_expand: true,
+        style_class: 'crypto-input',
+      });
+      hbox.add(coinSymbol);
 
-    let hbox = new St.BoxLayout({ x_expand: true });
-    vbox.add(hbox);
+      let coinTitle = new St.Entry({
+        name: 'title',
+        hint_text: 'Label?',
+        can_focus: true,
+        x_expand: true,
+        style_class: 'crypto-input',
+      });
+      hbox.add(coinTitle);
 
-    let coinSymbol = new St.Entry({
-      name: 'symbol',
-      hint_text: 'Name/Vol     ',
-      can_focus: true,
-      x_expand: true,
-      style_class: 'crypto-input',
-    });
-    hbox.add(coinSymbol);
+      let addBtn = new St.Button({
+        label: 'Add',
+        style_class: 'crypto-input btn',
+      });
+      addBtn.connect(
+        'clicked',
+        this._addCoin.bind(this, coinSymbol, coinTitle)
+      );
+      hbox.add(addBtn);
+    }
+    _addCoin(coinSymbol, coinTitle) {
+      // TODO show error
+      if (coinSymbol.text == '' || !coinSymbol.text.includes('/')) return;
 
-    let coinTitle = new St.Entry({
-      name: 'title',
-      hint_text: 'Label?',
-      can_focus: true,
-      x_expand: true,
-      style_class: 'crypto-input',
-    });
-    hbox.add(coinTitle);
+      let coin = new CoinItem(coinSymbol.text, false, coinTitle.text);
+      let result = Settings.addCoin({
+        symbol: coin.symbol,
+        active: coin.activeCoin,
+        title: coin.title,
+      });
+      if (result) this._buildCoinsSection();
 
-    let addBtn = new St.Button({
-      label: 'Add',
-      style_class: 'crypto-input btn',
-    });
-    addBtn.connect('clicked', this._addCoin.bind(this, coinSymbol, coinTitle));
-    hbox.add(addBtn);
-  }
-  _addCoin(coinSymbol, coinTitle) {
-    // TODO show error
-    if (coinSymbol.text == '' || !coinSymbol.text.includes('/')) return;
+      coinTitle.text = '';
+      coinSymbol.text = '';
+    }
 
-    let coin = new CoinItem(coinSymbol.text, false, coinTitle.text);
-    let result = Settings.addCoin({
-      symbol: coin.symbol,
-      active: coin.activeCoin,
-      title: coin.title,
-    });
-    if (result) this._buildCoinsSection();
+    _buildCoinsSection() {
+      this._setCoinsFromSettings();
+      this.coinSection.removeAll();
+      for (const coin of this.coins) {
+        this.coinSection.addMenuItem(coin);
+      }
+    }
 
-    coinTitle.text = '';
-    coinSymbol.text = '';
-  }
-
-  _buildCoinsSection() {
-    this._setCoinsFromSettings();
-    this.coinSection.removeAll();
-    for (const coin of this.coins) {
-      this.coinSection.addMenuItem(coin);
+    _setCoinsFromSettings() {
+      this.coins = [];
+      let coins = Settings.getCoins();
+      for (const coin of coins) {
+        let { symbol, active, title } = coin;
+        let _coin = new CoinItem(symbol, active, title);
+        this.coins.push(_coin);
+      }
     }
   }
+);
 
-  _setCoinsFromSettings() {
-    this.coins = [];
-    let coins = Settings.getCoins();
-    for (const coin of coins) {
-      let { symbol, active, title } = coin;
-      let _coin = new CoinItem(symbol, active, title);
-      this.coins.push(_coin);
-    }
+class Extension {
+  constructor(uuid) {
+    this._uuid = uuid;
+
+    // ExtensionUtils.initTranslations(GETTEXT_DOMAIN);
   }
-};
 
-if (SHELL_MINOR > 30) {
-  Indicator = GObject.registerClass({ GTypeName: 'Indicator' }, Indicator);
-}
+  enable() {
+    this._indicator = new Indicator();
 
-var indicator = null;
+    this._indicator._buildCoinsSection();
+    this._indicator._generateAddCoinPart();
 
-function addCoin(coin, reset) {
-  if (reset == true) indicator.coins = [];
-  indicator.coins.push(coin);
-}
-
-function init() {}
-
-function enable() {
-  indicator = new Indicator();
-
-  indicator._buildCoinsSection();
-  indicator._generateAddCoinPart();
-
-  Main.panel.addToStatusArea(`${Me.metadata.name} Indicator`, indicator);
-}
-
-function disable() {
-  if (indicator !== null) {
-    indicator.destroy();
-    indicator = null;
+    Main.panel.addToStatusArea(this._uuid, this._indicator);
   }
+
+  disable() {
+    this._indicator.destroy();
+    this._indicator = null;
+  }
+}
+
+function init(meta) {
+  _extension = new Extension(meta.uuid);
+  return _extension;
 }
