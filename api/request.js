@@ -1,5 +1,4 @@
 const Soup = imports.gi.Soup;
-const Lang = imports.lang;
 let _soupASyncSession;
 
 function _getSession() {
