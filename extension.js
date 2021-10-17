@@ -145,7 +145,7 @@ class Extension {
     this._indicator._buildCoinsSection();
     this._indicator._generateAddCoinPart();
 
-    this.settings = ExtensionUtils.getSettings(GETTEXT_DOMAIN);
+    this.settings = ExtensionUtils.getSettings(Me.metadata.uuid);
 
     Main.panel.addToStatusArea(this._uuid, this._indicator);
   }
