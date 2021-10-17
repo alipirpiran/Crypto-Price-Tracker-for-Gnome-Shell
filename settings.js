@@ -1,14 +1,11 @@
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const convenience = Me.imports.convenience;
-
-function enable() {
-  // Create objects, connect signals, create timeout sources, etc.
-}
+const settings = ExtensionUtils.getSettings(
+  'org.gnome.shell.extensions.crypto-tracker'
+);
 
 var getCoins = function () {
-  const settings = Me.imports.extension._extension.settings;
-
   let coinJsonStr = String(settings.get_string('coins'));
   let coinJson = JSON.parse(coinJsonStr);
   return coinJson.coins;
