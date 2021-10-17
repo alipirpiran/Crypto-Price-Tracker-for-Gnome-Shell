@@ -30,7 +30,7 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-let menuItem, _extension, _settings;
+let menuItem, _extension;
 
 const Indicator = GObject.registerClass(
   class Indicator extends PanelMenu.Button {
@@ -135,8 +135,6 @@ const Indicator = GObject.registerClass(
 class Extension {
   constructor(uuid) {
     this._uuid = uuid;
-
-    ExtensionUtils.initTranslations(GETTEXT_DOMAIN);
   }
 
   enable() {
@@ -144,8 +142,6 @@ class Extension {
 
     this._indicator._buildCoinsSection();
     this._indicator._generateAddCoinPart();
-
-    this.settings = ExtensionUtils.getSettings(Me.metadata.uuid);
 
     Main.panel.addToStatusArea(this._uuid, this._indicator);
   }
