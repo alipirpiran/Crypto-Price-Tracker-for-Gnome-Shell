@@ -17,7 +17,6 @@
  */
 
 const { GObject, St, Clutter } = imports.gi;
-const GETTEXT_DOMAIN = 'org.gnome.shell.extensions.crypto-tracker';
 
 const ExtensionUtils = imports.misc.extensionUtils;
 

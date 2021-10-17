@@ -1,6 +1,4 @@
 const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const convenience = Me.imports.convenience;
 
 let _settings;
 function _getSettings() {
@@ -10,7 +8,7 @@ function _getSettings() {
 
 var getCoins = function () {
   const settings = _getSettings();
-  
+
   let coinJsonStr = String(settings.get_string('coins'));
   let coinJson = JSON.parse(coinJsonStr);
   return coinJson.coins;
