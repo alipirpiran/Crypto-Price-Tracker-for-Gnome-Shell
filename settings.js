@@ -1,12 +1,15 @@
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const convenience = Me.imports.convenience;
-const Schema = convenience.getSettings(
-  'org.gnome.shell.extensions.crypto-tracker'
-);
+
+function enable() {
+  // Create objects, connect signals, create timeout sources, etc.
+}
 
 var getCoins = function () {
-  let coinJsonStr = String(Schema.get_string('coins'));
+  const settings = Me.imports.extension._extension.settings;
+
+  let coinJsonStr = String(settings.get_string('coins'));
   let coinJson = JSON.parse(coinJsonStr);
   return coinJson.coins;
 };
@@ -18,11 +21,11 @@ var addCoin = function ({ symbol, active, title }) {
     title,
   };
   if (_checkIsDuplicate(coin)) return false;
-  let originalCoinsStr = Schema.get_string('coins');
+  let originalCoinsStr = settings.get_string('coins');
   let originalCoinObj = JSON.parse(originalCoinsStr);
   originalCoinObj.coins.push(coin);
 
-  Schema.set_string('coins', JSON.stringify(originalCoinObj));
+  settings.set_string('coins', JSON.stringify(originalCoinObj));
   return true;
 };
 
@@ -35,7 +38,7 @@ function _checkIsDuplicate(coin) {
 }
 
 var delCoin = function ({ symbol }) {
-  let coinJsonStr = String(Schema.get_string('coins'));
+  let coinJsonStr = String(settings.get_string('coins'));
   let coinJson = JSON.parse(coinJsonStr);
   let coins = coinJson.coins;
 
@@ -44,7 +47,7 @@ var delCoin = function ({ symbol }) {
   });
   if (index) coins.splice(index, 1);
 
-  Schema.set_string('coins', JSON.stringify(coinJson));
+  settings.set_string('coins', JSON.stringify(coinJson));
 };
 
 var updateCoin = function (coin) {
@@ -58,12 +61,13 @@ var updateCoin = function (coin) {
   }
   setCoins(coins);
 };
+
 /**
  * @param  {[{}]} coins
  */
 var setCoins = function (coins) {
-  let originalCoinsStr = Schema.get_string('coins');
+  let originalCoinsStr = settings.get_string('coins');
   let originalCoinObj = JSON.parse(originalCoinsStr);
   originalCoinObj.coins = coins;
-  Schema.set_string('coins', JSON.stringify(originalCoinObj));
+  settings.set_string('coins', JSON.stringify(originalCoinObj));
 };

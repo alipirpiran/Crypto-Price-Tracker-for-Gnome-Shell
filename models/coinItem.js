@@ -14,10 +14,6 @@ const Binance = Me.imports.api.binance;
 const Settings = Me.imports.settings;
 const convenience = Me.imports.convenience;
 
-const Schema = convenience.getSettings(
-  'org.gnome.shell.extensions.crypto-tracker'
-);
-
 const PopupMenu = imports.ui.popupMenu;
 
 var CoinItem = GObject.registerClass(

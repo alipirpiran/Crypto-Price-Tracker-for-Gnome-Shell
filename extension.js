@@ -17,6 +17,7 @@
  */
 
 const { GObject, St, Clutter } = imports.gi;
+const GETTEXT_DOMAIN = 'org.gnome.shell.extensions.crypto-tracker';
 
 const ExtensionUtils = imports.misc.extensionUtils;
 
@@ -29,7 +30,7 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-let menuItem, _extension;
+let menuItem, _extension, _settings;
 
 const Indicator = GObject.registerClass(
   class Indicator extends PanelMenu.Button {
@@ -135,7 +136,7 @@ class Extension {
   constructor(uuid) {
     this._uuid = uuid;
 
-    // ExtensionUtils.initTranslations(GETTEXT_DOMAIN);
+    ExtensionUtils.initTranslations(GETTEXT_DOMAIN);
   }
 
   enable() {
@@ -143,6 +144,8 @@ class Extension {
 
     this._indicator._buildCoinsSection();
     this._indicator._generateAddCoinPart();
+
+    this.settings = ExtensionUtils.getSettings(GETTEXT_DOMAIN);
 
     Main.panel.addToStatusArea(this._uuid, this._indicator);
   }
