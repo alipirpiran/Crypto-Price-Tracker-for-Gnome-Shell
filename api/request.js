@@ -1,10 +1,10 @@
 const Soup = imports.gi.Soup;
 const Lang = imports.lang;
-let _soupSyncSession;
+let _soupASyncSession;
 
 function _getSession() {
-  if (!_soupSyncSession) _soupSyncSession = new Soup.SessionSync();
-  return _soupSyncSession;
+  if (!_soupASyncSession) _soupASyncSession = new Soup.SessionAsync();
+  return _soupASyncSession;
 }
 
 function get(url) {
@@ -53,16 +53,20 @@ function get2(url) {
 }
 
 function get3(url) {
-  try {
-    let message = Soup.Message.new('GET', url);
-    let responseCode = _getSession().send_message(message);
-    if (responseCode != 200) return;
-    return {
-      code: responseCode,
-      body: message['response-body'].data,
-    };
-  } catch (error) {
-    // print(error);
-    return;
-  }
+  return new Promise((resolve, reject) => {
+    try {
+      let request = Soup.Message.new('GET', url);
+      const _httpSession = _getSession();
+      _httpSession.queue_message(request, function (_httpSession, message) {
+        // request is done
+        resolve({
+          code: message.status_code,
+          body: request.response_body.data,
+        });
+      });
+    } catch (error) {
+      // print(error);
+      reject(error);
+    }
+  });
 }
