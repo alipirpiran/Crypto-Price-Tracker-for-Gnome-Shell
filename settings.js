@@ -1,17 +1,24 @@
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const convenience = Me.imports.convenience;
-const settings = ExtensionUtils.getSettings(
-  'org.gnome.shell.extensions.crypto-tracker'
-);
+
+let _settings;
+function _getSettings() {
+  if (!_settings) _settings = ExtensionUtils.getSettings();
+  return _settings;
+}
 
 var getCoins = function () {
+  const settings = _getSettings();
+  
   let coinJsonStr = String(settings.get_string('coins'));
   let coinJson = JSON.parse(coinJsonStr);
   return coinJson.coins;
 };
 
 var addCoin = function ({ symbol, active, title }) {
+  const settings = _getSettings();
+
   let coin = {
     symbol: symbol.toUpperCase(),
     active,
@@ -35,6 +42,8 @@ function _checkIsDuplicate(coin) {
 }
 
 var delCoin = function ({ symbol }) {
+  const settings = _getSettings();
+
   let coinJsonStr = String(settings.get_string('coins'));
   let coinJson = JSON.parse(coinJsonStr);
   let coins = coinJson.coins;
@@ -63,6 +72,8 @@ var updateCoin = function (coin) {
  * @param  {[{}]} coins
  */
 var setCoins = function (coins) {
+  const settings = _getSettings();
+
   let originalCoinsStr = settings.get_string('coins');
   let originalCoinObj = JSON.parse(originalCoinsStr);
   originalCoinObj.coins = coins;
