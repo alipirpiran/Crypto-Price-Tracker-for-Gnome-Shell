@@ -11,7 +11,7 @@ var getETH = function () {
 };
 
 var getCoin = function (symbol) {
-  return request.get2(
+  return request.get3(
     `https://www.binance.com/api/v3/avgPrice?symbol=${symbol}`
   );
 };

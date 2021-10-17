@@ -1,5 +1,12 @@
 const Soup = imports.gi.Soup;
 const Lang = imports.lang;
+let _soupSyncSession;
+
+function _getSession() {
+  if (!_soupSyncSession) _soupSyncSession = new Soup.SessionSync();
+  return _soupSyncSession;
+}
+
 function get(url) {
   return new Promise((resolve, reject) => {
     var _httpSession = new Soup.SessionAsync();
@@ -43,4 +50,19 @@ function get2(url) {
       reject(error);
     }
   });
+}
+
+function get3(url) {
+  try {
+    let message = Soup.Message.new('GET', url);
+    let responseCode = _getSession().send_message(message);
+    if (responseCode != 200) return;
+    return {
+      code: responseCode,
+      body: message['response-body'].data,
+    };
+  } catch (error) {
+    // print(error);
+    return;
+  }
 }
