@@ -12,7 +12,6 @@ const Me = ExtensionUtils.getCurrentExtension();
 
 const Binance = Me.imports.api.binance;
 const Settings = Me.imports.settings;
-const convenience = Me.imports.convenience;
 
 const PopupMenu = imports.ui.popupMenu;
 
