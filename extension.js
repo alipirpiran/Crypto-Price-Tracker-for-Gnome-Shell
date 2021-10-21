@@ -29,19 +29,19 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-let menuItem, _extension;
+let _extension;
 
 const Indicator = GObject.registerClass(
   class Indicator extends PanelMenu.Button {
     _init() {
       super._init(0.0, `${Me.metadata.name} Indicator`, false);
       this.coins = [];
-      menuItem = new St.Label({
+      this.menuItem = new St.Label({
         text: 'Crypto',
         y_expand: true,
         y_align: Clutter.ActorAlign.CENTER,
       });
-      this.actor.add_child(menuItem);
+      this.add_child(this.menuItem);
 
       this.coinSection = new PopupMenu.PopupMenuSection();
       this.menu.addMenuItem(this.coinSection);
@@ -99,7 +99,12 @@ const Indicator = GObject.registerClass(
       // TODO show error
       if (coinSymbol.text == '' || !coinSymbol.text.includes('/')) return;
 
-      let coin = new CoinItem(coinSymbol.text, false, coinTitle.text);
+      let coin = new CoinItem(
+        coinSymbol.text,
+        false,
+        coinTitle.text,
+        this.menuItem
+      );
       let result = Settings.addCoin({
         symbol: coin.symbol,
         active: coin.activeCoin,
@@ -124,7 +129,7 @@ const Indicator = GObject.registerClass(
       let coins = Settings.getCoins();
       for (const coin of coins) {
         let { symbol, active, title } = coin;
-        let _coin = new CoinItem(symbol, active, title);
+        let _coin = new CoinItem(symbol, active, title, this.menuItem);
         this.coins.push(_coin);
       }
     }
@@ -137,6 +142,7 @@ class Extension {
   }
 
   enable() {
+    print('Enabling');
     this._indicator = new Indicator();
 
     this._indicator._buildCoinsSection();
