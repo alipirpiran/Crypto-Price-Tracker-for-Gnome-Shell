@@ -50,13 +50,13 @@ Create extension dir and Copy files in it:
 
 | Symbol |
 | ------ |
-
 BTC/USDT
+BTC/EUR
 ETH/LTC
 XRP/USDT
 BNB/BTC
 
-- Complete list: [Binance](https://www.binance.com/indexSpa.html#/)
+- Complete list: [Binance](https://www.binance.com/en/markets)
 
 ## License
 
