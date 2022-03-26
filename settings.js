@@ -49,7 +49,7 @@ var delCoin = function ({ symbol }) {
   let index = coins.findIndex((value) => {
     return value.symbol == symbol;
   });
-  if (index) coins.splice(index, 1);
+  if (index != -1) coins.splice(index, 1);
 
   settings.set_string('coins', JSON.stringify(coinJson));
 };
