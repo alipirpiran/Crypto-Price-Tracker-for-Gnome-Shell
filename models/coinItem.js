@@ -10,7 +10,7 @@ const Atk = imports.gi.Atk;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-const Binance = Me.imports.api.binance;
+const Data = Me.imports.api.data;
 const Settings = Me.imports.settings;
 
 const PopupMenu = imports.ui.popupMenu;
@@ -73,7 +73,7 @@ var CoinItem = GObject.registerClass(
       if (active) this._activeCoin(menuItem);
       this._startTimer(menuItem);
 
-      this.connect('toggled', this.toggleCoin.bind(this));
+      this.connect('toggled', this.toggleCoin.bind(this, menuItem));
     }
     _activeCoin(menuItem) {
       // let menuItem = Me.imports.extension.menuItem;
@@ -93,9 +93,9 @@ var CoinItem = GObject.registerClass(
     }
     _getPrice() {
       let symbol = this.symbol;
-      symbol = symbol.replace('/', '');
+      symbol = symbol.replace('/', '-');
 
-      return Binance.getCoin(symbol);
+      return Data.getPrice(symbol);
     }
 
     _startTimer(menuItem) {
@@ -109,25 +109,7 @@ var CoinItem = GObject.registerClass(
       });
     }
     async _refreshPrice(menuItem) {
-      let result = await this._getPrice();
-      const jsonRes = JSON.parse(result.body);
-      let price = jsonRes.price;
-      let priceParts = price.split('.');
-
-      const totalLen = 6;
-      let len = 0;
-      len += priceParts[0].length;
-      price = priceParts[0] + '.';
-      let i = 0;
-      for (len; len < totalLen; len++) {
-        price += priceParts[1][i];
-        i++;
-      }
-      if (+price == 0)
-        for (let i = len; i < priceParts[1].length; i++) {
-          price += priceParts[1][i];
-        }
-
+      let price = await this._getPrice();
       if (this.activeCoin)
         menuItem.text = `${this.title || this.symbol}   ${price}`;
       this.label.text = `${this.title || this.symbol}    ${price}     `;
@@ -172,10 +154,11 @@ var CoinItem = GObject.registerClass(
       }
     }
 
-    toggleCoin() {
+    toggleCoin(menuItem) {
       print('toggle');
       if (this.state) {
-        this._activeCoin.bind(this)(menuItem);
+        //this._activeCoin.bind(this)(menuItem);
+        this._activeCoin(menuItem);
         this.disableOtherCoins();
       }
     }
@@ -202,8 +185,8 @@ var CoinItem = GObject.registerClass(
     }
 
     destroy() {
-      super.destroy();
       this.removeTimer();
+      super.destroy();
     }
   }
 );
