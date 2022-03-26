@@ -57,7 +57,7 @@ ETH/LTC
 XRP/USDT
 BNB/BTC
 
-- Complete list: [Binance](https://www.binance.com/en/markets)
+- Complete list: [OKX](https://www.okx.com/markets/prices)
 
 ## License
 
