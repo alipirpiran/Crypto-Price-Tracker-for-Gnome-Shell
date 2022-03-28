@@ -1,4 +1,3 @@
-'use strict';
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -92,10 +91,9 @@ var CoinItem = GObject.registerClass(
       };
     }
     _getPrice() {
-      let symbol = this.symbol;
-      symbol = symbol.replace('/', '-');
+      const parts = this.symbol.split('/');
 
-      return Data.getPrice(symbol);
+      return Data.getPrice(parts[0], parts[1]);
     }
 
     _startTimer(menuItem) {
@@ -155,7 +153,6 @@ var CoinItem = GObject.registerClass(
     }
 
     toggleCoin(menuItem) {
-      print('toggle');
       if (this.state) {
         //this._activeCoin.bind(this)(menuItem);
         this._activeCoin(menuItem);
@@ -168,7 +165,6 @@ var CoinItem = GObject.registerClass(
     }
 
     disableOtherCoins() {
-      print('disabling ...');
       for (const coin of Me.imports.extension._extension._indicator.coins) {
         if (coin == this) continue;
         if (coin.state) {
