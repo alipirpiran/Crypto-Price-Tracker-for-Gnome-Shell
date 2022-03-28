@@ -77,3 +77,13 @@ var setCoins = function (coins) {
   originalCoinObj.coins = coins;
   settings.set_string('coins', JSON.stringify(originalCoinObj));
 };
+
+var get_exchange = () => {
+  const settings = _getSettings();
+  return settings.get_string('exchange');
+};
+
+var change_exchange = (ex) => {
+  const settings = _getSettings();
+  return settings.set_string('exchange', ex);
+};
