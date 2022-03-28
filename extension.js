@@ -21,6 +21,7 @@ const { GObject, St, Clutter } = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 
 const Me = ExtensionUtils.getCurrentExtension();
+const Data = Me.imports.api.data;
 
 const Settings = Me.imports.settings;
 const { CoinItem } = Me.imports.models.coinItem;
@@ -28,6 +29,8 @@ const { CoinItem } = Me.imports.models.coinItem;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
+
+let current_exchange;
 
 let _extension;
 
@@ -45,6 +48,9 @@ const Indicator = GObject.registerClass(
 
       this.coinSection = new PopupMenu.PopupMenuSection();
       this.menu.addMenuItem(this.coinSection);
+
+      // set current exchange
+      current_exchange = Data.get_exchange();
     }
 
     _generateAddCoinPart() {
@@ -133,6 +139,52 @@ const Indicator = GObject.registerClass(
         this.coins.push(_coin);
       }
     }
+
+    _buildExchangeSection() {
+      let exchangeMenu = new PopupMenu.PopupSubMenuMenuItem(
+        'Exchange: ' + Data.get_exchange()
+      );
+      this.menu.addMenuItem(exchangeMenu);
+
+      let choseBox = new PopupMenu.PopupBaseMenuItem({
+        reactive: false,
+        can_focus: false,
+      });
+      exchangeMenu.menu.addMenuItem(choseBox);
+
+      let vbox = new St.BoxLayout({
+        style_class: 'add-coin-vbox',
+        vertical: true,
+        x_expand: true,
+      });
+      choseBox.actor.add_child(vbox);
+
+      let hbox = new St.BoxLayout({ x_expand: true });
+      vbox.add(hbox);
+
+      let btns = [];
+      for (const [key, val] of Object.entries(Data.exchanges)) {
+        let btn = new St.Button({
+          label: val,
+          style_class: 'btn exchange-btn',
+        });
+
+        if (val == Data.get_exchange()) {
+          btn.checked = true;
+        }
+
+        btn.connect('clicked', (self) => {
+          Data.change_exchange(val);
+          btns.forEach((self) => {
+            self.checked = false;
+          });
+          self.checked = true;
+          exchangeMenu.label.text = 'Exchange: ' + val;
+        });
+        hbox.add(btn);
+        btns.push(btn);
+      }
+    }
   }
 );
 
@@ -147,6 +199,7 @@ class Extension {
 
     this._indicator._buildCoinsSection();
     this._indicator._generateAddCoinPart();
+    this._indicator._buildExchangeSection();
 
     Main.panel.addToStatusArea(this._uuid, this._indicator);
   }
