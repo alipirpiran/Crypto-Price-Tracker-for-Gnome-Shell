@@ -23,9 +23,8 @@ An extension for Gnome-Shell to track price of Crypto currencies.
  <br />
  
 * Refresh price every 10 sec
-* You can choose coin from menu
-* Used OKX.com api
-* Add coin: use OKX symbols: [List](https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell#list-of-coins)
+* Add coin: use Binance symbols: [List](https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell#list-of-coins)
+* Exchanges: Binance, OKX
 
 ## Installation
 
@@ -57,7 +56,7 @@ ETH/LTC
 XRP/USDT
 BNB/BTC
 
-- Complete list: [OKX](https://www.okx.com/markets/prices)
+- Complete list: [Binance](https://www.binance.com/indexSpa.html)
 
 ## License
 
