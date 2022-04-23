@@ -32,8 +32,6 @@ const PopupMenu = imports.ui.popupMenu;
 
 let current_exchange;
 
-let _extension;
-
 const Indicator = GObject.registerClass(
   class Indicator extends PanelMenu.Button {
     _init() {
@@ -194,7 +192,6 @@ class Extension {
   }
 
   enable() {
-    print('Enabling');
     this._indicator = new Indicator();
 
     this._indicator._buildCoinsSection();
@@ -207,10 +204,10 @@ class Extension {
   disable() {
     this._indicator.destroy();
     this._indicator = null;
+    Settings._settings = null;
   }
 }
 
 function init(meta) {
-  _extension = new Extension(meta.uuid);
-  return _extension;
+  return new Extension(meta.uuid);
 }

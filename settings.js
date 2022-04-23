@@ -1,6 +1,6 @@
 const ExtensionUtils = imports.misc.extensionUtils;
 
-let _settings;
+var _settings;
 function _getSettings() {
   if (!_settings) _settings = ExtensionUtils.getSettings();
   return _settings;
