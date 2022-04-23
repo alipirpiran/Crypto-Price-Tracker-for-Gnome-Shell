@@ -5,7 +5,7 @@ const Settings = Me.imports.settings;
 const request = Me.imports.api.request;
 let current_exchange = '';
 
-const exchanges = {
+var exchanges = {
   binance: 'Binance',
   okx: 'OKX',
 };
