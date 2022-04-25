@@ -31,6 +31,7 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
 let current_exchange;
+var _extension; // import in other file, Me.imports.extension._extension
 
 const Indicator = GObject.registerClass(
   class Indicator extends PanelMenu.Button {
@@ -209,5 +210,6 @@ class Extension {
 }
 
 function init(meta) {
-  return new Extension(meta.uuid);
+  _extension = new Extension(meta.uuid);
+  return _extension;
 }
