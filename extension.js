@@ -31,7 +31,6 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
 let current_exchange;
-var _extension; // import in other file, Me.imports.extension._extension
 
 const Indicator = GObject.registerClass(
   class Indicator extends PanelMenu.Button {
@@ -134,7 +133,13 @@ const Indicator = GObject.registerClass(
       let coins = Settings.getCoins();
       for (const coin of coins) {
         let { symbol, active, title } = coin;
-        let _coin = new CoinItem(symbol, active, title, this.menuItem);
+        let _coin = new CoinItem(
+          symbol,
+          active,
+          title,
+          this.menuItem,
+          this.coins
+        );
         this.coins.push(_coin);
       }
     }
@@ -210,6 +215,5 @@ class Extension {
 }
 
 function init(meta) {
-  _extension = new Extension(meta.uuid);
-  return _extension;
+  return new Extension(meta.uuid);
 }

@@ -19,7 +19,7 @@ var CoinItem = GObject.registerClass(
     Signals: { toggled: { param_types: [GObject.TYPE_BOOLEAN] } },
   },
   class CoinItem extends PopupMenu.PopupBaseMenuItem {
-    _init(symbol, active, title = null, menuItem) {
+    _init(symbol, active, title = null, menuItem, coins) {
       super._init({
         reactive: true,
         activate: true,
@@ -68,6 +68,7 @@ var CoinItem = GObject.registerClass(
       this.activeCoin = active;
       this.title = title;
       this.timeOutTage;
+      this.coins = coins
 
       if (active) this._activeCoin(menuItem);
       this._startTimer(menuItem);
@@ -75,7 +76,6 @@ var CoinItem = GObject.registerClass(
       this.connect('toggled', this.toggleCoin.bind(this, menuItem));
     }
     _activeCoin(menuItem) {
-      // let menuItem = Me.imports.extension.menuItem;
 
       this._refreshPrice(menuItem);
       menuItem.text = (this.title || this.symbol) + ' ...';
@@ -97,7 +97,6 @@ var CoinItem = GObject.registerClass(
     }
 
     _startTimer(menuItem) {
-      // let menuItem = Me.imports.extension.menuItem;
 
       this._refreshPrice(menuItem);
 
@@ -165,7 +164,7 @@ var CoinItem = GObject.registerClass(
     }
 
     disableOtherCoins() {
-      for (const coin of Me.imports.extension._extension._indicator.coins) {
+      for (const coin of this.coins) {
         if (coin == this) continue;
         if (coin.state) {
           coin.toggle();
