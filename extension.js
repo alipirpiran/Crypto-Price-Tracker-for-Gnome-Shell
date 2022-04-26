@@ -107,7 +107,8 @@ const Indicator = GObject.registerClass(
         coinSymbol.text,
         false,
         coinTitle.text,
-        this.menuItem
+        this.menuItem,
+        this.coins
       );
       let result = Settings.addCoin({
         symbol: coin.symbol,
