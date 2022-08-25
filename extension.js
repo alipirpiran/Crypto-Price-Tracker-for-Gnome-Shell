@@ -38,9 +38,10 @@ const Indicator = GObject.registerClass(
       super._init(0.0, `${Me.metadata.name} Indicator`, false);
       this.coins = [];
       this.menuItem = new St.Label({
-        text: 'Crypto',
+        text: '₿',
         y_expand: true,
         y_align: Clutter.ActorAlign.CENTER,
+        style_class: 'menu-item-text'
       });
       this.add_child(this.menuItem);
 

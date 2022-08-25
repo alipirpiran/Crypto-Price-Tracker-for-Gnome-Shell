@@ -1,4 +1,4 @@
-const Gio = imports.gi.Gio;
+
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const St = imports.gi.St;
@@ -70,18 +70,23 @@ var CoinItem = GObject.registerClass(
       this.timeOutTage;
       this.coins = coins
 
-      if (active) this._activeCoin(menuItem);
+      if (active) this._activeCoin(menuItem, true);
       this._startTimer(menuItem);
 
       this.connect('toggled', this.toggleCoin.bind(this, menuItem));
     }
-    _activeCoin(menuItem) {
+    _activeCoin(menuItem, isInit) {
+        this.activeCoin = true;
+        Settings.updateCoin(this._getJSON());
 
-      this._refreshPrice(menuItem);
-      menuItem.text = (this.title || this.symbol) + ' ...';
-      this.activeCoin = true;
+        this._updateMenuCoinItems(menuItem, isInit);
+        this._refreshPrice(menuItem);
+    }
+    _disableCoin(menuItem) {
+        this.activeCoin = false;
+        Settings.updateCoin(this._getJSON());
 
-      Settings.updateCoin(this._getJSON());
+        this._updateMenuCoinItems(menuItem);
     }
     _getJSON() {
       return {
@@ -107,8 +112,10 @@ var CoinItem = GObject.registerClass(
     }
     async _refreshPrice(menuItem) {
       let price = await this._getPrice();
-      if (this.activeCoin)
-        menuItem.text = `${this.title || this.symbol}   ${price}`;
+      if (this.activeCoin) {
+        let re = new RegExp("("+`${this.title || this.symbol}`+") ((\\.\\.\\.)|(\\d*(,?\\d\\d\\d)*|\\d+)(\\.?\\d*))?", "g");
+        menuItem.text = menuItem.text.replace(re, `${this.title || this.symbol} ${price}`);
+      }
       this.label.text = `${this.title || this.symbol}    ${price}     `;
     }
     get state() {
@@ -153,9 +160,9 @@ var CoinItem = GObject.registerClass(
 
     toggleCoin(menuItem) {
       if (this.state) {
-        //this._activeCoin.bind(this)(menuItem);
         this._activeCoin(menuItem);
-        this.disableOtherCoins();
+      } else {
+        this._disableCoin(menuItem);
       }
     }
 
@@ -163,15 +170,15 @@ var CoinItem = GObject.registerClass(
       if (this.timeOutTag) GLib.Source.remove(this.timeOutTag);
     }
 
-    disableOtherCoins() {
-      for (const coin of this.coins) {
-        if (coin == this) continue;
-        if (coin.state) {
-          coin.toggle();
-          coin.activeCoin = false;
-          Settings.updateCoin(coin._getJSON());
-        }
-      }
+    _updateMenuCoinItems(menuItem, isInit) {
+      let newMenuItemText = this.coins
+          .filter(({activeCoin}) => activeCoin)
+          .map(({title, symbol}) => `${title || symbol} ...`).join(" | ");
+
+      if (isInit)
+        newMenuItemText += ` | ${this.title || this.symbol} ...`
+
+      menuItem.text = newMenuItemText || "₿";
     }
 
     _delCoin() {
