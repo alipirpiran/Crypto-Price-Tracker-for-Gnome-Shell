@@ -176,7 +176,7 @@ var CoinItem = GObject.registerClass(
           .map(({title, symbol}) => `${title || symbol} ...`).join(" | ");
 
       if (isInit)
-        newMenuItemText += ` | ${this.title || this.symbol} ...`
+        newMenuItemText += (newMenuItemText ? " | " : "") +`${this.title || this.symbol} ...`
 
       menuItem.text = newMenuItemText || "₿";
     }
