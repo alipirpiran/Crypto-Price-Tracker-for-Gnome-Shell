@@ -25,6 +25,7 @@ An extension for Gnome-Shell to track price of Crypto currencies.
 * Refresh price every 10 sec
 * Add coin: use Binance symbols: [List](https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell#list-of-coins)
 * Exchanges: Binance, OKX
+* [Display multiple coins](https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell#display-multiple-coins)
 
 ## Installation
 
@@ -45,6 +46,13 @@ Create extension dir and Copy files in it:
 
 - Restart Gnome-shell. (ALT+F2, r, Enter)
 - You may need to enable the extension via Gnome Tweaks
+
+## Display multiple coins 
+Activate multiple coins from the menu and display them all in the top bar.  
+  
+<img src="https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell/raw/screenshots/multicoin.gif">
+
+Thanks to [azorpax](https://github.com/azorpax) for creating this feature. [Pull request](https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell/pull/10#issue-1351086191)
 
 ## List of coins
 
