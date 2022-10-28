@@ -1,4 +1,3 @@
-
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const St = imports.gi.St;
@@ -68,7 +67,7 @@ var CoinItem = GObject.registerClass(
       this.activeCoin = active;
       this.title = title;
       this.timeOutTage;
-      this.coins = coins
+      this.coins = coins;
 
       if (active) this._activeCoin(menuItem, true);
       this._startTimer(menuItem);
@@ -76,17 +75,17 @@ var CoinItem = GObject.registerClass(
       this.connect('toggled', this.toggleCoin.bind(this, menuItem));
     }
     _activeCoin(menuItem, isInit) {
-        this.activeCoin = true;
-        Settings.updateCoin(this._getJSON());
+      this.activeCoin = true;
+      Settings.updateCoin(this._getJSON());
 
-        this._updateMenuCoinItems(menuItem, isInit);
-        this._refreshPrice(menuItem);
+      this._updateMenuCoinItems(menuItem, isInit);
+      this._refreshPrice(menuItem);
     }
     _disableCoin(menuItem) {
-        this.activeCoin = false;
-        Settings.updateCoin(this._getJSON());
+      this.activeCoin = false;
+      Settings.updateCoin(this._getJSON());
 
-        this._updateMenuCoinItems(menuItem);
+      this._updateMenuCoinItems(menuItem);
     }
     _getJSON() {
       return {
@@ -102,7 +101,6 @@ var CoinItem = GObject.registerClass(
     }
 
     _startTimer(menuItem) {
-
       this._refreshPrice(menuItem);
 
       this.timeOutTag = GLib.timeout_add(1, 1000 * 10, async () => {
@@ -111,12 +109,22 @@ var CoinItem = GObject.registerClass(
       });
     }
     async _refreshPrice(menuItem) {
-      let price = await this._getPrice();
-      if (this.activeCoin) {
-        let re = new RegExp("("+`${this.title || this.symbol}`+") ((\\.\\.\\.)|(\\d*(,?\\d\\d\\d)*|\\d+)(\\.?\\d*))?", "g");
-        menuItem.text = menuItem.text.replace(re, `${this.title || this.symbol} ${price}`);
-      }
-      this.label.text = `${this.title || this.symbol}    ${price}     `;
+      try {
+        let price = await this._getPrice();
+        if (this.activeCoin) {
+          let re = new RegExp(
+            '(' +
+              `${this.title || this.symbol}` +
+              ') ((\\.\\.\\.)|(\\d*(,?\\d\\d\\d)*|\\d+)(\\.?\\d*))?',
+            'g'
+          );
+          menuItem.text = menuItem.text.replace(
+            re,
+            `${this.title || this.symbol} ${price}`
+          );
+        }
+        this.label.text = `${this.title || this.symbol}    ${price}     `;
+      } catch (error) {}
     }
     get state() {
       return this._switch.state;
@@ -172,13 +180,15 @@ var CoinItem = GObject.registerClass(
 
     _updateMenuCoinItems(menuItem, isInit) {
       let newMenuItemText = this.coins
-          .filter(({activeCoin}) => activeCoin)
-          .map(({title, symbol}) => `${title || symbol} ...`).join(" | ");
+        .filter(({ activeCoin }) => activeCoin)
+        .map(({ title, symbol }) => `${title || symbol} ...`)
+        .join(' | ');
 
       if (isInit)
-        newMenuItemText += (newMenuItemText ? " | " : "") +`${this.title || this.symbol} ...`
+        newMenuItemText +=
+          (newMenuItemText ? ' | ' : '') + `${this.title || this.symbol} ...`;
 
-      menuItem.text = newMenuItemText || "₿";
+      menuItem.text = newMenuItemText || '₿';
     }
 
     _delCoin() {

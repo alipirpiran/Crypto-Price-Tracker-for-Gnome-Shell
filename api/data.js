@@ -32,30 +32,34 @@ var getPrice = async function (name, vol) {
 };
 
 async function _getPriceFromBinance(name, vol) {
-  const url = 'https://api.binance.com/api/v3/ticker/price?symbol=';
-  const res = await request.get(url + name + vol);
+  try {
+    const url = 'https://api.binance.com/api/v3/ticker/price?symbol=';
+    const res = await request.get(url + name + vol);
 
-  const jsonRes = JSON.parse(res.body);
-  if (jsonRes.code) return jsonRes.msg.slice(0, 30) + '...';
+    const jsonRes = JSON.parse(res.body);
+    if (jsonRes.code) return jsonRes.msg.slice(0, 30) + '...';
 
-  let price = +jsonRes.price;
+    let price = +jsonRes.price;
 
-  let maximumFractionDigits = 0;
-  const dig_count = price.toFixed().length;
-  if (5 - dig_count > 0) maximumFractionDigits = 5 - dig_count;
+    let maximumFractionDigits = 0;
+    const dig_count = price.toFixed().length;
+    if (5 - dig_count > 0) maximumFractionDigits = 5 - dig_count;
 
-  return price.toLocaleString(undefined, { maximumFractionDigits });
+    return price.toLocaleString(undefined, { maximumFractionDigits });
+  } catch (error) {}
 }
 
 async function _getPriceFromOKX(name, vol) {
-  const url = 'https://www.okx.com/api/v5/market/ticker?instId=';
-  const res = await request.get(url + name + '-' + vol);
+  try {
+    const url = 'https://www.okx.com/api/v5/market/ticker?instId=';
+    const res = await request.get(url + name + '-' + vol);
 
-  const jsonRes = JSON.parse(res.body);
+    const jsonRes = JSON.parse(res.body);
 
-  if (jsonRes.data.length == 0) return -1;
+    if (jsonRes.data.length == 0) return -1;
 
-  let price = +jsonRes.data[0].last;
+    let price = +jsonRes.data[0].last;
 
-  return price.toLocaleString();
+    return price.toLocaleString();
+  } catch (error) {}
 }
