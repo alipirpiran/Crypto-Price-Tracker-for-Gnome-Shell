@@ -111,7 +111,7 @@ var CoinItem = GObject.registerClass(
     async _refreshPrice(menuItem) {
       try {
         let price = await this._getPrice();
-        if (!price) price = '...';
+        if (!price) return; // if error happened, not change current price.
 
         if (this.activeCoin) {
           let re = new RegExp(
