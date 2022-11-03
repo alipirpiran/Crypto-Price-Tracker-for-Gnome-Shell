@@ -1,4 +1,5 @@
-const Soup = imports.gi.Soup;
+const { Soup, GLib } = imports.gi;
+
 let _soupASyncSession;
 
 function _getSession() {
