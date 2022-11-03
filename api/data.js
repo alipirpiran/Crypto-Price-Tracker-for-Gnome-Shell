@@ -16,7 +16,7 @@ var change_exchange = (exchange_name) => {
 };
 
 var get_exchange = () => {
-  if (current_exchange != '') return current_exchange;
+  if (current_exchange !== '') return current_exchange;
   current_exchange = Settings.get_exchange();
   return current_exchange;
 };
@@ -41,11 +41,8 @@ async function _getPriceFromBinance(name, vol) {
 
     let price = +jsonRes.price;
 
-    let maximumFractionDigits = 0;
-    const dig_count = price.toFixed().length;
-    if (5 - dig_count > 0) maximumFractionDigits = 5 - dig_count;
-
-    return price.toLocaleString(undefined, { maximumFractionDigits });
+    let { maximumFractionDigits, minimumFractionDigits } = _fractionDigits(price);
+    return price.toLocaleString(undefined, { maximumFractionDigits, minimumFractionDigits });
   } catch (error) {}
 }
 
@@ -56,10 +53,33 @@ async function _getPriceFromOKX(name, vol) {
 
     const jsonRes = JSON.parse(res.body);
 
-    if (jsonRes.data.length == 0) return -1;
+    if (jsonRes.data.length === 0) return -1;
 
     let price = +jsonRes.data[0].last;
 
-    return price.toLocaleString();
+    let { maximumFractionDigits, minimumFractionDigits } = _fractionDigits(price);
+    return price.toLocaleString(undefined, { maximumFractionDigits, minimumFractionDigits });
   } catch (error) {}
+}
+
+function _fractionDigits(price) {
+
+  let maximumFractionDigits = 0;
+  let minimumFractionDigits = 0;
+
+  if (price < 100 && price >= 10) {
+    maximumFractionDigits = 2
+    minimumFractionDigits = 2
+  } else if (price < 10 && price >= 1) {
+    maximumFractionDigits = 3
+    minimumFractionDigits = 3
+  } else if (price < 1 && price >= .1) {
+    maximumFractionDigits = 4
+    minimumFractionDigits = 4
+  } else if (price < .1) {
+    maximumFractionDigits = 5
+    minimumFractionDigits = 5
+  }
+
+  return { maximumFractionDigits, minimumFractionDigits };
 }
