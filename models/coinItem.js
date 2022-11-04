@@ -1,5 +1,5 @@
 // noinspection DuplicatedCode
-const { Atk, Clutter, Gtk, GLib, GObject, St } = imports.gi;
+const { Atk, Clutter, GLib, GObject, St } = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -8,6 +8,7 @@ const Data = Me.imports.api.data;
 const Settings = Me.imports.settings;
 
 const PopupMenu = imports.ui.popupMenu;
+const Util = imports.misc.util;
 
 var CoinItem = GObject.registerClass(
   {
@@ -233,7 +234,7 @@ var CoinItem = GObject.registerClass(
             ? this.symbol.replace('/', '-').toLowerCase()
             : this.symbol.replace('/', '_').toUpperCase();
 
-        Gtk.show_uri(null, exchangeUrl + pair, global.get_current_time());
+        Util.spawnCommandLine(`xdg-open ${exchangeUrl + pair}`);
       } catch (err) {
         let title = _('Can not open %s').format(url);
         Main.notifyError(title, err);
