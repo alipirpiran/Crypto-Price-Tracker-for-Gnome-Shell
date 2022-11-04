@@ -55,6 +55,14 @@
   /* width: 100%; */
 }
 
+.itemLabel {
+  min-width: 60px;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
 .color {
   background-color: red;
 }
