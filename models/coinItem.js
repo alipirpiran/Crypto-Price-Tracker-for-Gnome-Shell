@@ -40,13 +40,13 @@ var CoinItem = GObject.registerClass(
 
       this.nameLbl = new St.Label({
         text: title || symbol,
-        style_class: "itemLabel",
+        style_class: 'itemLabel',
         y_align: Clutter.ActorAlign.CENTER,
       });
       this.add_child(this.nameLbl);
 
       this.priceLbl = new St.Label({
-        text: "...",
+        text: '...',
         style_class: 'itemLabel text-align-right',
         y_align: Clutter.ActorAlign.CENTER,
       });
@@ -61,7 +61,7 @@ var CoinItem = GObject.registerClass(
       this._statusBtn = new St.Button({
         x_align: Clutter.ActorAlign.START,
         // x_expand: true,
-        child: this._switch
+        child: this._switch,
       });
       this._statusBtn.connect('clicked', this._toggle.bind(this, menuItem));
       this.add_child(this._statusBtn);
@@ -75,7 +75,7 @@ var CoinItem = GObject.registerClass(
         child: icon,
         style_class: 'btn m0',
       });
-      delBtn.connect('clicked', this._delCoin.bind(this));
+      delBtn.connect('clicked', this._delCoin.bind(this, menuItem));
       this.add_child(delBtn);
 
       this.symbol = symbol;
@@ -133,8 +133,10 @@ var CoinItem = GObject.registerClass(
               ') ((\\.\\.\\.)|(\\d*(,?\\d\\d\\d)*|\\d+)(\\.?\\d*))?',
             'g'
           );
-          let menuPairPrice = isNaN(price.replaceAll(",","")) ? "..." : price;
-          menuItem.text = menuItem.text.replace(re, `${this.title || this.symbol} ${menuPairPrice}`
+          let menuPairPrice = isNaN(price.replaceAll(',', '')) ? '...' : price;
+          menuItem.text = menuItem.text.replace(
+            re,
+            `${this.title || this.symbol} ${menuPairPrice}`
           );
         }
         this.nameLbl.text = `${this.title || this.symbol}`;
@@ -194,8 +196,7 @@ var CoinItem = GObject.registerClass(
     }
 
     _updateMenuCoinItems(menuItem, isInit) {
-      let activeCoins = this.coins
-          .filter(({ activeCoin }) => activeCoin);
+      let activeCoins = this.coins.filter(({ activeCoin }) => activeCoin);
       let newMenuItemText = activeCoins
         .map(({ title, symbol }) => `${title || symbol} ...`)
         .join(' | ');
@@ -206,24 +207,35 @@ var CoinItem = GObject.registerClass(
 
       menuItem.text = newMenuItemText || '₿';
 
-      if (!isInit)
-        activeCoins.forEach((coin) => coin._refreshPrice(menuItem));
+      if (!isInit) activeCoins.forEach((coin) => coin._refreshPrice(menuItem));
     }
 
-    _delCoin() {
+    _delCoin(menuItem) {
       Settings.delCoin({ symbol: this.symbol });
+
+      let index = this.coins.findIndex((coin) => {
+        return coin.symbol == this.symbol;
+      });
+      if (index != -1) this.coins.splice(index, 1);
+      this._updateMenuCoinItems(menuItem, false);
+
       this.destroy();
     }
 
     _openChart() {
       try {
-        let exchangeUrl = Data.get_exchange() === Data.exchanges.okx ? "https://www.okx.com/markets/spot-info/" : "https://www.binance.com/en/trade/";
-        let pair = Data.get_exchange() === Data.exchanges.okx ? this.symbol.replace('/', '-').toLowerCase() : this.symbol.replace('/', '_').toUpperCase();
+        let exchangeUrl =
+          Data.get_exchange() === Data.exchanges.okx
+            ? 'https://www.okx.com/markets/spot-info/'
+            : 'https://www.binance.com/en/trade/';
+        let pair =
+          Data.get_exchange() === Data.exchanges.okx
+            ? this.symbol.replace('/', '-').toLowerCase()
+            : this.symbol.replace('/', '_').toUpperCase();
 
         Gtk.show_uri(null, exchangeUrl + pair, global.get_current_time());
-      }
-      catch (err) {
-        let title = _("Can not open %s").format(url);
+      } catch (err) {
+        let title = _('Can not open %s').format(url);
         Main.notifyError(title, err);
       }
     }
