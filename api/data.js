@@ -21,8 +21,8 @@ var get_exchange = () => {
   return current_exchange;
 };
 
-var getPrice = async function (name, vol) {
-  switch (get_exchange()) {
+var getPrice = async function (name, vol, exchange) {
+  switch (exchange) {
     case exchanges.binance:
       return _getPriceFromBinance(name, vol);
 
@@ -67,7 +67,7 @@ function _fractionDigits(price) {
   let maximumFractionDigits = 0;
   let minimumFractionDigits = 0;
 
-  if (price < 100 && price >= 10) {
+  if (price < 1000 && price >= 10) {
     maximumFractionDigits = 2
     minimumFractionDigits = 2
   } else if (price < 10 && price >= 1) {

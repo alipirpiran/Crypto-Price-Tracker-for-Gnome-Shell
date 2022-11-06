@@ -22,6 +22,7 @@ const ExtensionUtils = imports.misc.extensionUtils;
 
 const Me = ExtensionUtils.getCurrentExtension();
 const Data = Me.imports.api.data;
+const CryptoUtil = Me.imports.utils.cryptoUtil;
 
 const Settings = Me.imports.settings;
 const { CoinItem } = Me.imports.models.coinItem;
@@ -52,8 +53,10 @@ const Indicator = GObject.registerClass(
       current_exchange = Data.get_exchange();
     }
 
-    _generateAddCoinPart() {
-      let addCoinBtnMenu = new PopupMenu.PopupSubMenuMenuItem('Add Coin');
+    _buildAddCoinSection() {
+      this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+
+      let addCoinBtnMenu = new PopupMenu.PopupSubMenuMenuItem('Add New Pair');
       this.menu.addMenuItem(addCoinBtnMenu);
 
       let addCoinSubMenu = new PopupMenu.PopupBaseMenuItem({
@@ -68,6 +71,58 @@ const Indicator = GObject.registerClass(
         x_expand: true,
       });
       addCoinSubMenu.actor.add_child(vbox);
+
+      let exchangeHbox = new St.BoxLayout({
+        x_expand: true,
+        style_class: 'exchange-hbox',
+      });
+      vbox.add(exchangeHbox);
+
+      let exchangeLbl = new St.Label({
+        text: 'Exchange:',
+        y_align: Clutter.ActorAlign.CENTER,
+        style_class: 'crypto-label',
+      });
+      exchangeHbox.add(exchangeLbl);
+
+      let btns = [];
+      for (const [key, val] of Object.entries(Data.exchanges)) {
+        let exchangeBtnHbox = new St.BoxLayout({
+          x_expand: true,
+          style_class: 'exchange-padding',
+        });
+        let exchangeIco = new St.Icon({
+          style_class: `popup-menu-icon exchange-icon ${val.toLowerCase()}`,
+        });
+        let exchangeLbl = new St.Label({
+          text: `${val}`,
+          style_class: 'crypto-label',
+        });
+        exchangeBtnHbox.add(exchangeIco);
+        exchangeBtnHbox.add(exchangeLbl);
+
+        let btn = new St.Button({
+          child: exchangeBtnHbox,
+          style_class: 'btn exchange-btn',
+          y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        if (val === Data.get_exchange()) {
+          btn.checked = true;
+        }
+
+        btn.connect('clicked', (self) => {
+          current_exchange = val;
+          Data.change_exchange(current_exchange);
+          btns.forEach((self) => {
+            self.checked = false;
+          });
+          self.checked = true;
+        });
+
+        exchangeHbox.add(btn);
+        btns.push(btn);
+      }
 
       let hbox = new St.BoxLayout({ x_expand: true });
       vbox.add(hbox);
@@ -100,22 +155,21 @@ const Indicator = GObject.registerClass(
       );
       hbox.add(addBtn);
     }
+
     _addCoin(coinSymbol, coinTitle) {
       // TODO show error
-      if (coinSymbol.text == '' || !coinSymbol.text.includes('/')) return;
+      if (coinSymbol.text === '' || !coinSymbol.text.includes('/')) return;
 
-      let coin = new CoinItem(
-        coinSymbol.text,
-        false,
-        coinTitle.text,
-        this.menuItem,
-        this.coins
-      );
-      let result = Settings.addCoin({
-        symbol: coin.symbol,
-        active: coin.activeCoin,
-        title: coin.title,
-      });
+      let coin = {
+        id: `${CryptoUtil.createUUID()}`,
+        symbol: `${coinSymbol.text}`,
+        active: false,
+        title: `${coinTitle.text}`,
+        exchange: `${current_exchange}`,
+      }
+
+      let result = Settings.addCoin(coin);
+
       if (result) this._buildCoinsSection();
 
       coinTitle.text = '';
@@ -134,61 +188,20 @@ const Indicator = GObject.registerClass(
       this.coins = [];
       let coins = Settings.getCoins();
       for (const coin of coins) {
-        let { symbol, active, title } = coin;
+        if (!coin.id) {
+          coin.id = CryptoUtil.createUUID();
+          Settings.setCoinId(coin);
+        }
+        if (!coin.exchange) {
+          coin.exchange = current_exchange;
+          Settings.updateCoin(coin);
+        }
         let _coin = new CoinItem(
-          symbol,
-          active,
-          title,
+          coin,
           this.menuItem,
           this.coins
         );
         this.coins.push(_coin);
-      }
-    }
-
-    _buildExchangeSection() {
-      let exchangeMenu = new PopupMenu.PopupSubMenuMenuItem(
-        'Exchange: ' + Data.get_exchange()
-      );
-      this.menu.addMenuItem(exchangeMenu);
-
-      let choseBox = new PopupMenu.PopupBaseMenuItem({
-        reactive: false,
-        can_focus: false,
-      });
-      exchangeMenu.menu.addMenuItem(choseBox);
-
-      let vbox = new St.BoxLayout({
-        style_class: 'add-coin-vbox',
-        vertical: true,
-        x_expand: true,
-      });
-      choseBox.actor.add_child(vbox);
-
-      let hbox = new St.BoxLayout({ x_expand: true });
-      vbox.add(hbox);
-
-      let btns = [];
-      for (const [key, val] of Object.entries(Data.exchanges)) {
-        let btn = new St.Button({
-          label: val,
-          style_class: 'btn exchange-btn',
-        });
-
-        if (val == Data.get_exchange()) {
-          btn.checked = true;
-        }
-
-        btn.connect('clicked', (self) => {
-          Data.change_exchange(val);
-          btns.forEach((self) => {
-            self.checked = false;
-          });
-          self.checked = true;
-          exchangeMenu.label.text = 'Exchange: ' + val;
-        });
-        hbox.add(btn);
-        btns.push(btn);
       }
     }
   }
@@ -203,8 +216,7 @@ class Extension {
     this._indicator = new Indicator();
 
     this._indicator._buildCoinsSection();
-    this._indicator._generateAddCoinPart();
-    this._indicator._buildExchangeSection();
+    this._indicator._buildAddCoinSection();
 
     Main.panel.addToStatusArea(this._uuid, this._indicator);
   }
