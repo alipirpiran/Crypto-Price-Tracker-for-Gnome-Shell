@@ -89,7 +89,6 @@ const Indicator = GObject.registerClass(
       for (const [key, val] of Object.entries(Data.exchanges)) {
         let exchangeBtnHbox = new St.BoxLayout({
           x_expand: true,
-          style_class: 'exchange-padding',
         });
         let exchangeIco = new St.Icon({
           style_class: `popup-menu-icon exchange-icon ${val.toLowerCase()}`,
@@ -145,8 +144,12 @@ const Indicator = GObject.registerClass(
       });
       hbox.add(coinTitle);
 
+      let saveIcon = new St.Icon({
+        icon_name: 'media-floppy-symbolic',
+        style_class: 'popup-menu-icon',
+      });
       let addBtn = new St.Button({
-        label: 'Add',
+        child: saveIcon,
         style_class: 'crypto-input btn',
       });
       addBtn.connect(
