@@ -86,13 +86,13 @@ var CoinItem = GObject.registerClass(
       this.add_child(delBtn);
 
       if (this.activeCoin) this._activeCoin(menuItem, true);
-      this._startTimer(menuItem)
+      this._startTimer(menuItem);
 
-      this.connect("enter-event", () => {
+      this.connect('enter-event', () => {
         viewIcon.icon_name = 'external-link-symbolic';
-        viewIcon.style_class = `popup-menu-icon`;
+        viewIcon.style_class = `popup-menu-icon w18`;
       });
-      this.connect("leave-event", () => {
+      this.connect('leave-event', () => {
         viewIcon.icon_name = '';
         viewIcon.style_class = `popup-menu-icon exchange-icon ${this.exchange.toLowerCase()}`;
       });
