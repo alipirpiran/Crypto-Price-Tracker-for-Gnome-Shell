@@ -52,18 +52,18 @@ var CoinItem = GObject.registerClass(
       });
       this.add_child(this.nameLbl);
 
+      let expander = new St.Bin({
+        style_class: 'popup-menu-item-expander',
+        x_expand: true,
+      });
+      this.add_child(expander);
+
       this.priceLbl = new St.Label({
         text: '...',
         style_class: 'itemLabel text-align-right',
         y_align: Clutter.ActorAlign.CENTER,
       });
       this.add_child(this.priceLbl);
-
-      let expander = new St.Bin({
-        style_class: 'popup-menu-item-expander',
-        x_expand: true,
-      });
-      this.add_child(expander);
 
       this._statusBtn = new St.Button({
         x_align: Clutter.ActorAlign.START,
