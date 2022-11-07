@@ -14,13 +14,15 @@ var getCoins = function () {
   return coinJson.coins;
 };
 
-var addCoin = function ({ symbol, active, title }) {
+var addCoin = function ({ id, symbol, active, title, exchange }) {
   const settings = _getSettings();
 
   let coin = {
+    id,
     symbol: symbol.toUpperCase(),
     active,
     title,
+    exchange,
   };
   if (_checkIsDuplicate(coin)) return false;
   let originalCoinsStr = settings.get_string('coins');
@@ -34,12 +36,13 @@ var addCoin = function ({ symbol, active, title }) {
 function _checkIsDuplicate(coin) {
   let coins = getCoins();
   for (const _coin of coins)
-    if (coin.symbol.toUpperCase() == _coin.symbol) return true;
+    if (coin.symbol.toUpperCase() === _coin.symbol
+        && coin.exchange === _coin.exchange) return true;
 
   return false;
 }
 
-var delCoin = function ({ symbol }) {
+var delCoin = function ({ id }) {
   const settings = _getSettings();
 
   let coinJsonStr = String(settings.get_string('coins'));
@@ -47,22 +50,37 @@ var delCoin = function ({ symbol }) {
   let coins = coinJson.coins;
 
   let index = coins.findIndex((value) => {
-    return value.symbol == symbol;
+    return value.id === id;
   });
-  if (index != -1) coins.splice(index, 1);
+  if (index !== -1) coins.splice(index, 1);
 
   settings.set_string('coins', JSON.stringify(coinJson));
 };
 
+var setCoinId = function (coin) {
+  const coins = getCoins();
+
+  for (const _coin of coins) {
+    if (_coin.symbol === coin.symbol) {
+      _coin.id = coin.id;
+    }
+  }
+
+  setCoins(coins);
+}
+
 var updateCoin = function (coin) {
   const coins = getCoins();
+
   for (const _coin of coins) {
-    if (_coin.symbol == coin.symbol) {
+    if (_coin.id === coin.id) {
       _coin.active = coin.active;
       _coin.title = coin.title;
       _coin.symbol = coin.symbol;
+      _coin.exchange = coin.exchange;
     }
   }
+
   setCoins(coins);
 };
 

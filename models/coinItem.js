@@ -6,32 +6,38 @@ const Me = ExtensionUtils.getCurrentExtension();
 
 const Data = Me.imports.api.data;
 const Settings = Me.imports.settings;
+const CryptoUtil = Me.imports.utils.cryptoUtil;
 
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
 
 var CoinItem = GObject.registerClass(
-  {
-    Signals: { toggled: { param_types: [GObject.TYPE_BOOLEAN] } },
-  },
   class CoinItem extends PopupMenu.PopupBaseMenuItem {
-    _init(symbol, active, title = null, menuItem, coins) {
+    _init(coin, menuItem, coins) {
       super._init({
         reactive: true,
         activate: true,
         hover: true,
         can_focus: true,
       });
+
+      this.id = coin.id;
+      this.symbol = coin.symbol;
+      this.activeCoin = coin.active;
+      this.title = coin.title;
+      this.exchange = coin.exchange;
+      this.coins = coins;
+
       this.add_style_class_name('popup-submenu-menu-item');
-      this._switch = new PopupMenu.Switch(active);
+      this._switch = new PopupMenu.Switch(this.activeCoin);
 
       this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
       this.checkAccessibleState();
 
       let viewIcon = new St.Icon({
-        icon_name: 'external-link-symbolic',
-        style_class: 'popup-menu-icon',
+        style_class: `popup-menu-icon exchange-icon ${this.exchange.toLowerCase()}`,
       });
+
       let viewBtn = new St.Button({
         child: viewIcon,
         style_class: 'btn m0',
@@ -40,7 +46,7 @@ var CoinItem = GObject.registerClass(
       this.add_child(viewBtn);
 
       this.nameLbl = new St.Label({
-        text: title || symbol,
+        text: this.title || this.symbol,
         style_class: 'itemLabel',
         y_align: Clutter.ActorAlign.CENTER,
       });
@@ -79,18 +85,22 @@ var CoinItem = GObject.registerClass(
       delBtn.connect('clicked', this._delCoin.bind(this, menuItem));
       this.add_child(delBtn);
 
-      this.symbol = symbol;
-      this.activeCoin = active;
-      this.title = title;
-      this.timeOutTage;
-      this.coins = coins;
-
-      if (active) this._activeCoin(menuItem, true);
+      if (this.activeCoin) this._activeCoin(menuItem, true);
       this._startTimer(menuItem);
+
+      this.connect('enter-event', () => {
+        viewIcon.icon_name = 'external-link-symbolic';
+        viewIcon.style_class = `popup-menu-icon w18`;
+      });
+      this.connect('leave-event', () => {
+        viewIcon.icon_name = '';
+        viewIcon.style_class = `popup-menu-icon exchange-icon ${this.exchange.toLowerCase()}`;
+      });
     }
     _activeCoin(menuItem, isInit) {
       this.activeCoin = true;
-      Settings.updateCoin(this._getJSON());
+
+      if (!isInit) Settings.updateCoin(this._getJSON());
 
       this._updateMenuCoinItems(menuItem, isInit);
       this._refreshPrice(menuItem);
@@ -103,15 +113,17 @@ var CoinItem = GObject.registerClass(
     }
     _getJSON() {
       return {
+        id: this.id,
         symbol: this.symbol,
         active: this.activeCoin,
         title: this.title,
+        exchange: this.exchange,
       };
     }
     _getPrice() {
       const parts = this.symbol.split('/');
 
-      return Data.getPrice(parts[0], parts[1]);
+      return Data.getPrice(parts[0], parts[1], this.exchange);
     }
 
     _startTimer(menuItem) {
@@ -212,31 +224,24 @@ var CoinItem = GObject.registerClass(
     }
 
     _delCoin(menuItem) {
-      Settings.delCoin({ symbol: this.symbol });
+      Settings.delCoin({ id: this.id });
 
       let index = this.coins.findIndex((coin) => {
-        return coin.symbol == this.symbol;
+        return coin.id === this.id;
       });
-      if (index != -1) this.coins.splice(index, 1);
+      if (index !== -1) this.coins.splice(index, 1);
       this._updateMenuCoinItems(menuItem, false);
 
       this.destroy();
     }
 
     _openChart() {
+      let chartUrl = '';
       try {
-        let exchangeUrl =
-          Data.get_exchange() === Data.exchanges.okx
-            ? 'https://www.okx.com/markets/spot-info/'
-            : 'https://www.binance.com/en/trade/';
-        let pair =
-          Data.get_exchange() === Data.exchanges.okx
-            ? this.symbol.replace('/', '-').toLowerCase()
-            : this.symbol.replace('/', '_').toUpperCase();
-
-        Util.spawnCommandLine(`xdg-open ${exchangeUrl + pair}`);
+        chartUrl = CryptoUtil.getChartUrl(this.symbol, this.exchange);
+        Util.spawnCommandLine(`xdg-open ${chartUrl}`);
       } catch (err) {
-        let title = _('Can not open %s').format(url);
+        let title = _('Can not open %s').format(chartUrl);
         Main.notifyError(title, err);
       }
     }
