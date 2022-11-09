@@ -23,8 +23,8 @@ An extension for Gnome-Shell to track price of Crypto currencies.
  <br />
  
 * Refresh price every 10 sec
-* Add coin: use Binance symbols: [List](#list-of-coins)
-* Exchanges: Binance, OKX
+* Add new pair: use source pair names
+* Sources: Binance, OKX, Coingecko
 * [Display multiple coins](#display-multiple-coins)
 
 ## Installation
@@ -37,34 +37,61 @@ Go on the [CryptoPriceTracker](https://extensions.gnome.org/extension/2817/crypt
 
 Clone the git repo:
 
-    $ git clone https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell.git
+``` shell
+$ git clone https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell.git
+```
 
 Create extension dir and Copy files in it:
 
-    $ mkdir -p ~/.local/share/gnome-shell/extensions/crypto@alipirpiran.github/
-    $ cp -r ./Crypto-Price-Tracker-for-Gnome-Shell/* ~/.local/share/gnome-shell/extensions/crypto@alipirpiran.github/
+``` shell
+$ mkdir -p ~/.local/share/gnome-shell/extensions/crypto@alipirpiran.github/ 
 
-- Restart Gnome-shell. (ALT+F2, r, Enter)
-- You may need to enable the extension via Gnome Tweaks
+$ cp -r ./Crypto-Price-Tracker-for-Gnome-Shell/* ~/.local/share/gnome-shell/extensions/crypto@alipirpiran.github/
+```
 
-## Display multiple coins 
+* Restart Gnome-shell. (ALT+F2, r, Enter)
+
+* You may need to enable the extension via Gnome Tweaks
+
+## Display multiple coins
+
 Activate multiple coins from the menu and display them all in the top bar.  
   
 <img src="https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell/raw/screenshots/multicoin.gif">
 
 Thanks to [azorpax](https://github.com/azorpax) for creating this feature. [Pull request](https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell/pull/10#issue-1351086191)
 
-## List of coins
+## Sources
 
-| Symbol |
+* ### Binance
+
+    List of pairs: <https://www.binance.com/indexSpa.html>
+
+    Example: BTC/USDT
+
+* ### OKX
+
+    List of pairs: <https://www.okx.com/markets/spot-list>
+
+    Example: BTC/USDT
+
+* ### Coingecko
+
+    List of coin ids (name): <https://api.coingecko.com/api/v3/coins/list>
+
+    List of compare currencies (vol): <https://api.coingecko.com/api/v3/simple/supported_vs_currencies>
+
+    Example: Bitcoin/USD
+
+## Example List of coins - Binance, OKX
+
+| Name/Vol |
 | ------ |
 BTC/USDT
 BTC/EUR
 ETH/LTC
 XRP/USDT
 BNB/BTC
-
-- Complete list: [Binance](https://www.binance.com/indexSpa.html)
 
 ## License
 
