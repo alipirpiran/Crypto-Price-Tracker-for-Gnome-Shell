@@ -73,7 +73,7 @@ const Indicator = GObject.registerClass(
       addCoinSubMenu.actor.add_child(vbox);
 
       let exchangeLbl = new St.Label({
-        text: 'Exchange:',
+        text: 'Source:',
         y_align: Clutter.ActorAlign.CENTER,
         style_class: 'crypto-label',
       });
