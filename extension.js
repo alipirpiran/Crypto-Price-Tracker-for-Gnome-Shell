@@ -42,7 +42,7 @@ const Indicator = GObject.registerClass(
         text: '₿',
         y_expand: true,
         y_align: Clutter.ActorAlign.CENTER,
-        style_class: 'menu-item-text'
+        style_class: 'menu-item-text',
       });
       this.add_child(this.menuItem);
 
@@ -72,18 +72,18 @@ const Indicator = GObject.registerClass(
       });
       addCoinSubMenu.actor.add_child(vbox);
 
-      let exchangeHbox = new St.BoxLayout({
-        x_expand: true,
-        style_class: 'exchange-hbox',
-      });
-      vbox.add(exchangeHbox);
-
       let exchangeLbl = new St.Label({
         text: 'Exchange:',
         y_align: Clutter.ActorAlign.CENTER,
         style_class: 'crypto-label',
       });
-      exchangeHbox.add(exchangeLbl);
+      vbox.add(exchangeLbl);
+
+      let exchangeHbox = new St.BoxLayout({
+        x_expand: true,
+        style_class: 'exchange-hbox',
+      });
+      vbox.add(exchangeHbox);
 
       let btns = [];
       for (const [key, val] of Object.entries(Data.exchanges)) {
@@ -169,7 +169,7 @@ const Indicator = GObject.registerClass(
         active: false,
         title: `${coinTitle.text}`,
         exchange: `${current_exchange}`,
-      }
+      };
 
       let result = Settings.addCoin(coin);
 
@@ -199,11 +199,7 @@ const Indicator = GObject.registerClass(
           coin.exchange = current_exchange;
           Settings.updateCoin(coin);
         }
-        let _coin = new CoinItem(
-          coin,
-          this.menuItem,
-          this.coins
-        );
+        let _coin = new CoinItem(coin, this.menuItem, this.coins);
         this.coins.push(_coin);
       }
     }
