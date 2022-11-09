@@ -1,6 +1,6 @@
 {
   "name": "Crypto Price Tracker",
-  "description": "Simple extension to track price of Crypto Currencies\n\nadd coins by Binance symbols, for example: \"BTC/USDT\"\ncomplete list on binance: https://www.binance.com/indexSpa.html\n\n** if it faced error after update:\n**Restart Gnome-shell. (ALT+F2, r, Enter)",
+  "description": "Simple extension to track price of Crypto Currencies\n\nSources: Binance, OKX, Coingecko\n\nAdd coins by Binance symbols, for example: \"BTC/USDT\"\ncomplete list on binance: https://www.binance.com/indexSpa.html\nOKX pairs: \"LTC/USDT\"\nCoingecko pairs: \"bitcoin/usd\"\nUsing api.coingecko.com\n\nComplete guide: https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell#readme\n\n** if it faced error after update:\n**Restart Gnome-shell. (ALT+F2, r, Enter)",
   "uuid": "crypto@alipirpiran.github",
   "settings-schema": "org.gnome.shell.extensions.crypto-tracker",
   "url": "https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell",
