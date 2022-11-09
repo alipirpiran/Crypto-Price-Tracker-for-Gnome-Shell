@@ -96,6 +96,10 @@
    background-image: url("assets/exchanges/okx.png");
 }
 
+.exchange-icon.coingecko{
+   background-image: url("assets/exchanges/coingecko.ico");
+}
+
 .w18 {
   width: 18px;
 }

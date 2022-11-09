@@ -8,6 +8,7 @@ let current_exchange = '';
 var exchanges = {
   binance: 'Binance',
   okx: 'OKX',
+  coingecko: 'Coingecko',
 };
 
 var change_exchange = (exchange_name) => {
@@ -28,6 +29,9 @@ var getPrice = async function (name, vol, exchange) {
 
     case exchanges.okx:
       return _getPriceFromOKX(name, vol);
+
+    case exchanges.coingecko:
+      return _getPriceFromCoingecko(name, vol);
   }
 };
 
@@ -41,8 +45,12 @@ async function _getPriceFromBinance(name, vol) {
 
     let price = +jsonRes.price;
 
-    let { maximumFractionDigits, minimumFractionDigits } = _fractionDigits(price);
-    return price.toLocaleString(undefined, { maximumFractionDigits, minimumFractionDigits });
+    let { maximumFractionDigits, minimumFractionDigits } =
+      _fractionDigits(price);
+    return price.toLocaleString(undefined, {
+      maximumFractionDigits,
+      minimumFractionDigits,
+    });
   } catch (error) {}
 }
 
@@ -57,28 +65,54 @@ async function _getPriceFromOKX(name, vol) {
 
     let price = +jsonRes.data[0].last;
 
-    let { maximumFractionDigits, minimumFractionDigits } = _fractionDigits(price);
-    return price.toLocaleString(undefined, { maximumFractionDigits, minimumFractionDigits });
+    let { maximumFractionDigits, minimumFractionDigits } =
+      _fractionDigits(price);
+    return price.toLocaleString(undefined, {
+      maximumFractionDigits,
+      minimumFractionDigits,
+    });
+  } catch (error) {}
+}
+
+async function _getPriceFromCoingecko(name, vol) {
+  try {
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${name}&vs_currencies=${vol}`;
+    const res = await request.get(url);
+
+    name = name.toLowerCase();
+    vol = vol.toLowerCase();
+    const jsonRes = JSON.parse(res.body);
+
+    if (Object.keys(jsonRes).length === 0) return 'Not found';
+    if (Object.keys(jsonRes[name]).length === 0) return 'Not found';
+
+    let price = +jsonRes[name][vol];
+
+    let { maximumFractionDigits, minimumFractionDigits } =
+      _fractionDigits(price);
+    return price.toLocaleString(undefined, {
+      maximumFractionDigits,
+      minimumFractionDigits,
+    });
   } catch (error) {}
 }
 
 function _fractionDigits(price) {
-
   let maximumFractionDigits = 0;
   let minimumFractionDigits = 0;
 
   if (price < 1000 && price >= 10) {
-    maximumFractionDigits = 2
-    minimumFractionDigits = 2
+    maximumFractionDigits = 2;
+    minimumFractionDigits = 2;
   } else if (price < 10 && price >= 1) {
-    maximumFractionDigits = 3
-    minimumFractionDigits = 3
-  } else if (price < 1 && price >= .1) {
-    maximumFractionDigits = 4
-    minimumFractionDigits = 4
-  } else if (price < .1) {
-    maximumFractionDigits = 5
-    minimumFractionDigits = 5
+    maximumFractionDigits = 3;
+    minimumFractionDigits = 3;
+  } else if (price < 1 && price >= 0.1) {
+    maximumFractionDigits = 4;
+    minimumFractionDigits = 4;
+  } else if (price < 0.1) {
+    maximumFractionDigits = 5;
+    minimumFractionDigits = 5;
   }
 
   return { maximumFractionDigits, minimumFractionDigits };
