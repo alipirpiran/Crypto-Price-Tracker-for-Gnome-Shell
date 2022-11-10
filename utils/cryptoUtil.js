@@ -46,9 +46,7 @@ var _get_coingecko_data = async () => {
   if (coingecko_data) return coingecko_data;
 
   //TODO update json file, if one coin not found. get from https://api.coingecko.com/api/v3/coins/list
-  const file = Gio.File.new_for_path(
-    '.local/share/gnome-shell/extensions/crypto@alipirpiran.github/assets/coingecko.json'
-  );
+  const file = Gio.File.new_for_path(Me.path + '/assets/coingecko.json');
   const [, contents, etag] = await new Promise((resolve, reject) => {
     file.load_contents_async(null, (file_, result) => {
       try {
