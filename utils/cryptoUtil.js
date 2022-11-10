@@ -24,6 +24,8 @@ var getChartUrl = (symbol, exchange) => {
       break;
 
     case Data.exchanges.coingecko:
+      exchangeUrl = 'https://www.coingecko.com/en/coins/';
+      formattedPair = symbol.toLowerCase();
       break;
 
     default:
