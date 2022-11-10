@@ -159,9 +159,20 @@ const Indicator = GObject.registerClass(
       hbox.add(addBtn);
     }
 
-    _addCoin(coinSymbol, coinTitle) {
+    async _addCoin(coinSymbol, coinTitle) {
       // TODO show error
       if (coinSymbol.text === '' || !coinSymbol.text.includes('/')) return;
+
+      var coingecko_id = '';
+      if (current_exchange == Data.exchanges.coingecko) {
+        try {
+          coingecko_id = await CryptoUtil.coingecko_symbol_to_id(
+            coinSymbol.text.split('/')[0]
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      }
 
       let coin = {
         id: `${CryptoUtil.createUUID()}`,
@@ -169,6 +180,7 @@ const Indicator = GObject.registerClass(
         active: false,
         title: `${coinTitle.text}`,
         exchange: `${current_exchange}`,
+        coingecko_id,
       };
 
       let result = Settings.addCoin(coin);

@@ -14,7 +14,7 @@ var getCoins = function () {
   return coinJson.coins;
 };
 
-var addCoin = function ({ id, symbol, active, title, exchange }) {
+var addCoin = function ({ id, symbol, active, title, exchange, coingecko_id }) {
   const settings = _getSettings();
 
   let coin = {
@@ -23,6 +23,7 @@ var addCoin = function ({ id, symbol, active, title, exchange }) {
     active,
     title,
     exchange,
+    coingecko_id,
   };
   if (_checkIsDuplicate(coin)) return false;
   let originalCoinsStr = settings.get_string('coins');
@@ -36,8 +37,11 @@ var addCoin = function ({ id, symbol, active, title, exchange }) {
 function _checkIsDuplicate(coin) {
   let coins = getCoins();
   for (const _coin of coins)
-    if (coin.symbol.toUpperCase() === _coin.symbol
-        && coin.exchange === _coin.exchange) return true;
+    if (
+      coin.symbol.toUpperCase() === _coin.symbol &&
+      coin.exchange === _coin.exchange
+    )
+      return true;
 
   return false;
 }
@@ -67,7 +71,7 @@ var setCoinId = function (coin) {
   }
 
   setCoins(coins);
-}
+};
 
 var updateCoin = function (coin) {
   const coins = getCoins();

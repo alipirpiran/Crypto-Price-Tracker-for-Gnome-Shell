@@ -5,7 +5,7 @@
     <key
         type="s"
         name="coins">
-      <default>'{"coins":[{"id": "xxxx-xxxx-xxx-xxx1", "symbol":"BTC/USDT", "active": true, "title":"BTC","exchange":"Binance"}]}'</default>
+      <default>'{"coins":[{"id": "xxxx-xxxx-xxx-xxx1", "symbol":"BTC/USDT", "active": true, "title":"BTC","exchange":"Binance", "coingecko_id": ""}]}'</default>
       <description />
     </key>
     <key

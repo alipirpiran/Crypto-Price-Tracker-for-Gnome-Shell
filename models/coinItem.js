@@ -23,6 +23,7 @@ var CoinItem = GObject.registerClass(
 
       this.id = coin.id;
       this.symbol = coin.symbol;
+      this.coingecko_id = coin.coingecko_id;
       this.activeCoin = coin.active;
       this.title = coin.title;
       this.exchange = coin.exchange;
@@ -121,7 +122,10 @@ var CoinItem = GObject.registerClass(
       };
     }
     _getPrice() {
-      const parts = this.symbol.split('/');
+      var parts = this.symbol.split('/');
+      if (this.exchange == Data.exchanges.coingecko) {
+        parts[0] = this.coingecko_id;
+      }
 
       return Data.getPrice(parts[0], parts[1], this.exchange);
     }
