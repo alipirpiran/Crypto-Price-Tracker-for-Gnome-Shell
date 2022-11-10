@@ -242,7 +242,7 @@ var CoinItem = GObject.registerClass(
     _openChart() {
       let chartUrl = '';
       try {
-        chartUrl = CryptoUtil.getChartUrl(this.symbol, this.exchange);
+        chartUrl = CryptoUtil.getChartUrl(this.coingecko_id || this.symbol, this.exchange);
         Util.spawnCommandLine(`xdg-open ${chartUrl}`);
       } catch (err) {
         let title = _('Can not open %s').format(chartUrl);
