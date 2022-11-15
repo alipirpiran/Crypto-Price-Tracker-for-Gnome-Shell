@@ -23,7 +23,7 @@ An extension for Gnome-Shell to track price of Crypto currencies.
  <br />
  
 * Refresh price every 10 sec
-* Add new pair: use source pair names
+* Add new pair e.g BTC/USDT
 * Sources: Binance, OKX, Coingecko
 * [Display multiple coins](#display-multiple-coins)
 
@@ -81,9 +81,9 @@ Thanks to [azorpax](https://github.com/azorpax) for creating this feature. [Pull
 
     List of compare currencies (vol): <https://api.coingecko.com/api/v3/simple/supported_vs_currencies>
 
-    Example: Bitcoin/USD
+    Example: BTC/USD
 
-## Example List of coins - Binance, OKX
+## Example List of coins
 
 | Name/Vol |
 | ------ |

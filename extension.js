@@ -21,7 +21,7 @@ const { GObject, St, Clutter } = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 
 const Me = ExtensionUtils.getCurrentExtension();
-const Data = Me.imports.api.data;
+const SourceClient = Me.imports.api.sourceClient;
 const CryptoUtil = Me.imports.utils.cryptoUtil;
 
 const Settings = Me.imports.settings;
@@ -50,7 +50,7 @@ const Indicator = GObject.registerClass(
       this.menu.addMenuItem(this.coinSection);
 
       // set current exchange
-      current_exchange = Data.get_exchange();
+      current_exchange = SourceClient.get_exchange();
     }
 
     _buildAddCoinSection() {
@@ -79,14 +79,17 @@ const Indicator = GObject.registerClass(
       });
       vbox.add(exchangeLbl);
 
-      let exchangeHbox = new St.BoxLayout({
-        x_expand: true,
-        style_class: 'exchange-hbox',
-      });
-      vbox.add(exchangeHbox);
-
+      let exchangeHbox;
       let btns = [];
-      for (const [key, val] of Object.entries(Data.exchanges)) {
+      for (let [ind, val] of Object.values(SourceClient.exchanges).entries()) {
+        if (ind % 2 === 0) {
+          exchangeHbox = new St.BoxLayout({
+            x_expand: true,
+            style_class: 'exchange-hbox',
+          });
+          vbox.add(exchangeHbox);
+        }
+
         let exchangeBtnHbox = new St.BoxLayout({
           x_expand: true,
         });
@@ -106,13 +109,13 @@ const Indicator = GObject.registerClass(
           y_align: Clutter.ActorAlign.CENTER,
         });
 
-        if (val === Data.get_exchange()) {
+        if (val === SourceClient.get_exchange()) {
           btn.checked = true;
         }
 
         btn.connect('clicked', (self) => {
           current_exchange = val;
-          Data.change_exchange(current_exchange);
+          SourceClient.change_exchange(current_exchange);
           btns.forEach((self) => {
             self.checked = false;
           });
@@ -128,7 +131,7 @@ const Indicator = GObject.registerClass(
 
       let coinSymbol = new St.Entry({
         name: 'symbol',
-        hint_text: 'Name/Vol     ',
+        hint_text: 'Symbol/Vol     ',
         can_focus: true,
         x_expand: true,
         style_class: 'crypto-input',
@@ -164,7 +167,7 @@ const Indicator = GObject.registerClass(
       if (coinSymbol.text === '' || !coinSymbol.text.includes('/')) return;
 
       var coingecko_id = '';
-      if (current_exchange == Data.exchanges.coingecko) {
+      if (current_exchange === SourceClient.exchanges.coingecko) {
         try {
           coingecko_id = await CryptoUtil.coingecko_symbol_to_id(
             coinSymbol.text.split('/')[0]
