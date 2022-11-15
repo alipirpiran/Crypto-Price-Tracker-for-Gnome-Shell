@@ -79,17 +79,21 @@ const Indicator = GObject.registerClass(
       });
       vbox.add(exchangeLbl);
 
-      let exchangeHbox;
+      var _scrollView = new St.ScrollView({
+        style_class: 'sources-scrollview',
+        enable_mouse_scrolling: true,
+        width: 100,
+      });
+      _scrollView.set_policy(St.PolicyType.AUTOMATIC, St.PolicyType.NEVER);
+      vbox.add(_scrollView);
+
+      var btn_vbox = new St.BoxLayout({
+        vertical: false,
+        x_expand: true,
+      });
+
       let btns = [];
       for (let [ind, val] of Object.values(SourceClient.exchanges).entries()) {
-        if (ind % 2 === 0) {
-          exchangeHbox = new St.BoxLayout({
-            x_expand: true,
-            style_class: 'exchange-hbox',
-          });
-          vbox.add(exchangeHbox);
-        }
-
         let exchangeBtnHbox = new St.BoxLayout({
           x_expand: true,
         });
@@ -122,9 +126,10 @@ const Indicator = GObject.registerClass(
           self.checked = true;
         });
 
-        exchangeHbox.add(btn);
         btns.push(btn);
+        btn_vbox.add(btn);
       }
+      _scrollView.add_actor(btn_vbox);
 
       let hbox = new St.BoxLayout({ x_expand: true });
       vbox.add(hbox);

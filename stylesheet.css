@@ -38,6 +38,7 @@
   margin-left: 5px;
   margin-right: 5px;
   border-radius: 10px;
+  margin-bottom: 10px;
 }
 .exchange-btn:checked {
   background-color: #00bfff;
@@ -90,21 +91,27 @@
 }
 
 .exchange-icon.binance {
-  background-image: url("assets/icons/binance.ico");
+  background-image: url('assets/icons/binance.ico');
 }
 
 .exchange-icon.coingecko {
-  background-image: url("assets/icons/coingecko.ico");
+  background-image: url('assets/icons/coingecko.ico');
 }
 
 .exchange-icon.crypto {
-  background-image: url("assets/icons/crypto.png");
+  background-image: url('assets/icons/crypto.png');
 }
 
 .exchange-icon.okx {
-   background-image: url("assets/icons/okx.png");
+  background-image: url('assets/icons/okx.png');
 }
 
 .w18 {
   width: 18px;
+}
+
+.sources-scrollview {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding-bottom: 5px;
 }
