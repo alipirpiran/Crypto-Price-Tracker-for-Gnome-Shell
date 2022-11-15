@@ -1,39 +1,11 @@
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Settings = Me.imports.settings;
-const Data = Me.imports.api.data;
 
 const { GLib, Gio } = imports.gi;
 const Config = imports.misc.config;
 
 var coingecko_data = null;
-
-var getChartUrl = (symbol, exchange) => {
-  let exchangeUrl, formattedPair;
-
-  switch (exchange) {
-    case Data.exchanges.okx:
-      exchangeUrl = 'https://www.okx.com/markets/spot-info';
-      formattedPair = symbol.replace('/', '-').toLowerCase();
-
-      break;
-
-    case Data.exchanges.binance:
-      exchangeUrl = 'https://www.binance.com/en/trade';
-      formattedPair = symbol.replace('/', '_').toUpperCase();
-      break;
-
-    case Data.exchanges.coingecko:
-      exchangeUrl = 'https://www.coingecko.com/en/coins/';
-      formattedPair = symbol.toLowerCase();
-      break;
-
-    default:
-      break;
-  }
-
-  return _('%s/%s').format(exchangeUrl, formattedPair);
-};
 
 var createUUID = () => {
   let dt = new Date().getTime();
