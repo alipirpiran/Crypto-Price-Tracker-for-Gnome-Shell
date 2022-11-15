@@ -131,7 +131,7 @@ const Indicator = GObject.registerClass(
 
       let coinSymbol = new St.Entry({
         name: 'symbol',
-        hint_text: 'Name/Vol     ',
+        hint_text: 'Symbol/Vol     ',
         can_focus: true,
         x_expand: true,
         style_class: 'crypto-input',
