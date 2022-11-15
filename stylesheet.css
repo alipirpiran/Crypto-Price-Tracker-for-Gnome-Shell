@@ -89,15 +89,19 @@
 }
 
 .exchange-icon.binance {
-  background-image: url("./assets/exchanges/binance.ico");
+  background-image: url("assets/icons/binance.ico");
+}
+
+.exchange-icon.coingecko {
+  background-image: url("assets/icons/coingecko.ico");
+}
+
+.exchange-icon.crypto {
+  background-image: url("assets/icons/crypto.png");
 }
 
 .exchange-icon.okx {
-   background-image: url("assets/exchanges/okx.png");
-}
-
-.exchange-icon.coingecko{
-   background-image: url("assets/exchanges/coingecko.ico");
+   background-image: url("assets/icons/okx.png");
 }
 
 .w18 {

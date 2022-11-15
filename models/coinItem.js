@@ -4,9 +4,8 @@ const { Atk, Clutter, GLib, GObject, St } = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-const Data = Me.imports.api.data;
+const SourceClient = Me.imports.api.sourceClient;
 const Settings = Me.imports.settings;
-const CryptoUtil = Me.imports.utils.cryptoUtil;
 
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
@@ -123,11 +122,11 @@ var CoinItem = GObject.registerClass(
     }
     _getPrice() {
       var parts = this.symbol.split('/');
-      if (this.exchange == Data.exchanges.coingecko) {
+      if (this.exchange === SourceClient.exchanges.coingecko) {
         parts[0] = this.coingecko_id;
       }
 
-      return Data.getPrice(parts[0], parts[1], this.exchange);
+      return SourceClient.getPrice(parts[0], parts[1], this.exchange);
     }
 
     _startTimer(menuItem) {
@@ -242,7 +241,7 @@ var CoinItem = GObject.registerClass(
     _openChart() {
       let chartUrl = '';
       try {
-        chartUrl = CryptoUtil.getChartUrl(this.coingecko_id || this.symbol, this.exchange);
+        chartUrl = SourceClient.getChartUrl(this.coingecko_id || this.symbol, this.exchange);
         Util.spawnCommandLine(`xdg-open ${chartUrl}`);
       } catch (err) {
         let title = _('Can not open %s').format(chartUrl);
