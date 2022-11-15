@@ -32,6 +32,7 @@
 }
 
 .exchange-btn {
+  min-width: 110px;
   border-color: #00bfff;
   border-width: 1px;
   margin-left: 5px;

@@ -79,14 +79,17 @@ const Indicator = GObject.registerClass(
       });
       vbox.add(exchangeLbl);
 
-      let exchangeHbox = new St.BoxLayout({
-        x_expand: true,
-        style_class: 'exchange-hbox',
-      });
-      vbox.add(exchangeHbox);
-
+      let exchangeHbox;
       let btns = [];
-      for (const [key, val] of Object.entries(SourceClient.exchanges)) {
+      for (let [ind, val] of Object.values(SourceClient.exchanges).entries()) {
+        if (ind % 2 === 0) {
+          exchangeHbox = new St.BoxLayout({
+            x_expand: true,
+            style_class: 'exchange-hbox',
+          });
+          vbox.add(exchangeHbox);
+        }
+
         let exchangeBtnHbox = new St.BoxLayout({
           x_expand: true,
         });
