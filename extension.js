@@ -25,7 +25,8 @@ const SourceClient = Me.imports.api.sourceClient;
 const CryptoUtil = Me.imports.utils.cryptoUtil;
 
 const Settings = Me.imports.settings;
-const { CoinItem } = Me.imports.models.coinItem;
+const { CoinMenuItem } = Me.imports.models.coinMenuItem;
+const { AddCoinMenuItem } = Me.imports.models.addCoinMenuItem;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -50,153 +51,18 @@ const Indicator = GObject.registerClass(
       this.menu.addMenuItem(this.coinSection);
 
       // set current exchange
-      current_exchange = SourceClient.get_exchange();
+      this.current_exchange = SourceClient.get_exchange();
     }
 
     _buildAddCoinSection() {
+
       this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
       let addCoinBtnMenu = new PopupMenu.PopupSubMenuMenuItem('Add New Pair');
       this.menu.addMenuItem(addCoinBtnMenu);
 
-      let addCoinSubMenu = new PopupMenu.PopupBaseMenuItem({
-        reactive: false,
-        can_focus: false,
-      });
+      let addCoinSubMenu = new AddCoinMenuItem(this);
       addCoinBtnMenu.menu.addMenuItem(addCoinSubMenu);
-
-      let vbox = new St.BoxLayout({
-        style_class: 'add-coin-vbox',
-        vertical: true,
-        x_expand: true,
-      });
-      addCoinSubMenu.actor.add_child(vbox);
-
-      let exchangeLbl = new St.Label({
-        text: 'Source:',
-        y_align: Clutter.ActorAlign.CENTER,
-        style_class: 'crypto-label',
-      });
-      vbox.add(exchangeLbl);
-
-      var _scrollView = new St.ScrollView({
-        style_class: 'sources-scrollview',
-        enable_mouse_scrolling: true,
-        width: 100,
-      });
-      _scrollView.set_policy(St.PolicyType.AUTOMATIC, St.PolicyType.NEVER);
-      vbox.add(_scrollView);
-
-      var btn_vbox = new St.BoxLayout({
-        vertical: false,
-        x_expand: true,
-      });
-
-      let btns = [];
-      for (let [ind, val] of Object.values(SourceClient.exchanges).entries()) {
-        let exchangeBtnHbox = new St.BoxLayout({
-          x_expand: true,
-        });
-        let exchangeIco = new St.Icon({
-          style_class: `popup-menu-icon exchange-icon ${val.toLowerCase()}`,
-        });
-        let exchangeLbl = new St.Label({
-          text: `${val}`,
-          style_class: 'crypto-label',
-        });
-        exchangeBtnHbox.add(exchangeIco);
-        exchangeBtnHbox.add(exchangeLbl);
-
-        let btn = new St.Button({
-          child: exchangeBtnHbox,
-          style_class: 'btn exchange-btn',
-          y_align: Clutter.ActorAlign.CENTER,
-        });
-
-        if (val === SourceClient.get_exchange()) {
-          btn.checked = true;
-        }
-
-        btn.connect('clicked', (self) => {
-          current_exchange = val;
-          SourceClient.change_exchange(current_exchange);
-          btns.forEach((self) => {
-            self.checked = false;
-          });
-          self.checked = true;
-        });
-
-        btns.push(btn);
-        btn_vbox.add(btn);
-      }
-      _scrollView.add_actor(btn_vbox);
-
-      let hbox = new St.BoxLayout({ x_expand: true });
-      vbox.add(hbox);
-
-      let coinSymbol = new St.Entry({
-        name: 'symbol',
-        hint_text: 'Symbol/Vol     ',
-        can_focus: true,
-        x_expand: true,
-        style_class: 'crypto-input',
-      });
-      hbox.add(coinSymbol);
-
-      let coinTitle = new St.Entry({
-        name: 'title',
-        hint_text: 'Label?',
-        can_focus: true,
-        x_expand: true,
-        style_class: 'crypto-input',
-      });
-      hbox.add(coinTitle);
-
-      let saveIcon = new St.Icon({
-        icon_name: 'media-floppy-symbolic',
-        style_class: 'popup-menu-icon',
-      });
-      let addBtn = new St.Button({
-        child: saveIcon,
-        style_class: 'crypto-input btn',
-      });
-      addBtn.connect(
-        'clicked',
-        this._addCoin.bind(this, coinSymbol, coinTitle)
-      );
-      hbox.add(addBtn);
-    }
-
-    async _addCoin(coinSymbol, coinTitle) {
-      // TODO show error
-      if (coinSymbol.text === '' || !coinSymbol.text.includes('/')) return;
-
-      var coingecko_id = '';
-      if (current_exchange === SourceClient.exchanges.coingecko) {
-        try {
-          coingecko_id = await CryptoUtil.coingecko_symbol_to_id(
-            coinSymbol.text.split('/')[0]
-          );
-        } catch (error) {
-          console.log(error);
-        }
-      }
-
-      let coin = {
-        id: `${CryptoUtil.createUUID()}`,
-        symbol: `${coinSymbol.text}`,
-        active: false,
-        title: `${coinTitle.text}`,
-        exchange: `${current_exchange}`,
-        coingecko_id,
-      };
-
-      let result = Settings.addCoin(coin);
-
-      if (result) this._buildCoinsSection();
-
-      coinTitle.text = '';
-      coinSymbol.text = '';
     }
 
     _buildCoinsSection() {
@@ -219,7 +85,7 @@ const Indicator = GObject.registerClass(
           coin.exchange = current_exchange;
           Settings.updateCoin(coin);
         }
-        let _coin = new CoinItem(coin, this.menuItem, this.coins);
+        let _coin = new CoinMenuItem(coin, this.menuItem, this.coins);
         this.coins.push(_coin);
       }
     }
@@ -233,7 +99,6 @@ class Extension {
 
   enable() {
     this._indicator = new Indicator();
-
     this._indicator._buildCoinsSection();
     this._indicator._buildAddCoinSection();
 

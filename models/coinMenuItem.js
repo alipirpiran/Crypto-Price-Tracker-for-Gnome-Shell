@@ -10,8 +10,8 @@ const Settings = Me.imports.settings;
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
 
-var CoinItem = GObject.registerClass(
-  class CoinItem extends PopupMenu.PopupBaseMenuItem {
+var CoinMenuItem = GObject.registerClass(
+  class CoinMenuItem extends PopupMenu.PopupBaseMenuItem {
     _init(coin, menuItem, coins) {
       super._init({
         reactive: true,
@@ -72,7 +72,6 @@ var CoinItem = GObject.registerClass(
       });
       this._statusBtn.connect('clicked', this._toggle.bind(this, menuItem));
       this.add_child(this._statusBtn);
-      // this._statusBin.child = this._switch;
 
       let icon = new St.Icon({
         icon_name: 'edit-delete-symbolic',
