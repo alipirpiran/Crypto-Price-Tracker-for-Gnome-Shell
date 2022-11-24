@@ -55,10 +55,10 @@ const Indicator = GObject.registerClass(
     }
 
     _buildAddCoinSection() {
-
       this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
       let addCoinBtnMenu = new PopupMenu.PopupSubMenuMenuItem('Add New Pair');
+      addCoinBtnMenu.add_style_class_name('add-coin-btn');
       this.menu.addMenuItem(addCoinBtnMenu);
 
       let addCoinSubMenu = new AddCoinMenuItem(this);

@@ -2,6 +2,11 @@
   font-size: 0.8em;
 }
 
+.add-coin-btn {
+  min-width: 300px;
+  padding-right: 20px;
+}
+
 .crypto-label {
   min-width: 50px;
   margin-left: 5px;
