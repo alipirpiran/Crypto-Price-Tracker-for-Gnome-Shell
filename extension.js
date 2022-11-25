@@ -32,8 +32,6 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-let current_exchange;
-
 const Indicator = GObject.registerClass(
   class Indicator extends PanelMenu.Button {
     _init() {
@@ -49,9 +47,6 @@ const Indicator = GObject.registerClass(
 
       this.coinSection = new PopupMenu.PopupMenuSection();
       this.menu.addMenuItem(this.coinSection);
-
-      // set current exchange
-      this.current_exchange = SourceClient.get_exchange();
     }
 
     _buildAddCoinSection() {
@@ -75,7 +70,9 @@ const Indicator = GObject.registerClass(
 
     _setCoinsFromSettings() {
       this.coins = [];
+      let current_exchange = SourceClient.get_exchange();
       let coins = Settings.getCoins();
+
       for (const coin of coins) {
         if (!coin.id) {
           coin.id = CryptoUtil.createUUID();

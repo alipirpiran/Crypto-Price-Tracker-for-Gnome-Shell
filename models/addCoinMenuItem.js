@@ -18,7 +18,7 @@ var AddCoinMenuItem = GObject.registerClass(
         can_focus: false,
       });
       this.panelMenu = panelMenu;
-      this.current_exchange = panelMenu.current_exchange;
+      this.current_exchange = SourceClient.get_exchange();
 
       var vbox = new St.BoxLayout({
         style_class: 'add-coin-vbox',
