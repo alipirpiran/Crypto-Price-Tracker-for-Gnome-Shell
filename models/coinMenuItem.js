@@ -12,7 +12,7 @@ const Util = imports.misc.util;
 
 var CoinMenuItem = GObject.registerClass(
   class CoinMenuItem extends PopupMenu.PopupBaseMenuItem {
-    _init(coin, menuItem, coins) {
+    _init(coin, menuItem, coins, panelMenu) {
       super._init({
         reactive: true,
         activate: true,
@@ -27,6 +27,7 @@ var CoinMenuItem = GObject.registerClass(
       this.title = coin.title;
       this.exchange = coin.exchange;
       this.coins = coins;
+      this.panelMenu = panelMenu;
 
       this.add_style_class_name('popup-submenu-menu-item');
       this._switch = new PopupMenu.Switch(this.activeCoin);
@@ -235,6 +236,7 @@ var CoinMenuItem = GObject.registerClass(
       this._updateMenuCoinItems(menuItem, false);
 
       this.destroy();
+      this.panelMenu.checkHeight();
     }
 
     _openChart() {

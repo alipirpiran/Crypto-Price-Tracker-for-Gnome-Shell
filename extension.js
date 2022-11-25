@@ -36,6 +36,8 @@ const Indicator = GObject.registerClass(
   class Indicator extends PanelMenu.Button {
     _init() {
       super._init(0.0, `${Me.metadata.name} Indicator`, false);
+      this.coinsScrollViewVbox = null;
+      this.coinsCountChangeToScroll = 0;
       this.coins = [];
       this.menuItem = new St.Label({
         text: '₿',
@@ -62,9 +64,14 @@ const Indicator = GObject.registerClass(
 
     _buildCoinsSection() {
       this._setCoinsFromSettings();
-      this.coinSection.removeAll();
+      if (!this.coinsScrollViewVbox) this.coinSection.removeAll();
+
       for (const coin of this.coins) {
-        this.coinSection.addMenuItem(coin);
+        if (this.coinsScrollViewVbox) {
+          this.coinsScrollViewVbox.add_child(coin);
+        } else {
+          this.coinSection.addMenuItem(coin);
+        }
       }
     }
 
@@ -82,9 +89,53 @@ const Indicator = GObject.registerClass(
           coin.exchange = current_exchange;
           Settings.updateCoin(coin);
         }
-        let _coin = new CoinMenuItem(coin, this.menuItem, this.coins);
+        let _coin = new CoinMenuItem(coin, this.menuItem, this.coins, this);
         this.coins.push(_coin);
       }
+    }
+
+    checkHeight() {
+      const ratio = 0.4;
+      const monitor = global.display.get_primary_monitor();
+      const workAreaHeight =
+        Main.layoutManager.getWorkAreaForMonitor(monitor).height;
+      const boxHeight = this.coinSection.box.height;
+
+      if (
+        this.coinsScrollViewVbox &&
+        this.coins.length < this.coinsCountChangeToScroll
+      ) {
+        this.coinsScrollViewVbox = null;
+        this._buildCoinsSection();
+        return;
+      }
+      if (this.coinsScrollViewVbox || boxHeight / workAreaHeight < ratio)
+        return;
+
+      this.coinsCountChangeToScroll = this.coins.length;
+
+      this.coinsScrollViewVbox = new St.BoxLayout({
+        vertical: true,
+        x_expand: false,
+      });
+
+      var _coinsScrollview = new St.ScrollView({
+        enable_mouse_scrolling: true,
+        height: ratio * workAreaHeight,
+      });
+      _coinsScrollview.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
+      _coinsScrollview.add_actor(this.coinsScrollViewVbox);
+
+      const baseMenuItem = new PopupMenu.PopupBaseMenuItem({
+        hover: false,
+        can_focus: false,
+        activate: false,
+        reactive: false,
+      });
+      baseMenuItem.add_child(_coinsScrollview);
+      this.coinSection.removeAll();
+      this.coinSection.addMenuItem(baseMenuItem);
+      this._buildCoinsSection();
     }
   }
 );
@@ -98,6 +149,7 @@ class Extension {
     this._indicator = new Indicator();
     this._indicator._buildCoinsSection();
     this._indicator._buildAddCoinSection();
+    this._indicator.checkHeight();
 
     Main.panel.addToStatusArea(this._uuid, this._indicator);
   }
