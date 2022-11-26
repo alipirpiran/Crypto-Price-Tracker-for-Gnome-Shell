@@ -236,7 +236,7 @@ var CoinMenuItem = GObject.registerClass(
       this._updateMenuCoinItems(menuItem, false);
 
       this.destroy();
-      this.panelMenu.checkHeight();
+      this.panelMenu._buildCoinsSection()
     }
 
     _openChart() {

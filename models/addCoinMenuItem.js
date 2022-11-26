@@ -97,7 +97,6 @@ var AddCoinMenuItem = GObject.registerClass(
 
       coinTitle.text = '';
       coinSymbol.text = '';
-      this.panelMenu.checkHeight();
     }
   }
 );

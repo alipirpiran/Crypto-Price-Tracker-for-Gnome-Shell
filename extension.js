@@ -36,8 +36,6 @@ const Indicator = GObject.registerClass(
   class Indicator extends PanelMenu.Button {
     _init() {
       super._init(0.0, `${Me.metadata.name} Indicator`, false);
-      this.coinsScrollViewVbox = null;
-      this.coinsCountChangeToScroll = 0;
       this.coins = [];
       this.menuItem = new St.Label({
         text: '₿',
@@ -49,6 +47,29 @@ const Indicator = GObject.registerClass(
 
       this.coinSection = new PopupMenu.PopupMenuSection();
       this.menu.addMenuItem(this.coinSection);
+
+      this.coinsScrollViewVbox = new St.BoxLayout({
+        vertical: true,
+        x_expand: false,
+      });
+      this.coinsCountChangeToScroll = 0;
+      const baseMenuItem = new PopupMenu.PopupBaseMenuItem({
+        hover: false,
+        can_focus: false,
+        activate: false,
+        reactive: false,
+      });
+      this.coinSection.addMenuItem(baseMenuItem);
+
+      this._coinsScrollview = new St.ScrollView({
+        enable_mouse_scrolling: true,
+      });
+      this._coinsScrollview.set_policy(
+        St.PolicyType.NEVER,
+        St.PolicyType.AUTOMATIC
+      );
+      this._coinsScrollview.add_actor(this.coinsScrollViewVbox);
+      baseMenuItem.add_child(this._coinsScrollview);
     }
 
     _buildAddCoinSection() {
@@ -64,23 +85,27 @@ const Indicator = GObject.registerClass(
 
     _buildCoinsSection() {
       this._setCoinsFromSettings();
-      if (!this.coinsScrollViewVbox) this.coinSection.removeAll();
 
       for (const coin of this.coins) {
-        if (this.coinsScrollViewVbox) {
-          this.coinsScrollViewVbox.add_child(coin);
-        } else {
-          this.coinSection.addMenuItem(coin);
-        }
+        this.coinsScrollViewVbox.add_child(coin);
+      }
+
+      const result = CryptoUtil.checkHeight(this.coinsScrollViewVbox.height);
+      if (result.activeScroll) {
+        this._coinsScrollview.set_height(result.maxHeight);
+      } else {
+        this._coinsScrollview.set_height(this.coinsScrollViewVbox.height);
       }
     }
 
     _setCoinsFromSettings() {
-      this.coins = [];
       let current_exchange = SourceClient.get_exchange();
-      let coins = Settings.getCoins();
+      let _coins = Settings.getCoins();
 
-      for (const coin of coins) {
+      for (const c of this.coins) c.destroy();
+      this.coins = [];
+
+      for (const coin of _coins) {
         if (!coin.id) {
           coin.id = CryptoUtil.createUUID();
           Settings.setCoinId(coin);
@@ -92,50 +117,6 @@ const Indicator = GObject.registerClass(
         let _coin = new CoinMenuItem(coin, this.menuItem, this.coins, this);
         this.coins.push(_coin);
       }
-    }
-
-    checkHeight() {
-      const ratio = 0.4;
-      const monitor = global.display.get_primary_monitor();
-      const workAreaHeight =
-        Main.layoutManager.getWorkAreaForMonitor(monitor).height;
-      const boxHeight = this.coinSection.box.height;
-
-      if (
-        this.coinsScrollViewVbox &&
-        this.coins.length < this.coinsCountChangeToScroll
-      ) {
-        this.coinsScrollViewVbox = null;
-        this._buildCoinsSection();
-        return;
-      }
-      if (this.coinsScrollViewVbox || boxHeight / workAreaHeight < ratio)
-        return;
-
-      this.coinsCountChangeToScroll = this.coins.length;
-
-      this.coinsScrollViewVbox = new St.BoxLayout({
-        vertical: true,
-        x_expand: false,
-      });
-
-      var _coinsScrollview = new St.ScrollView({
-        enable_mouse_scrolling: true,
-        height: ratio * workAreaHeight,
-      });
-      _coinsScrollview.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
-      _coinsScrollview.add_actor(this.coinsScrollViewVbox);
-
-      const baseMenuItem = new PopupMenu.PopupBaseMenuItem({
-        hover: false,
-        can_focus: false,
-        activate: false,
-        reactive: false,
-      });
-      baseMenuItem.add_child(_coinsScrollview);
-      this.coinSection.removeAll();
-      this.coinSection.addMenuItem(baseMenuItem);
-      this._buildCoinsSection();
     }
   }
 );
@@ -149,7 +130,6 @@ class Extension {
     this._indicator = new Indicator();
     this._indicator._buildCoinsSection();
     this._indicator._buildAddCoinSection();
-    this._indicator.checkHeight();
 
     Main.panel.addToStatusArea(this._uuid, this._indicator);
   }

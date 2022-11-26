@@ -1,8 +1,9 @@
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Settings = Me.imports.settings;
+const Main = imports.ui.main;
 
-const { GLib, Gio } = imports.gi;
+const { GLib, Gio, St } = imports.gi;
 const Config = imports.misc.config;
 
 var coingecko_data = null;
@@ -54,4 +55,17 @@ var coingecko_symbol_to_id = async (symbol) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+var checkHeight = (vboxHeight) => {
+  const ratio = 0.4;
+  const monitor = global.display.get_primary_monitor();
+  const workAreaHeight =
+    Main.layoutManager.getWorkAreaForMonitor(monitor).height;
+  const maxHeight = ratio * workAreaHeight;
+
+  return {
+    activeScroll: vboxHeight >= maxHeight,
+    maxHeight,
+  };
 };
