@@ -57,15 +57,12 @@ var coingecko_symbol_to_id = async (symbol) => {
   }
 };
 
-var checkHeight = (vboxHeight) => {
+var getHeight = (vboxHeight) => {
   const ratio = 0.4;
   const monitor = global.display.get_primary_monitor();
   const workAreaHeight =
     Main.layoutManager.getWorkAreaForMonitor(monitor).height;
   const maxHeight = ratio * workAreaHeight;
 
-  return {
-    activeScroll: vboxHeight >= maxHeight,
-    maxHeight,
-  };
+  return Math.min(vboxHeight, maxHeight);
 };

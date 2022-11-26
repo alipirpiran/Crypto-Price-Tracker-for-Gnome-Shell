@@ -89,13 +89,9 @@ const Indicator = GObject.registerClass(
       for (const coin of this.coins) {
         this.coinsScrollViewVbox.add_child(coin);
       }
-
-      const result = CryptoUtil.checkHeight(this.coinsScrollViewVbox.height);
-      if (result.activeScroll) {
-        this._coinsScrollview.set_height(result.maxHeight);
-      } else {
-        this._coinsScrollview.set_height(this.coinsScrollViewVbox.height);
-      }
+      this._coinsScrollview.set_height(
+        CryptoUtil.getHeight(this.coinsScrollViewVbox.height)
+      );
     }
 
     _setCoinsFromSettings() {
