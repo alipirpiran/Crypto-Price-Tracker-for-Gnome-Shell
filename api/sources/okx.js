@@ -1,8 +1,6 @@
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const request = Me.imports.api.request;
+import * as request from '../request.js';
 
-var OkxClient = {
+export var OkxClient = {
   async _getPrice(name, vol) {
     try {
       const url = 'https://www.okx.com/api/v5/market/ticker?instId=';
@@ -19,8 +17,8 @@ var OkxClient = {
   },
 
   _getChartUrl(symbol) {
-    exchangeUrl = 'https://www.okx.com/markets/spot-info';
-    formattedPair = symbol.replace('/', '-').toLowerCase();
+    let exchangeUrl = 'https://www.okx.com/markets/spot-info';
+    let formattedPair = symbol.replace('/', '-').toLowerCase();
 
     return _('%s/%s').format(exchangeUrl, formattedPair);
   }

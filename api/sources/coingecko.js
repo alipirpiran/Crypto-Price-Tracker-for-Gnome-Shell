@@ -1,8 +1,6 @@
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const request = Me.imports.api.request;
+import * as request from '../request.js';
 
-var CoingeckoClient = {
+export var CoingeckoClient = {
   async _getPrice(name, vol) {
     try {
       const url = `https://api.coingecko.com/api/v3/simple/price?ids=${name}&vs_currencies=${vol}`;
@@ -11,7 +9,6 @@ var CoingeckoClient = {
       name = name.toLowerCase();
       vol = vol.toLowerCase();
       const jsonRes = JSON.parse(res.body);
-
       if (Object.keys(jsonRes).length === 0) return 'Not found';
       if (Object.keys(jsonRes[name]).length === 0) return 'Not found';
 
@@ -22,8 +19,8 @@ var CoingeckoClient = {
   },
 
   _getChartUrl(symbol) {
-    exchangeUrl = 'https://www.coingecko.com/en/coins';
-    formattedPair = symbol.toLowerCase();
+    let exchangeUrl = 'https://www.coingecko.com/en/coins';
+    let formattedPair = symbol.toLowerCase();
 
     return _('%s/%s').format(exchangeUrl, formattedPair);
   }

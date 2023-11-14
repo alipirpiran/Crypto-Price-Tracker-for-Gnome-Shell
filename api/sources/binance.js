@@ -1,8 +1,6 @@
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const request = Me.imports.api.request;
+import * as request from '../request.js';
 
-var BinanceClient = {
+export var BinanceClient = {
   async _getPrice(name, vol) {
     try {
       const url = 'https://api.binance.com/api/v3/ticker/price?symbol=';

@@ -1,8 +1,6 @@
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const request = Me.imports.api.request;
+import * as request from '../request.js';
 
-var CryptoClient = {
+export var CryptoClient = {
   async _getPrice(name, vol) {
     try {
       const url = 'https://api.crypto.com/v2/public/get-ticker?instrument_name=';
@@ -18,8 +16,8 @@ var CryptoClient = {
   },
 
   _getChartUrl(symbol) {
-    exchangeUrl = 'https://crypto.com/exchange/trade';
-    formattedPair = symbol.replace('/', '_').toUpperCase();
+    let exchangeUrl = 'https://crypto.com/exchange/trade';
+    let formattedPair = symbol.replace('/', '_').toUpperCase();
 
     return _('%s/%s').format(exchangeUrl, formattedPair);
   }
