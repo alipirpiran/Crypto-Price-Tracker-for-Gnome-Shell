@@ -1,5 +1,5 @@
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
-const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
+const Me = Extension.lookupByURL(import.meta.url);
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 import Gio from 'gi://Gio';

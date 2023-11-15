@@ -1,5 +1,3 @@
-import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
-const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
 import {get} from '../request.js';
 
 export var BinanceClient = {

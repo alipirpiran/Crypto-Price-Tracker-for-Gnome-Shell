@@ -1,12 +1,17 @@
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
+
+var extensionObject, _settings;
+
 var _settings;
 function _getSettings() {
-  if (!_settings) _settings = ExtensionUtils.getSettings();
+  extensionObject = Extension.lookupByUUID('crypto@alipirpiran.github');
+  if (!_settings) _settings = _settings = extensionObject.getSettings();
+
   return _settings;
 }
 
-var getCoins = function () {
+export var getCoins = function () {
   const settings = _getSettings();
 
   let coinJsonStr = String(settings.get_string('coins'));
@@ -91,7 +96,7 @@ export var updateCoin = function (coin) {
 /**
  * @param  {[{}]} coins
  */
-var setCoins = function (coins) {
+export var setCoins = function (coins) {
   const settings = _getSettings();
 
   let originalCoinsStr = settings.get_string('coins');

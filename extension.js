@@ -22,7 +22,6 @@ import Clutter from 'gi://Clutter';
 
 import {Extension as Ex} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-const Me = Ex.lookupByUUID('crypto@alipirpiran.github');
 import * as SourceClient from './api/sourceClient.js';
 import * as CryptoUtil from './utils/cryptoUtil.js';
 
@@ -36,8 +35,8 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 const Indicator = GObject.registerClass(
   class Indicator extends PanelMenu.Button {
-    _init() {
-      super._init(0.0, `${Me.metadata.name} Indicator`, false);
+    constructor(metadata) {
+      super(0.0, `${metadata.name} Indicator`, false);
       this.coins = [];
       this.menuItem = new St.Label({
         text: '₿',
@@ -120,25 +119,22 @@ const Indicator = GObject.registerClass(
 );
 
 export default class Extension extends Ex {
-  constructor(uuid) {
-    this._uuid = uuid;
+  constructor(meta) {
+    super(meta)
   }
 
   enable() {
-    this._indicator = new Indicator();
+    this._indicator = new Indicator(this.metadata);
     this._indicator._buildCoinsSection();
     this._indicator._buildAddCoinSection();
+    this._settings = this.getSettings("org.gnome.shell.extensions.crypto-tracker")
 
-    Main.panel.addToStatusArea(this._uuid, this._indicator);
+    Main.panel.addToStatusArea(this.uuid, this._indicator);
   }
 
   disable() {
     this._indicator.destroy();
     this._indicator = null;
-    Settings._settings = null;
+    this._settings = null;
   }
-}
-
-function init(meta) {
-  return new Extension(meta.uuid);
 }

@@ -3,9 +3,6 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import St from 'gi://St';
 
-import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
-const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
-
 import * as SourceClient from '../api/sourceClient.js';
 import * as CryptoUtil from '../utils/cryptoUtil.js';
 import * as Settings from '../settings.js';
@@ -15,8 +12,8 @@ import { AddCoinSourceBoxLayout } from './addCoinSourceBoxLayout.js';
 
 export var AddCoinMenuItem = GObject.registerClass(
   class AddCoinMenuItem extends PopupMenu.PopupBaseMenuItem {
-    _init(panelMenu) {
-      super._init({
+    constructor(panelMenu) {
+      super({
         reactive: false,
         can_focus: false,
       });
