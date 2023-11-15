@@ -3,8 +3,11 @@ const Me = ExtensionUtils.getCurrentExtension();
 import Settings from './settings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
-const { GLib, Gio, St } = imports.gi;
+import GLib from 'gi://GLib';
+import Gio from 'gi://Gio';
+import St from 'gi://St';
 import * as Config from 'resource:///org/gnome/shell/misc/config.js.in';
+import ByteArray from 'gi://GjsGLib.ByteArray';
 
 var coingecko_data = null;
 
@@ -37,7 +40,6 @@ var _get_coingecko_data = async () => {
     const decoder = new TextDecoder('utf-8');
     contentsString = decoder.decode(contents);
   } else {
-    const ByteArray = imports.byteArray;
     contentsString = ByteArray.toString(contents);
   }
 

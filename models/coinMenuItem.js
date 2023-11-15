@@ -1,5 +1,9 @@
 // noinspection DuplicatedCode
-const { Atk, Clutter, GLib, GObject, St } = imports.gi;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
 import * as ExtensionUtils from 'resource:///org/gnome/shell/misc/extensionUtils.js';
 const Me = ExtensionUtils.getCurrentExtension();

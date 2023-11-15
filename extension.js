@@ -16,7 +16,9 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-const { GObject, St, Clutter } = imports.gi;
+import GObject from 'gi://GObject';
+import St from 'gi://St';
+import Clutter from 'gi://Clutter';
 
 import * as ExtensionUtils from 'resource:///org/gnome/shell/misc/extensionUtils.js';
 

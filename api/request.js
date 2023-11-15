@@ -1,4 +1,5 @@
-const { Soup, GLib } = imports.gi;
+import Soup from 'gi://Soup';
+import GLib from 'gi://GLib';
 
 let _soupASyncSession;
 
