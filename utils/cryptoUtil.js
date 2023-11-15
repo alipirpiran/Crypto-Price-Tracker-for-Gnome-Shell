@@ -3,8 +3,7 @@ const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 import Gio from 'gi://Gio';
-import * as Config from 'resource:///org/gnome/shell/misc/config.js.in';
-import ByteArray from 'gi://GjsGLib.ByteArray';
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
 var coingecko_data = null;
 
@@ -27,15 +26,13 @@ var _get_coingecko_data = async () => {
   if (+Config.PACKAGE_VERSION >= 41) {
     const decoder = new TextDecoder('utf-8');
     contentsString = decoder.decode(contents);
-  } else {
-    contentsString = ByteArray.toString(contents);
   }
 
   coingecko_data = JSON.parse(contentsString);
   return coingecko_data;
 };
 
-var coingecko_symbol_to_id = async (symbol) => {
+export var coingecko_symbol_to_id = async (symbol) => {
   try {
     const data = await _get_coingecko_data();
     for (const item of data) {
@@ -47,7 +44,7 @@ var coingecko_symbol_to_id = async (symbol) => {
   }
 };
 
-var getHeight = (vboxHeight) => {
+export var getHeight = (vboxHeight) => {
   const ratio = 0.4;
   const monitor = global.display.get_primary_monitor();
   const workAreaHeight =

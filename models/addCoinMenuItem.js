@@ -6,14 +6,14 @@ import St from 'gi://St';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
 
-import SourceClient from './api/sourceClient.js';
-import CryptoUtil from './utils.cryptoUtil.js';
-import Settings from '../settings.js';
+import * as SourceClient from '../api/sourceClient.js';
+import * as CryptoUtil from '../utils/cryptoUtil.js';
+import * as Settings from '../settings.js';
 
-import PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-import { AddCoinSourceBoxLayout } from './models/addCoinSourceBoxLayout.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import { AddCoinSourceBoxLayout } from './addCoinSourceBoxLayout.js';
 
-var AddCoinMenuItem = GObject.registerClass(
+export var AddCoinMenuItem = GObject.registerClass(
   class AddCoinMenuItem extends PopupMenu.PopupBaseMenuItem {
     _init(panelMenu) {
       super._init({

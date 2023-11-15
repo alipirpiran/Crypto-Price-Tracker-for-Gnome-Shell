@@ -8,7 +8,7 @@ function _getSession() {
   return _soupASyncSession;
 }
 
-function get(url) {
+export function get(url) {
   switch (Soup.MAJOR_VERSION) {
     case 2:
       return get_soup_v2(url);

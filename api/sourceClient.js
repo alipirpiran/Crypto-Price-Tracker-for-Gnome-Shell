@@ -1,33 +1,33 @@
-// import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
-// const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
-import Settings from '../settings.js';
+import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
+import * as Settings from '../settings.js';
 
 import { BinanceClient } from './sources/binance.js';
 import { CoingeckoClient } from './sources/coingecko.js';
 import { CryptoClient } from './sources/crypto.js';
 import { OkxClient } from './sources/okx.js';
 
-let current_exchange = '';
+export let current_exchange = '';
 
-var exchanges = {
+export var exchanges = {
   binance: 'Binance',
   coingecko: 'Coingecko',
   crypto: 'Crypto',
   okx: 'OKX'
 };
 
-var change_exchange = (exchange_name) => {
+export var change_exchange = (exchange_name) => {
   current_exchange = exchange_name;
   Settings.change_exchange(exchange_name);
 };
 
-var get_exchange = () => {
+export var get_exchange = () => {
   if (current_exchange !== '') return current_exchange;
   current_exchange = Settings.get_exchange();
   return current_exchange;
 };
 
-var getPrice = async function (name, vol, exchange) {
+export var getPrice = async function (name, vol, exchange) {
   let price;
 
   switch (exchange) {
@@ -54,7 +54,7 @@ var getPrice = async function (name, vol, exchange) {
   });
 };
 
-var getChartUrl = (symbol, exchange) => {
+export var getChartUrl = (symbol, exchange) => {
   switch (exchange) {
 
     case exchanges.binance:

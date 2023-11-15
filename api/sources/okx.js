@@ -1,12 +1,12 @@
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
-import request from '../request.js';
+import {get} from '../request.js';
 
-var OkxClient = {
+export var OkxClient = {
   async _getPrice(name, vol) {
     try {
       const url = 'https://www.okx.com/api/v5/market/ticker?instId=';
-      const res = await request.get(url + name + '-' + vol);
+      const res = await get(url + name + '-' + vol);
 
       const jsonRes = JSON.parse(res.body);
 

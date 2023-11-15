@@ -1,13 +1,13 @@
 import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
-import St from     'gi://St';
+import St from 'gi://St';
 
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
 
-import SourceClient from './api/sourceClient.js';
+import * as SourceClient from '../api/sourceClient.js';
 
-var AddCoinSourceBoxLayout = GObject.registerClass(
+export var AddCoinSourceBoxLayout = GObject.registerClass(
   class AddCoinSourceBoxLayout extends St.BoxLayout {
     _init(addCoinMenuItem) {
       super._init({

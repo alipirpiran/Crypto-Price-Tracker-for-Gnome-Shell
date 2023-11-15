@@ -14,7 +14,7 @@ var getCoins = function () {
   return coinJson.coins;
 };
 
-var addCoin = function ({ id, symbol, active, title, exchange, coingecko_id }) {
+export var addCoin = function ({ id, symbol, active, title, exchange, coingecko_id }) {
   const settings = _getSettings();
 
   let coin = {
@@ -46,7 +46,7 @@ function _checkIsDuplicate(coin) {
   return false;
 }
 
-var delCoin = function ({ id }) {
+export var delCoin = function ({ id }) {
   const settings = _getSettings();
 
   let coinJsonStr = String(settings.get_string('coins'));
@@ -61,7 +61,7 @@ var delCoin = function ({ id }) {
   settings.set_string('coins', JSON.stringify(coinJson));
 };
 
-var setCoinId = function (coin) {
+export var setCoinId = function (coin) {
   const coins = getCoins();
 
   for (const _coin of coins) {
@@ -73,7 +73,7 @@ var setCoinId = function (coin) {
   setCoins(coins);
 };
 
-var updateCoin = function (coin) {
+export var updateCoin = function (coin) {
   const coins = getCoins();
 
   for (const _coin of coins) {
@@ -100,12 +100,12 @@ var setCoins = function (coins) {
   settings.set_string('coins', JSON.stringify(originalCoinObj));
 };
 
-var get_exchange = () => {
+export var get_exchange = () => {
   const settings = _getSettings();
   return settings.get_string('exchange');
 };
 
-var change_exchange = (ex) => {
+export var change_exchange = (ex) => {
   const settings = _getSettings();
   return settings.set_string('exchange', ex);
 };
