@@ -21,12 +21,12 @@ const { GObject, St, Clutter } = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 
 const Me = ExtensionUtils.getCurrentExtension();
-const SourceClient = Me.imports.api.sourceClient;
-const CryptoUtil = Me.imports.utils.cryptoUtil;
+import SourceClient from './api/sourceClient.js';
+import CryptoUtil from './utils/cryptoUtil.js';
 
-const Settings = Me.imports.settings;
-const { CoinMenuItem } = Me.imports.models.coinMenuItem;
-const { AddCoinMenuItem } = Me.imports.models.addCoinMenuItem;
+import Settings from './settings.js';
+import { CoinMenuItem } from './models/coinMenuItem.js';
+import { AddCoinMenuItem } from './models/addCoinMenuItem.js';
 
 import Main from 'resource:///org/gnome/shell/ui/main.js';
 import PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';

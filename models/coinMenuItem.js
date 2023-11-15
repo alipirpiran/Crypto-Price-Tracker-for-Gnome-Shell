@@ -4,8 +4,8 @@ const { Atk, Clutter, GLib, GObject, St } = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-const SourceClient = Me.imports.api.sourceClient;
-const Settings = Me.imports.settings;
+import SourceClient from './api/sourceClient.js';
+import Settings from './settings.js';
 
 import PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 const Util = imports.misc.util;

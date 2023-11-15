@@ -3,12 +3,12 @@ const { Clutter, GLib, GObject, St } = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-const SourceClient = Me.imports.api.sourceClient;
-const CryptoUtil = Me.imports.utils.cryptoUtil;
-const Settings = Me.imports.settings;
+import SourceClient from './api/sourceClient.js';
+import CryptoUtil from './utils.cryptoUtil.js';
+import Settings from './settings.js';
 
 import PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-const { AddCoinSourceBoxLayout } = Me.imports.models.addCoinSourceBoxLayout;
+import { AddCoinSourceBoxLayout } from './models/addCoinSourceBoxLayout.js';
 
 var AddCoinMenuItem = GObject.registerClass(
   class AddCoinMenuItem extends PopupMenu.PopupBaseMenuItem {

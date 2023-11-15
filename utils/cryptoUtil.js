@@ -1,6 +1,6 @@
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const Settings = Me.imports.settings;
+import Settings from './settings.js';
 import Main from 'resource:///org/gnome/shell/ui/main.js';
 
 const { GLib, Gio, St } = imports.gi;

@@ -1,6 +1,6 @@
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const request = Me.imports.api.request;
+import request from './api/request.js';
 
 var OkxClient = {
   async _getPrice(name, vol) {

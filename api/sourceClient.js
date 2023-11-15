@@ -1,11 +1,11 @@
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const Settings = Me.imports.settings;
+import Settings from './settings.js';
 
-const { BinanceClient } = Me.imports.api.sources.binance;
-const { CoingeckoClient } = Me.imports.api.sources.coingecko;
-const { CryptoClient } = Me.imports.api.sources.crypto;
-const { OkxClient } = Me.imports.api.sources.okx;
+import { BinanceClient } from './api/sources/binance.js';
+import { CoingeckoClient } from './api/sources/coingecko.js';
+import { CryptoClient } from './api/sources/crypto.js';
+import { OkxClient } from './api/sources/okx.js';
 
 let current_exchange = '';
 
