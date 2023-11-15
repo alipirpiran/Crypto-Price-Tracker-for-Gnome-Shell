@@ -8,7 +8,7 @@ const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
 
 import SourceClient from './api/sourceClient.js';
 import CryptoUtil from './utils.cryptoUtil.js';
-import Settings from './settings.js';
+import Settings from '../settings.js';
 
 import PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import { AddCoinSourceBoxLayout } from './models/addCoinSourceBoxLayout.js';

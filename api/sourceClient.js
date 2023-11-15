@@ -1,11 +1,11 @@
-import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
-const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
-import Settings from './settings.js';
+// import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+// const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
+import Settings from '../settings.js';
 
-import { BinanceClient } from './api/sources/binance.js';
-import { CoingeckoClient } from './api/sources/coingecko.js';
-import { CryptoClient } from './api/sources/crypto.js';
-import { OkxClient } from './api/sources/okx.js';
+import { BinanceClient } from './sources/binance.js';
+import { CoingeckoClient } from './sources/coingecko.js';
+import { CryptoClient } from './sources/crypto.js';
+import { OkxClient } from './sources/okx.js';
 
 let current_exchange = '';
 

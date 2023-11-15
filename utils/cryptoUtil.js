@@ -1,24 +1,12 @@
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
-import Settings from './settings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
-import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
-import St from 'gi://St';
 import * as Config from 'resource:///org/gnome/shell/misc/config.js.in';
 import ByteArray from 'gi://GjsGLib.ByteArray';
 
 var coingecko_data = null;
-
-var createUUID = () => {
-  let dt = new Date().getTime();
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    let r = (dt + Math.random() * 16) % 16 | 0;
-    dt = Math.floor(dt / 16);
-    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
-  });
-};
 
 var _get_coingecko_data = async () => {
   if (coingecko_data) return coingecko_data;

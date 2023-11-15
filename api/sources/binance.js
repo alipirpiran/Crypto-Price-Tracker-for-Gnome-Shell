@@ -1,6 +1,6 @@
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
-import request from './api/request.js';
+import request from '../request.js';
 
 var BinanceClient = {
   async _getPrice(name, vol) {
