@@ -1,10 +1,10 @@
-const ExtensionUtils = imports.misc.extensionUtils;
+import * as ExtensionUtils from 'resource:///org/gnome/shell/misc/extensionUtils.js';
 const Me = ExtensionUtils.getCurrentExtension();
 import Settings from './settings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 const { GLib, Gio, St } = imports.gi;
-const Config = imports.misc.config;
+import * as Config from 'resource:///org/gnome/shell/misc/config.js.in';
 
 var coingecko_data = null;
 

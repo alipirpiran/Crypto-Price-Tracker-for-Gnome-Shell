@@ -1,4 +1,4 @@
-const ExtensionUtils = imports.misc.extensionUtils;
+import * as ExtensionUtils from 'resource:///org/gnome/shell/misc/extensionUtils.js';
 
 var _settings;
 function _getSettings() {

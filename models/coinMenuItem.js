@@ -1,14 +1,14 @@
 // noinspection DuplicatedCode
 const { Atk, Clutter, GLib, GObject, St } = imports.gi;
 
-const ExtensionUtils = imports.misc.extensionUtils;
+import * as ExtensionUtils from 'resource:///org/gnome/shell/misc/extensionUtils.js';
 const Me = ExtensionUtils.getCurrentExtension();
 
 import SourceClient from './api/sourceClient.js';
 import Settings from './settings.js';
 
 import PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-const Util = imports.misc.util;
+import * as Util from 'resource:///org/gnome/shell/misc/util.js';
 
 var CoinMenuItem = GObject.registerClass(
   class CoinMenuItem extends PopupMenu.PopupBaseMenuItem {

@@ -18,7 +18,7 @@
 
 const { GObject, St, Clutter } = imports.gi;
 
-const ExtensionUtils = imports.misc.extensionUtils;
+import * as ExtensionUtils from 'resource:///org/gnome/shell/misc/extensionUtils.js';
 
 const Me = ExtensionUtils.getCurrentExtension();
 import SourceClient from './api/sourceClient.js';
