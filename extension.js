@@ -28,9 +28,9 @@ const Settings = Me.imports.settings;
 const { CoinMenuItem } = Me.imports.models.coinMenuItem;
 const { AddCoinMenuItem } = Me.imports.models.addCoinMenuItem;
 
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
+import Main from 'resource:///org/gnome/shell/ui/main.js';
+import PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 const Indicator = GObject.registerClass(
   class Indicator extends PanelMenu.Button {

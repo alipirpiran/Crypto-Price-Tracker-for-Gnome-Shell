@@ -6,7 +6,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 const SourceClient = Me.imports.api.sourceClient;
 const Settings = Me.imports.settings;
 
-const PopupMenu = imports.ui.popupMenu;
+import PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 var AddCoinSourceBoxLayout = GObject.registerClass(
   class AddCoinSourceBoxLayout extends St.BoxLayout {

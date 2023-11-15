@@ -7,7 +7,7 @@ const SourceClient = Me.imports.api.sourceClient;
 const CryptoUtil = Me.imports.utils.cryptoUtil;
 const Settings = Me.imports.settings;
 
-const PopupMenu = imports.ui.popupMenu;
+import PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 const { AddCoinSourceBoxLayout } = Me.imports.models.addCoinSourceBoxLayout;
 
 var AddCoinMenuItem = GObject.registerClass(

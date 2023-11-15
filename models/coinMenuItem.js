@@ -7,7 +7,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 const SourceClient = Me.imports.api.sourceClient;
 const Settings = Me.imports.settings;
 
-const PopupMenu = imports.ui.popupMenu;
+import PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 const Util = imports.misc.util;
 
 var CoinMenuItem = GObject.registerClass(
