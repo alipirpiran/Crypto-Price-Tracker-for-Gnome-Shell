@@ -28,7 +28,7 @@ import Settings from './settings.js';
 import { CoinMenuItem } from './models/coinMenuItem.js';
 import { AddCoinMenuItem } from './models/addCoinMenuItem.js';
 
-import Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
