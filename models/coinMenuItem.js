@@ -5,8 +5,8 @@ import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import St from 'gi://St';
 
-import * as ExtensionUtils from 'resource:///org/gnome/shell/misc/extensionUtils.js';
-const Me = ExtensionUtils.getCurrentExtension();
+import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
 
 import SourceClient from './api/sourceClient.js';
 import Settings from './settings.js';

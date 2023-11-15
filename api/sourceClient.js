@@ -1,5 +1,5 @@
-import * as ExtensionUtils from 'resource:///org/gnome/shell/misc/extensionUtils.js';
-const Me = ExtensionUtils.getCurrentExtension();
+import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
 import Settings from './settings.js';
 
 import { BinanceClient } from './api/sources/binance.js';

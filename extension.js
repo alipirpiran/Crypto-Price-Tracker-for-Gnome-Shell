@@ -20,9 +20,9 @@ import GObject from 'gi://GObject';
 import St from 'gi://St';
 import Clutter from 'gi://Clutter';
 
-import * as ExtensionUtils from 'resource:///org/gnome/shell/misc/extensionUtils.js';
+import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-const Me = ExtensionUtils.getCurrentExtension();
+const Me = Extension.lookupByUUID('crypto@alipirpiran.github');
 import SourceClient from './api/sourceClient.js';
 import CryptoUtil from './utils/cryptoUtil.js';
 
@@ -119,7 +119,7 @@ const Indicator = GObject.registerClass(
   }
 );
 
-class Extension {
+export default class CryptoExtension extends Extension {
   constructor(uuid) {
     this._uuid = uuid;
   }
