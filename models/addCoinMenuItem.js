@@ -1,19 +1,19 @@
-const { Clutter, GLib, GObject, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
+import * as SourceClient from '../api/sourceClient.js';
+import * as CryptoUtil from '../utils/cryptoUtil.js';
+import * as Settings from '../settings.js';
 
-const SourceClient = Me.imports.api.sourceClient;
-const CryptoUtil = Me.imports.utils.cryptoUtil;
-const Settings = Me.imports.settings;
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import { AddCoinSourceBoxLayout } from './addCoinSourceBoxLayout.js';
 
-const PopupMenu = imports.ui.popupMenu;
-const { AddCoinSourceBoxLayout } = Me.imports.models.addCoinSourceBoxLayout;
-
-var AddCoinMenuItem = GObject.registerClass(
+export var AddCoinMenuItem = GObject.registerClass(
   class AddCoinMenuItem extends PopupMenu.PopupBaseMenuItem {
-    _init(panelMenu) {
-      super._init({
+    constructor(panelMenu) {
+      super({
         reactive: false,
         can_focus: false,
       });

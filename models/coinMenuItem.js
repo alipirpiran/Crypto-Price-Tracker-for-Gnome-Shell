@@ -1,19 +1,20 @@
 // noinspection DuplicatedCode
-const { Atk, Clutter, GLib, GObject, St } = imports.gi;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
+import * as SourceClient from '../api/sourceClient.js';
+import * as Settings from '../settings.js';
 
-const SourceClient = Me.imports.api.sourceClient;
-const Settings = Me.imports.settings;
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import * as Util from 'resource:///org/gnome/shell/misc/util.js';
 
-const PopupMenu = imports.ui.popupMenu;
-const Util = imports.misc.util;
-
-var CoinMenuItem = GObject.registerClass(
+export var CoinMenuItem = GObject.registerClass(
   class CoinMenuItem extends PopupMenu.PopupBaseMenuItem {
-    _init(coin, menuItem, coins, panelMenu) {
-      super._init({
+    constructor(coin, menuItem, coins, panelMenu) {
+      super({
         reactive: true,
         activate: true,
         hover: true,

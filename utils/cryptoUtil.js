@@ -1,21 +1,11 @@
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Settings = Me.imports.settings;
-const Main = imports.ui.main;
+import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+const Me = Extension.lookupByURL(import.meta.url);
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
-const { GLib, Gio, St } = imports.gi;
-const Config = imports.misc.config;
+import Gio from 'gi://Gio';
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
 var coingecko_data = null;
-
-var createUUID = () => {
-  let dt = new Date().getTime();
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    let r = (dt + Math.random() * 16) % 16 | 0;
-    dt = Math.floor(dt / 16);
-    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
-  });
-};
 
 var _get_coingecko_data = async () => {
   if (coingecko_data) return coingecko_data;
@@ -36,16 +26,13 @@ var _get_coingecko_data = async () => {
   if (+Config.PACKAGE_VERSION >= 41) {
     const decoder = new TextDecoder('utf-8');
     contentsString = decoder.decode(contents);
-  } else {
-    const ByteArray = imports.byteArray;
-    contentsString = ByteArray.toString(contents);
   }
 
   coingecko_data = JSON.parse(contentsString);
   return coingecko_data;
 };
 
-var coingecko_symbol_to_id = async (symbol) => {
+export var coingecko_symbol_to_id = async (symbol) => {
   try {
     const data = await _get_coingecko_data();
     for (const item of data) {
@@ -57,7 +44,7 @@ var coingecko_symbol_to_id = async (symbol) => {
   }
 };
 
-var getHeight = (vboxHeight) => {
+export var getHeight = (vboxHeight) => {
   const ratio = 0.4;
   const monitor = global.display.get_primary_monitor();
   const workAreaHeight =

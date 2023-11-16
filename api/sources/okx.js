@@ -1,12 +1,10 @@
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const request = Me.imports.api.request;
+import {get} from '../request.js';
 
-var OkxClient = {
+export var OkxClient = {
   async _getPrice(name, vol) {
     try {
       const url = 'https://www.okx.com/api/v5/market/ticker?instId=';
-      const res = await request.get(url + name + '-' + vol);
+      const res = await get(url + name + '-' + vol);
 
       const jsonRes = JSON.parse(res.body);
 

@@ -1,12 +1,17 @@
-const ExtensionUtils = imports.misc.extensionUtils;
+import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+
+
+var extensionObject, _settings;
 
 var _settings;
 function _getSettings() {
-  if (!_settings) _settings = ExtensionUtils.getSettings();
+  extensionObject = Extension.lookupByUUID('crypto@alipirpiran.github');
+  if (!_settings) _settings = _settings = extensionObject.getSettings();
+
   return _settings;
 }
 
-var getCoins = function () {
+export var getCoins = function () {
   const settings = _getSettings();
 
   let coinJsonStr = String(settings.get_string('coins'));
@@ -14,7 +19,7 @@ var getCoins = function () {
   return coinJson.coins;
 };
 
-var addCoin = function ({ id, symbol, active, title, exchange, coingecko_id }) {
+export var addCoin = function ({ id, symbol, active, title, exchange, coingecko_id }) {
   const settings = _getSettings();
 
   let coin = {
@@ -46,7 +51,7 @@ function _checkIsDuplicate(coin) {
   return false;
 }
 
-var delCoin = function ({ id }) {
+export var delCoin = function ({ id }) {
   const settings = _getSettings();
 
   let coinJsonStr = String(settings.get_string('coins'));
@@ -61,7 +66,7 @@ var delCoin = function ({ id }) {
   settings.set_string('coins', JSON.stringify(coinJson));
 };
 
-var setCoinId = function (coin) {
+export var setCoinId = function (coin) {
   const coins = getCoins();
 
   for (const _coin of coins) {
@@ -73,7 +78,7 @@ var setCoinId = function (coin) {
   setCoins(coins);
 };
 
-var updateCoin = function (coin) {
+export var updateCoin = function (coin) {
   const coins = getCoins();
 
   for (const _coin of coins) {
@@ -91,7 +96,7 @@ var updateCoin = function (coin) {
 /**
  * @param  {[{}]} coins
  */
-var setCoins = function (coins) {
+export var setCoins = function (coins) {
   const settings = _getSettings();
 
   let originalCoinsStr = settings.get_string('coins');
@@ -100,12 +105,12 @@ var setCoins = function (coins) {
   settings.set_string('coins', JSON.stringify(originalCoinObj));
 };
 
-var get_exchange = () => {
+export var get_exchange = () => {
   const settings = _getSettings();
   return settings.get_string('exchange');
 };
 
-var change_exchange = (ex) => {
+export var change_exchange = (ex) => {
   const settings = _getSettings();
   return settings.set_string('exchange', ex);
 };

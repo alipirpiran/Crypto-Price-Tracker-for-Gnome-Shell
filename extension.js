@@ -16,26 +16,27 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-const { GObject, St, Clutter } = imports.gi;
+import GObject from 'gi://GObject';
+import St from 'gi://St';
+import Clutter from 'gi://Clutter';
 
-const ExtensionUtils = imports.misc.extensionUtils;
+import {Extension as Ex} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-const Me = ExtensionUtils.getCurrentExtension();
-const SourceClient = Me.imports.api.sourceClient;
-const CryptoUtil = Me.imports.utils.cryptoUtil;
+import * as SourceClient from './api/sourceClient.js';
+import * as CryptoUtil from './utils/cryptoUtil.js';
 
-const Settings = Me.imports.settings;
-const { CoinMenuItem } = Me.imports.models.coinMenuItem;
-const { AddCoinMenuItem } = Me.imports.models.addCoinMenuItem;
+import * as Settings from './settings.js';
+import { CoinMenuItem } from './models/coinMenuItem.js';
+import { AddCoinMenuItem } from './models/addCoinMenuItem.js';
 
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 const Indicator = GObject.registerClass(
   class Indicator extends PanelMenu.Button {
-    _init() {
-      super._init(0.0, `${Me.metadata.name} Indicator`, false);
+    constructor(metadata) {
+      super(0.0, `${metadata.name} Indicator`, false);
       this.coins = [];
       this.menuItem = new St.Label({
         text: '₿',
@@ -117,26 +118,23 @@ const Indicator = GObject.registerClass(
   }
 );
 
-class Extension {
-  constructor(uuid) {
-    this._uuid = uuid;
+export default class Extension extends Ex {
+  constructor(meta) {
+    super(meta)
   }
 
   enable() {
-    this._indicator = new Indicator();
+    this._indicator = new Indicator(this.metadata);
     this._indicator._buildCoinsSection();
     this._indicator._buildAddCoinSection();
+    this._settings = this.getSettings("org.gnome.shell.extensions.crypto-tracker")
 
-    Main.panel.addToStatusArea(this._uuid, this._indicator);
+    Main.panel.addToStatusArea(this.uuid, this._indicator);
   }
 
   disable() {
     this._indicator.destroy();
     this._indicator = null;
-    Settings._settings = null;
+    this._settings = null;
   }
-}
-
-function init(meta) {
-  return new Extension(meta.uuid);
 }

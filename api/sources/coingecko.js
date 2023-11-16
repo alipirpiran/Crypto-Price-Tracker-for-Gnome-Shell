@@ -1,12 +1,10 @@
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const request = Me.imports.api.request;
+import {get} from '../request.js';
 
-var CoingeckoClient = {
+export var CoingeckoClient = {
   async _getPrice(name, vol) {
     try {
       const url = `https://api.coingecko.com/api/v3/simple/price?ids=${name}&vs_currencies=${vol}`;
-      const res = await request.get(url);
+      const res = await get(url);
 
       name = name.toLowerCase();
       vol = vol.toLowerCase();

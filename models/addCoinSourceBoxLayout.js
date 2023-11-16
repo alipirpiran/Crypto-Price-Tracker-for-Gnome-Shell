@@ -1,17 +1,13 @@
-const { Clutter, GLib, GObject, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
+import * as SourceClient from '../api/sourceClient.js';
 
-const SourceClient = Me.imports.api.sourceClient;
-const Settings = Me.imports.settings;
-
-const PopupMenu = imports.ui.popupMenu;
-
-var AddCoinSourceBoxLayout = GObject.registerClass(
+export var AddCoinSourceBoxLayout = GObject.registerClass(
   class AddCoinSourceBoxLayout extends St.BoxLayout {
-    _init(addCoinMenuItem) {
-      super._init({
+    constructor(addCoinMenuItem) {
+      super({
         vertical: true,
         x_expand: true,
       });

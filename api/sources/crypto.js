@@ -1,12 +1,10 @@
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const request = Me.imports.api.request;
+import {get} from '../request.js';
 
-var CryptoClient = {
+export var CryptoClient = {
   async _getPrice(name, vol) {
     try {
       const url = 'https://api.crypto.com/v2/public/get-ticker?instrument_name=';
-      const res = await request.get(url + name + '_' + vol);
+      const res = await get(url + name + '_' + vol);
 
       const jsonRes = JSON.parse(res.body);
       if (jsonRes.result?.data.length === 0) return -1;
