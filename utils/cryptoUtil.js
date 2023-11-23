@@ -31,6 +31,7 @@ let _get_coingecko_data = async (Me) => {
 };
 
 export let coingecko_symbol_to_id = async (symbol, Me) => {
+  console.log('crypto util 35');
   try {
     const data = await _get_coingecko_data(Me);
     for (const item of data) {
@@ -50,4 +51,13 @@ export let getHeight = (vboxHeight) => {
   const maxHeight = ratio * workAreaHeight;
 
   return Math.min(vboxHeight, maxHeight);
+};
+
+export let createUUID = () => {
+  let dt = new Date().getTime();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    let r = (dt + Math.random() * 16) % 16 | 0;
+    dt = Math.floor(dt / 16);
+    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+  });
 };
