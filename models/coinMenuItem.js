@@ -122,7 +122,7 @@ export let CoinMenuItem = GObject.registerClass(
       };
     }
     _getPrice() {
-      var parts = this.symbol.split('/');
+      let parts = this.symbol.split('/');
       if (this.exchange === SourceClient.exchanges.coingecko) {
         parts[0] = this.coingecko_id;
       }

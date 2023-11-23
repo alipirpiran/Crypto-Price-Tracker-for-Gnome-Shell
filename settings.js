@@ -1,9 +1,9 @@
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 
-var extensionObject, _settings;
+let extensionObject, _settings;
 
-var _settings;
+let _settings;
 function _getSettings() {
   extensionObject = Extension.lookupByUUID('crypto@alipirpiran.github');
   if (!_settings) _settings = _settings = extensionObject.getSettings();

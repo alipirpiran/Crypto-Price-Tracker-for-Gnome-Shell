@@ -20,7 +20,7 @@ export let AddCoinMenuItem = GObject.registerClass(
       this.panelMenu = panelMenu;
       this.current_exchange = SourceClient.get_exchange();
 
-      var vbox = new St.BoxLayout({
+      let vbox = new St.BoxLayout({
         style_class: 'add-coin-vbox',
         vertical: true,
         x_expand: true,

@@ -5,9 +5,9 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import Gio from 'gi://Gio';
 import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
-var coingecko_data = null;
+let coingecko_data = null;
 
-var _get_coingecko_data = async () => {
+let _get_coingecko_data = async () => {
   if (coingecko_data) return coingecko_data;
 
   //TODO update json file, if one coin not found. get from https://api.coingecko.com/api/v3/coins/list
@@ -22,7 +22,7 @@ var _get_coingecko_data = async () => {
     });
   });
 
-  var contentsString = '';
+  let contentsString = '';
   if (+Config.PACKAGE_VERSION >= 41) {
     const decoder = new TextDecoder('utf-8');
     contentsString = decoder.decode(contents);

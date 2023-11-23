@@ -19,9 +19,9 @@ export function get(url) {
 
 function get_soup_v3(url) {
   return new Promise((resolve, reject) => {
-    var session = new Soup.Session();
+    let session = new Soup.Session();
 
-    var message = Soup.Message.new('GET', url);
+    let message = Soup.Message.new('GET', url);
 
     session.send_and_read_async(
       message,
@@ -45,13 +45,13 @@ function get_soup_v3(url) {
 
 function get_soup_v2(url) {
   return new Promise((resolve, reject) => {
-    var session = new Soup.SessionAsync();
+    let session = new Soup.SessionAsync();
     Soup.Session.prototype.add_feature.call(
       session,
       new Soup.ProxyResolverDefault()
     );
 
-    var message = Soup.Message.new('GET', url);
+    let message = Soup.Message.new('GET', url);
 
     session.queue_message(message, function (_httpSession, result) {
       // request is done
