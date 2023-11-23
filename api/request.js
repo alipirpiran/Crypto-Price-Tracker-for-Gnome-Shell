@@ -1,13 +1,6 @@
 import Soup from 'gi://Soup';
 import GLib from 'gi://GLib';
 
-let _soupASyncSession;
-
-function _getSession() {
-  if (!_soupASyncSession) _soupASyncSession = new Soup.Session();
-  return _soupASyncSession;
-}
-
 export function get(url) {
   switch (Soup.MAJOR_VERSION) {
     case 2:

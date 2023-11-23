@@ -1,5 +1,3 @@
-import Clutter from 'gi://Clutter';
-import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import St from 'gi://St';
 
@@ -69,20 +67,28 @@ export let AddCoinMenuItem = GObject.registerClass(
     }
 
     async _addCoin(coinSymbol, coinTitle) {
+      console.log('here');
       // TODO show error
       if (coinSymbol.text === '' || !coinSymbol.text.includes('/')) return;
 
       let coingecko_id = '';
-      if (this.current_exchange === SourceClient.exchanges.coingecko) {
-        try {
-          coingecko_id = await CryptoUtil.coingecko_symbol_to_id(
-            coinSymbol.text.split('/')[0],
-            this.Me
-          );
-        } catch (error) {
-          console.log(error);
+      try {
+        if (this.current_exchange === SourceClient.exchanges.coingecko) {
+          try {
+            coingecko_id = await CryptoUtil.coingecko_symbol_to_id(
+              coinSymbol.text.split('/')[0],
+              this.Me
+            );
+          } catch (error) {
+            console.log(error);
+          }
         }
+      } catch (error) {
+        console.log(error);
       }
+
+      console.log(SourceClient.exchanges.coingecko);
+
 
       let coin = {
         id: `${CryptoUtil.createUUID()}`,
@@ -93,9 +99,14 @@ export let AddCoinMenuItem = GObject.registerClass(
         coingecko_id,
       };
 
-      let result = Settings.addCoin(coin);
+      console.log('sdfsdfsdfsdf');
+      try {
+        let result = Settings.addCoin(coin);
 
-      if (result) this.panelMenu._buildCoinsSection();
+        if (result) this.panelMenu._buildCoinsSection();
+      } catch (error) {
+        console.log(error);
+      }
 
       coinTitle.text = '';
       coinSymbol.text = '';

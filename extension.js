@@ -20,7 +20,7 @@ import GObject from 'gi://GObject';
 import St from 'gi://St';
 import Clutter from 'gi://Clutter';
 
-import {Extension as Ex} from 'resource:///org/gnome/shell/extensions/extension.js';
+import { Extension as Ex } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import * as SourceClient from './api/sourceClient.js';
 import * as CryptoUtil from './utils/cryptoUtil.js';
@@ -120,14 +120,16 @@ const Indicator = GObject.registerClass(
 
 export default class Extension extends Ex {
   constructor(meta) {
-    super(meta)
+    super(meta);
   }
 
   enable() {
     this._indicator = new Indicator(this.metadata);
     this._indicator._buildCoinsSection();
     this._indicator._buildAddCoinSection(this);
-    this._settings = this.getSettings("org.gnome.shell.extensions.crypto-tracker")
+    this._settings = this.getSettings(
+      'org.gnome.shell.extensions.crypto-tracker'
+    );
 
     Main.panel.addToStatusArea(this.uuid, this._indicator);
   }
@@ -136,5 +138,6 @@ export default class Extension extends Ex {
     this._indicator.destroy();
     this._indicator = null;
     this._settings = null;
+    coingecko_data = null;
   }
 }

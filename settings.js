@@ -1,14 +1,10 @@
-import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 
-let extensionObject, _settings;
-
-let _settings;
 function _getSettings() {
-  extensionObject = Extension.lookupByUUID('crypto@alipirpiran.github');
-  if (!_settings) _settings = _settings = extensionObject.getSettings();
+  let extensionObject = Extension.lookupByUUID('crypto@alipirpiran.github');
 
-  return _settings;
+  return extensionObject.getSettings();
 }
 
 export let getCoins = function () {
@@ -19,7 +15,14 @@ export let getCoins = function () {
   return coinJson.coins;
 };
 
-export let addCoin = function ({ id, symbol, active, title, exchange, coingecko_id }) {
+export let addCoin = function ({
+  id,
+  symbol,
+  active,
+  title,
+  exchange,
+  coingecko_id,
+}) {
   const settings = _getSettings();
 
   let coin = {

@@ -7,14 +7,14 @@ import { OkxClient } from './sources/okx.js';
 
 export let current_exchange = '';
 
-export let exchanges = {
+export var exchanges = {
   binance: 'Binance',
   coingecko: 'Coingecko',
   crypto: 'Crypto',
   okx: 'OKX'
 };
 
-export let change_exchange = (exchange_name) => {
+export var change_exchange = (exchange_name) => {
   current_exchange = exchange_name;
   Settings.change_exchange(exchange_name);
 };
