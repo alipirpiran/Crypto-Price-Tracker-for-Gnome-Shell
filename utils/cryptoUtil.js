@@ -1,5 +1,3 @@
-import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
-const Me = Extension.lookupByURL(import.meta.url);
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 import Gio from 'gi://Gio';
@@ -7,7 +5,7 @@ import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
 let coingecko_data = null;
 
-let _get_coingecko_data = async () => {
+let _get_coingecko_data = async (Me) => {
   if (coingecko_data) return coingecko_data;
 
   //TODO update json file, if one coin not found. get from https://api.coingecko.com/api/v3/coins/list
@@ -32,9 +30,9 @@ let _get_coingecko_data = async () => {
   return coingecko_data;
 };
 
-export let coingecko_symbol_to_id = async (symbol) => {
+export let coingecko_symbol_to_id = async (symbol, Me) => {
   try {
-    const data = await _get_coingecko_data();
+    const data = await _get_coingecko_data(Me);
     for (const item of data) {
       if (item['symbol'].toLowerCase() === symbol.toLowerCase())
         return item['id'];

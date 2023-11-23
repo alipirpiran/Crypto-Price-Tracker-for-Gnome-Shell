@@ -12,13 +12,14 @@ import { AddCoinSourceBoxLayout } from './addCoinSourceBoxLayout.js';
 
 export let AddCoinMenuItem = GObject.registerClass(
   class AddCoinMenuItem extends PopupMenu.PopupBaseMenuItem {
-    constructor(panelMenu) {
+    constructor(panelMenu, Me) {
       super({
         reactive: false,
         can_focus: false,
       });
       this.panelMenu = panelMenu;
       this.current_exchange = SourceClient.get_exchange();
+      this.Me = Me;
 
       let vbox = new St.BoxLayout({
         style_class: 'add-coin-vbox',
@@ -75,7 +76,8 @@ export let AddCoinMenuItem = GObject.registerClass(
       if (this.current_exchange === SourceClient.exchanges.coingecko) {
         try {
           coingecko_id = await CryptoUtil.coingecko_symbol_to_id(
-            coinSymbol.text.split('/')[0]
+            coinSymbol.text.split('/')[0],
+            this.Me
           );
         } catch (error) {
           console.log(error);

@@ -73,14 +73,14 @@ const Indicator = GObject.registerClass(
       baseMenuItem.add_child(this._coinsScrollview);
     }
 
-    _buildAddCoinSection() {
+    _buildAddCoinSection(Me) {
       this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
       let addCoinBtnMenu = new PopupMenu.PopupSubMenuMenuItem('Add New Pair');
       addCoinBtnMenu.add_style_class_name('add-coin-btn');
       this.menu.addMenuItem(addCoinBtnMenu);
 
-      let addCoinSubMenu = new AddCoinMenuItem(this);
+      let addCoinSubMenu = new AddCoinMenuItem(this, Me);
       addCoinBtnMenu.menu.addMenuItem(addCoinSubMenu);
     }
 
@@ -126,7 +126,7 @@ export default class Extension extends Ex {
   enable() {
     this._indicator = new Indicator(this.metadata);
     this._indicator._buildCoinsSection();
-    this._indicator._buildAddCoinSection();
+    this._indicator._buildAddCoinSection(this);
     this._settings = this.getSettings("org.gnome.shell.extensions.crypto-tracker")
 
     Main.panel.addToStatusArea(this.uuid, this._indicator);
