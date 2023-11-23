@@ -67,28 +67,20 @@ export let AddCoinMenuItem = GObject.registerClass(
     }
 
     async _addCoin(coinSymbol, coinTitle) {
-      console.log('here');
       // TODO show error
       if (coinSymbol.text === '' || !coinSymbol.text.includes('/')) return;
 
       let coingecko_id = '';
-      try {
-        if (this.current_exchange === SourceClient.exchanges.coingecko) {
-          try {
-            coingecko_id = await CryptoUtil.coingecko_symbol_to_id(
-              coinSymbol.text.split('/')[0],
-              this.Me
-            );
-          } catch (error) {
-            console.log(error);
-          }
+      if (this.current_exchange === SourceClient.exchanges.coingecko) {
+        try {
+          coingecko_id = await CryptoUtil.coingecko_symbol_to_id(
+            coinSymbol.text.split('/')[0],
+            this.Me
+          );
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
       }
-
-      console.log(SourceClient.exchanges.coingecko);
-
 
       let coin = {
         id: `${CryptoUtil.createUUID()}`,
@@ -99,7 +91,6 @@ export let AddCoinMenuItem = GObject.registerClass(
         coingecko_id,
       };
 
-      console.log('sdfsdfsdfsdf');
       try {
         let result = Settings.addCoin(coin);
 
