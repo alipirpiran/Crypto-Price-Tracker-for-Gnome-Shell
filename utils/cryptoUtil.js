@@ -31,7 +31,6 @@ let _get_coingecko_data = async (Me) => {
 };
 
 export let coingecko_symbol_to_id = async (symbol, Me) => {
-  console.log('crypto util 35');
   try {
     const data = await _get_coingecko_data(Me);
     for (const item of data) {
