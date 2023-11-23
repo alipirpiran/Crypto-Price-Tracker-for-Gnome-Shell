@@ -138,6 +138,6 @@ export default class Extension extends Ex {
     this._indicator.destroy();
     this._indicator = null;
     this._settings = null;
-    coingecko_data = null;
+    CryptoUtil.destroy();
   }
 }

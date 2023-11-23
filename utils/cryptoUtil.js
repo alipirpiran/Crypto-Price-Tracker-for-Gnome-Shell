@@ -60,3 +60,7 @@ export let createUUID = () => {
     return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
   });
 };
+
+export let destroy = () => {
+  coingecko_data = null;
+};
