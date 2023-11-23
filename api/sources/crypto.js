@@ -1,6 +1,6 @@
 import {get} from '../request.js';
 
-export var CryptoClient = {
+export let CryptoClient = {
   async _getPrice(name, vol) {
     try {
       const url = 'https://api.crypto.com/v2/public/get-ticker?instrument_name=';

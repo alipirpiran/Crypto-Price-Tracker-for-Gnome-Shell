@@ -32,7 +32,7 @@ var _get_coingecko_data = async () => {
   return coingecko_data;
 };
 
-export var coingecko_symbol_to_id = async (symbol) => {
+export let coingecko_symbol_to_id = async (symbol) => {
   try {
     const data = await _get_coingecko_data();
     for (const item of data) {
@@ -44,7 +44,7 @@ export var coingecko_symbol_to_id = async (symbol) => {
   }
 };
 
-export var getHeight = (vboxHeight) => {
+export let getHeight = (vboxHeight) => {
   const ratio = 0.4;
   const monitor = global.display.get_primary_monitor();
   const workAreaHeight =

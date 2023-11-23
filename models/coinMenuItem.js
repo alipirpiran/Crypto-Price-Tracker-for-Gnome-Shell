@@ -11,7 +11,7 @@ import * as Settings from '../settings.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as Util from 'resource:///org/gnome/shell/misc/util.js';
 
-export var CoinMenuItem = GObject.registerClass(
+export let CoinMenuItem = GObject.registerClass(
   class CoinMenuItem extends PopupMenu.PopupBaseMenuItem {
     constructor(coin, menuItem, coins, panelMenu) {
       super({

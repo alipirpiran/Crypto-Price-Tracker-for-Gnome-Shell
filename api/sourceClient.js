@@ -7,25 +7,25 @@ import { OkxClient } from './sources/okx.js';
 
 export let current_exchange = '';
 
-export var exchanges = {
+export let exchanges = {
   binance: 'Binance',
   coingecko: 'Coingecko',
   crypto: 'Crypto',
   okx: 'OKX'
 };
 
-export var change_exchange = (exchange_name) => {
+export let change_exchange = (exchange_name) => {
   current_exchange = exchange_name;
   Settings.change_exchange(exchange_name);
 };
 
-export var get_exchange = () => {
+export let get_exchange = () => {
   if (current_exchange !== '') return current_exchange;
   current_exchange = Settings.get_exchange();
   return current_exchange;
 };
 
-export var getPrice = async function (name, vol, exchange) {
+export let getPrice = async function (name, vol, exchange) {
   let price;
 
   switch (exchange) {
@@ -52,7 +52,7 @@ export var getPrice = async function (name, vol, exchange) {
   });
 };
 
-export var getChartUrl = (symbol, exchange) => {
+export let getChartUrl = (symbol, exchange) => {
   switch (exchange) {
 
     case exchanges.binance:

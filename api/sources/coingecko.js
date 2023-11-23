@@ -1,6 +1,6 @@
 import {get} from '../request.js';
 
-export var CoingeckoClient = {
+export let CoingeckoClient = {
   async _getPrice(name, vol) {
     try {
       const url = `https://api.coingecko.com/api/v3/simple/price?ids=${name}&vs_currencies=${vol}`;

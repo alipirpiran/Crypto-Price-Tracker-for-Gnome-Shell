@@ -10,7 +10,7 @@ import * as Settings from '../settings.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import { AddCoinSourceBoxLayout } from './addCoinSourceBoxLayout.js';
 
-export var AddCoinMenuItem = GObject.registerClass(
+export let AddCoinMenuItem = GObject.registerClass(
   class AddCoinMenuItem extends PopupMenu.PopupBaseMenuItem {
     constructor(panelMenu) {
       super({

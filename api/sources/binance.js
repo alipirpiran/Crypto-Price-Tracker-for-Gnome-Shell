@@ -1,6 +1,6 @@
 import {get} from '../request.js';
 
-export var BinanceClient = {
+export let BinanceClient = {
   async _getPrice(name, vol) {
     try {
       const url = 'https://api.binance.com/api/v3/ticker/price?symbol=';

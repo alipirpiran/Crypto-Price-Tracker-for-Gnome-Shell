@@ -11,7 +11,7 @@ function _getSettings() {
   return _settings;
 }
 
-export var getCoins = function () {
+export let getCoins = function () {
   const settings = _getSettings();
 
   let coinJsonStr = String(settings.get_string('coins'));
@@ -19,7 +19,7 @@ export var getCoins = function () {
   return coinJson.coins;
 };
 
-export var addCoin = function ({ id, symbol, active, title, exchange, coingecko_id }) {
+export let addCoin = function ({ id, symbol, active, title, exchange, coingecko_id }) {
   const settings = _getSettings();
 
   let coin = {
@@ -51,7 +51,7 @@ function _checkIsDuplicate(coin) {
   return false;
 }
 
-export var delCoin = function ({ id }) {
+export let delCoin = function ({ id }) {
   const settings = _getSettings();
 
   let coinJsonStr = String(settings.get_string('coins'));
@@ -66,7 +66,7 @@ export var delCoin = function ({ id }) {
   settings.set_string('coins', JSON.stringify(coinJson));
 };
 
-export var setCoinId = function (coin) {
+export let setCoinId = function (coin) {
   const coins = getCoins();
 
   for (const _coin of coins) {
@@ -78,7 +78,7 @@ export var setCoinId = function (coin) {
   setCoins(coins);
 };
 
-export var updateCoin = function (coin) {
+export let updateCoin = function (coin) {
   const coins = getCoins();
 
   for (const _coin of coins) {
@@ -96,7 +96,7 @@ export var updateCoin = function (coin) {
 /**
  * @param  {[{}]} coins
  */
-export var setCoins = function (coins) {
+export let setCoins = function (coins) {
   const settings = _getSettings();
 
   let originalCoinsStr = settings.get_string('coins');
@@ -105,12 +105,12 @@ export var setCoins = function (coins) {
   settings.set_string('coins', JSON.stringify(originalCoinObj));
 };
 
-export var get_exchange = () => {
+export let get_exchange = () => {
   const settings = _getSettings();
   return settings.get_string('exchange');
 };
 
-export var change_exchange = (ex) => {
+export let change_exchange = (ex) => {
   const settings = _getSettings();
   return settings.set_string('exchange', ex);
 };

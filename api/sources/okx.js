@@ -1,6 +1,6 @@
 import {get} from '../request.js';
 
-export var OkxClient = {
+export let OkxClient = {
   async _getPrice(name, vol) {
     try {
       const url = 'https://www.okx.com/api/v5/market/ticker?instId=';

@@ -4,7 +4,7 @@ import St from 'gi://St';
 
 import * as SourceClient from '../api/sourceClient.js';
 
-export var AddCoinSourceBoxLayout = GObject.registerClass(
+export let AddCoinSourceBoxLayout = GObject.registerClass(
   class AddCoinSourceBoxLayout extends St.BoxLayout {
     constructor(addCoinMenuItem) {
       super({
