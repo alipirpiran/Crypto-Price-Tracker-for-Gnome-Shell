@@ -150,7 +150,8 @@ export let CoinMenuItem = GObject.registerClass(
               ') ((\\.\\.\\.)|(\\d*(,?\\d\\d\\d)*|\\d+)(\\.?\\d*))?',
             'g'
           );
-          let menuPairPrice = isNaN(price.replaceAll(',', '')) ? '...' : price;
+          let menuPairPrice = isNaN(+price.replaceAll(',', '')) ? '...' : price;
+
           menuItem.text = menuItem.text.replace(
             re,
             `${this.title || this.symbol} ${menuPairPrice}`
@@ -237,7 +238,7 @@ export let CoinMenuItem = GObject.registerClass(
       this._updateMenuCoinItems(menuItem, false);
 
       this.destroy();
-      this.panelMenu._buildCoinsSection()
+      this.panelMenu._buildCoinsSection();
     }
 
     _openChart() {
