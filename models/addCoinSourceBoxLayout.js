@@ -55,7 +55,7 @@ export let AddCoinSourceBoxLayout = GObject.registerClass(
         if (this.isActiveChangeSource) {
           this.add_child(this._scrollView);
         } else {
-          this.remove_actor(this._scrollView)
+          this.remove_child(this._scrollView)
         }
       });
 
