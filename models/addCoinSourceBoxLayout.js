@@ -17,20 +17,20 @@ export let AddCoinSourceBoxLayout = GObject.registerClass(
         x_expand: true,
         style_class: 'exchange-hbox',
       });
-      this.add(hbox);
+      this.add_child(hbox);
 
       this.sourceLbl = new St.Label({
         text: ('%s %s').format('Source: ', this.addCoinMenuItem.current_exchange),
         y_align: Clutter.ActorAlign.CENTER,
         style_class: 'crypto-label',
       });
-      hbox.add(this.sourceLbl);
+      hbox.add_child(this.sourceLbl);
 
       let expander = new St.Bin({
         style_class: 'popup-menu-item-expander',
         x_expand: true,
       });
-      hbox.add(expander);
+      hbox.add_child(expander);
 
       let changeSourceHbox = new St.BoxLayout({
         x_expand: true,
@@ -40,22 +40,22 @@ export let AddCoinSourceBoxLayout = GObject.registerClass(
         icon_name: 'go-next-symbolic',
         style_class: 'popup-menu-icon',
       });
-      changeSourceHbox.add(this.changeSourceIcon);
+      changeSourceHbox.add_child(this.changeSourceIcon);
 
       let changeSourceBtn = new St.Button({
         child: changeSourceHbox,
         style_class: 'crypto-input btn',
       });
-      hbox.add(changeSourceBtn);
+      hbox.add_child(changeSourceBtn);
 
       this.isActiveChangeSource = false;
       changeSourceBtn.connect('clicked', (self) => {
         this.isActiveChangeSource = !this.isActiveChangeSource;
         this.changeSourceIcon.icon_name = (this.isActiveChangeSource) ? 'go-down-symbolic' : 'go-next-symbolic';
         if (this.isActiveChangeSource) {
-          this.add_actor(this._scrollView);
+          this.add_child(this._scrollView);
         } else {
-          this.remove_actor(this._scrollView)
+          this.remove_child(this._scrollView)
         }
       });
 
@@ -70,7 +70,7 @@ export let AddCoinSourceBoxLayout = GObject.registerClass(
         height: 80,
       });
       this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
-      this._scrollView.add_actor(this.sourceSection);
+      this._scrollView.add_child(this.sourceSection);
       this._buildSourceButtons();
     }
 
@@ -82,7 +82,7 @@ export let AddCoinSourceBoxLayout = GObject.registerClass(
           sourceBtnsHbox = new St.BoxLayout({
             x_expand: true,
           });
-          this.sourceSection.add(sourceBtnsHbox);
+          this.sourceSection.add_child(sourceBtnsHbox);
         }
 
         let exchangeBtnHbox = new St.BoxLayout({
@@ -92,13 +92,13 @@ export let AddCoinSourceBoxLayout = GObject.registerClass(
         let exchangeIco = new St.Icon({
           style_class: `popup-menu-icon exchange-icon ${val.toLowerCase()}`,
         });
-        exchangeBtnHbox.add(exchangeIco);
+        exchangeBtnHbox.add_child(exchangeIco);
 
         let exchangeLbl = new St.Label({
           text: `${val}`,
           style_class: 'crypto-label',
         });
-        exchangeBtnHbox.add(exchangeLbl);
+        exchangeBtnHbox.add_child(exchangeLbl);
 
         let btn = new St.Button({
           child: exchangeBtnHbox,
@@ -121,7 +121,7 @@ export let AddCoinSourceBoxLayout = GObject.registerClass(
         });
 
         btns.push(btn);
-        sourceBtnsHbox.add(btn);
+        sourceBtnsHbox.add_child(btn);
       }
     }
   }

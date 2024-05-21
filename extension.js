@@ -69,7 +69,7 @@ const Indicator = GObject.registerClass(
         St.PolicyType.NEVER,
         St.PolicyType.AUTOMATIC
       );
-      this._coinsScrollview.add_actor(this.coinsScrollViewVbox);
+      this._coinsScrollview.add_child(this.coinsScrollViewVbox);
       baseMenuItem.add_child(this._coinsScrollview);
     }
 

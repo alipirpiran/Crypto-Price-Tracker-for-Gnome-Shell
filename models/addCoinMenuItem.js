@@ -28,10 +28,10 @@ export let AddCoinMenuItem = GObject.registerClass(
       this.actor.add_child(vbox);
 
       let sourceBoxLayout = new AddCoinSourceBoxLayout(this);
-      vbox.add(sourceBoxLayout);
+      vbox.add_child(sourceBoxLayout);
 
       let hbox = new St.BoxLayout({ x_expand: true });
-      vbox.add(hbox);
+      vbox.add_child(hbox);
 
       let coinSymbol = new St.Entry({
         name: 'symbol',
@@ -40,7 +40,7 @@ export let AddCoinMenuItem = GObject.registerClass(
         x_expand: true,
         style_class: 'crypto-input',
       });
-      hbox.add(coinSymbol);
+      hbox.add_child(coinSymbol);
 
       let coinTitle = new St.Entry({
         name: 'title',
@@ -49,7 +49,7 @@ export let AddCoinMenuItem = GObject.registerClass(
         x_expand: true,
         style_class: 'crypto-input',
       });
-      hbox.add(coinTitle);
+      hbox.add_child(coinTitle);
 
       let saveIcon = new St.Icon({
         icon_name: 'media-floppy-symbolic',
@@ -63,7 +63,7 @@ export let AddCoinMenuItem = GObject.registerClass(
         'clicked',
         this._addCoin.bind(this, coinSymbol, coinTitle)
       );
-      hbox.add(addBtn);
+      hbox.add_child(addBtn);
     }
 
     async _addCoin(coinSymbol, coinTitle) {
