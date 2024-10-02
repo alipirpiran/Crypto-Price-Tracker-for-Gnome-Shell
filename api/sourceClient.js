@@ -11,7 +11,7 @@ export var exchanges = {
   binance: 'Binance',
   coingecko: 'Coingecko',
   crypto: 'Crypto',
-  okx: 'OKX'
+  okx: 'OKX',
 };
 
 export var change_exchange = (exchange_name) => {
@@ -43,10 +43,9 @@ export let getPrice = async function (name, vol, exchange) {
       break;
   }
 
-  let { maximumFractionDigits, minimumFractionDigits } =
-    _fractionDigits(price);
+  let { maximumFractionDigits, minimumFractionDigits } = _fractionDigits(price);
 
-  return price.toLocaleString(undefined, {
+  return price.toLocaleString('en-US', {
     maximumFractionDigits,
     minimumFractionDigits,
   });
@@ -54,7 +53,6 @@ export let getPrice = async function (name, vol, exchange) {
 
 export let getChartUrl = (symbol, exchange) => {
   switch (exchange) {
-
     case exchanges.binance:
       return BinanceClient._getChartUrl(symbol);
 
@@ -70,7 +68,6 @@ export let getChartUrl = (symbol, exchange) => {
     default:
       return null;
   }
-
 };
 
 function _fractionDigits(price) {
