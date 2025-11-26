@@ -148,13 +148,13 @@ export let CoinMenuItem = GObject.registerClass(
             '(' +
               `${this.title || this.symbol}` +
               ') ((\\.\\.\\.)|(\\d*(,?\\d\\d\\d)*|\\d+)(\\.?\\d*))?',
-            'g'
+            'g',
           );
           let menuPairPrice = isNaN(+price.replaceAll(',', '')) ? '...' : price;
 
           menuItem.text = menuItem.text.replace(
             re,
-            `${this.title || this.symbol} ${menuPairPrice}`
+            `${this.title || this.symbol} ${menuPairPrice}`,
           );
         }
         this.nameLbl.text = `${this.title || this.symbol}`;
@@ -246,7 +246,7 @@ export let CoinMenuItem = GObject.registerClass(
       try {
         chartUrl = SourceClient.getChartUrl(
           this.coingecko_id || this.symbol,
-          this.exchange
+          this.exchange,
         );
         Util.spawnCommandLine(`xdg-open ${chartUrl}`);
       } catch (err) {
@@ -259,5 +259,5 @@ export let CoinMenuItem = GObject.registerClass(
       this.removeTimer();
       super.destroy();
     }
-  }
+  },
 );

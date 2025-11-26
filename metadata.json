@@ -4,6 +4,6 @@
   "uuid": "crypto@alipirpiran.github",
   "settings-schema": "org.gnome.shell.extensions.crypto-tracker",
   "url": "https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell",
-  "shell-version": ["46", "47"],
-  "version": 49
+  "shell-version": ["46", "47", "48", "49"],
+  "version": 50
 }
