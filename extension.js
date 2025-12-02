@@ -67,7 +67,7 @@ const Indicator = GObject.registerClass(
       });
       this._coinsScrollview.set_policy(
         St.PolicyType.NEVER,
-        St.PolicyType.AUTOMATIC
+        St.PolicyType.AUTOMATIC,
       );
       this._coinsScrollview.add_child(this.coinsScrollViewVbox);
       baseMenuItem.add_child(this._coinsScrollview);
@@ -91,7 +91,7 @@ const Indicator = GObject.registerClass(
         this.coinsScrollViewVbox.add_child(coin);
       }
       this._coinsScrollview.set_height(
-        CryptoUtil.getHeight(this.coinsScrollViewVbox.height)
+        CryptoUtil.getHeight(this.coinsScrollViewVbox.height),
       );
     }
 
@@ -115,7 +115,7 @@ const Indicator = GObject.registerClass(
         this.coins.push(_coin);
       }
     }
-  }
+  },
 );
 
 export default class Extension extends Ex {
@@ -128,13 +128,18 @@ export default class Extension extends Ex {
     this._indicator._buildCoinsSection();
     this._indicator._buildAddCoinSection(this);
     this._settings = this.getSettings(
-      'org.gnome.shell.extensions.crypto-tracker'
+      'org.gnome.shell.extensions.crypto-tracker',
     );
 
     Main.panel.addToStatusArea(this.uuid, this._indicator);
   }
 
   disable() {
+    if (this._indicator.coins?.length) {
+      for (const c of this._indicator.coins) {
+        c.destroy();
+      }
+    }
     this._indicator.destroy();
     this._indicator = null;
     this._settings = null;

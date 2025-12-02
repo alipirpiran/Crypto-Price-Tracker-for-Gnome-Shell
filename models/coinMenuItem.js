@@ -210,7 +210,10 @@ export let CoinMenuItem = GObject.registerClass(
     }
 
     removeTimer() {
-      if (this.timeOutTag) GLib.Source.remove(this.timeOutTag);
+      if (this.timeOutTag) {
+        GLib.source_remove(this.timeOutTag);
+        this.timeOutTag = 0;
+      }
     }
 
     _updateMenuCoinItems(menuItem, isInit) {
