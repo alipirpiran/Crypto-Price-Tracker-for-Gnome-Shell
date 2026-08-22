@@ -17,8 +17,8 @@ export let OkxClient = {
   },
 
   _getChartUrl(symbol) {
-    exchangeUrl = 'https://www.okx.com/markets/spot-info';
-    formattedPair = symbol.replace('/', '-').toLowerCase();
+    let exchangeUrl = 'https://www.okx.com/markets/spot-info';
+    let formattedPair = symbol.replace('/', '-').toLowerCase();
 
     return _('%s/%s').format(exchangeUrl, formattedPair);
   }

@@ -20,8 +20,8 @@ export let CoingeckoClient = {
   },
 
   _getChartUrl(symbol) {
-    exchangeUrl = 'https://www.coingecko.com/en/coins';
-    formattedPair = symbol.toLowerCase();
+    let exchangeUrl = 'https://www.coingecko.com/en/coins';
+    let formattedPair = symbol.toLowerCase();
 
     return _('%s/%s').format(exchangeUrl, formattedPair);
   }
