@@ -141,6 +141,7 @@ export let CoinMenuItem = GObject.registerClass(
     async _refreshPrice(menuItem) {
       try {
         let price = await this._getPrice();
+        if (this._destroyed) return; // destroyed while the request was in flight
         if (!price) return; // if error happened, not change current price.
 
         if (this.activeCoin) {
@@ -259,6 +260,7 @@ export let CoinMenuItem = GObject.registerClass(
     }
 
     destroy() {
+      this._destroyed = true;
       this.removeTimer();
       super.destroy();
     }
