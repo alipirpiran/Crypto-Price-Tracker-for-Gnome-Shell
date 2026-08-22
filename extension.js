@@ -22,6 +22,7 @@ import Clutter from 'gi://Clutter';
 
 import { Extension as Ex } from 'resource:///org/gnome/shell/extensions/extension.js';
 
+import * as Request from './api/request.js';
 import * as SourceClient from './api/sourceClient.js';
 import * as CryptoUtil from './utils/cryptoUtil.js';
 
@@ -144,5 +145,6 @@ export default class Extension extends Ex {
     this._indicator = null;
     this._settings = null;
     CryptoUtil.destroy();
+    Request.destroy();
   }
 }
