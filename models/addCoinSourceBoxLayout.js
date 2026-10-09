@@ -8,7 +8,7 @@ export let AddCoinSourceBoxLayout = GObject.registerClass(
   class AddCoinSourceBoxLayout extends St.BoxLayout {
     constructor(addCoinMenuItem) {
       super({
-        vertical: true,
+        orientation: Clutter.Orientation.VERTICAL,
         x_expand: true,
       });
       this.addCoinMenuItem = addCoinMenuItem;
@@ -60,7 +60,7 @@ export let AddCoinSourceBoxLayout = GObject.registerClass(
       });
 
       this.sourceSection = new St.BoxLayout({
-        vertical: true,
+        orientation: Clutter.Orientation.VERTICAL,
         x_expand: false,
       });
 

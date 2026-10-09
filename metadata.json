@@ -5,11 +5,10 @@
   "settings-schema": "org.gnome.shell.extensions.crypto-tracker",
   "url": "https://github.com/alipirpiran/Crypto-Price-Tracker-for-Gnome-Shell",
   "shell-version": [
-    "46",
-    "47",
     "48",
     "49",
-    "50"
+    "50",
+    "51"
   ],
   "version": 52
 }

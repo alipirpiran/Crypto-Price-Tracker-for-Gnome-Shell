@@ -1,4 +1,5 @@
 import GObject from 'gi://GObject';
+import Clutter from 'gi://Clutter';
 import St from 'gi://St';
 
 import * as SourceClient from '../api/sourceClient.js';
@@ -21,7 +22,7 @@ export let AddCoinMenuItem = GObject.registerClass(
 
       let vbox = new St.BoxLayout({
         style_class: 'add-coin-vbox',
-        vertical: true,
+        orientation: Clutter.Orientation.VERTICAL,
         x_expand: true,
       });
 

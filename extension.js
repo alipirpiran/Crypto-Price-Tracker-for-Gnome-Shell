@@ -51,7 +51,7 @@ const Indicator = GObject.registerClass(
       this.menu.addMenuItem(this.coinSection);
 
       this.coinsScrollViewVbox = new St.BoxLayout({
-        vertical: true,
+        orientation: Clutter.Orientation.VERTICAL,
         x_expand: false,
       });
       this.coinsCountChangeToScroll = 0;
